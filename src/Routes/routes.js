@@ -7,7 +7,6 @@ import Dashboard from "../Pages/Dashboard";
 // Import Calender
 import Calender from "../Pages/Calender";
 
-
 // Import E-mail
 import Inbox from "../Pages/E-mail/Inbox";
 import ReadEmail from "../Pages/E-mail/ReadEmail";
@@ -76,7 +75,6 @@ import BasicTable from "../Pages/Tables/BasicTable.js";
 import ListJs from "../Pages/Tables/ListTables/ListTables";
 import DataTable from "../Pages/Tables/DataTables/DataTables";
 
-
 // Import Charts
 import ApexCharts from "../Pages/Charts/ApexCharts";
 import ChartJs from "../Pages/Charts/ChartjsCharts";
@@ -88,12 +86,11 @@ import JknobCharts from "../Pages/Charts/JqueryKnobCharts";
 import IconMaterialdesign from "../Pages/Icons/IconMaterialdesign";
 import IconFontawesome from "../Pages/Icons/IconFontAwesome";
 import IconDripicons from "../Pages/Icons/IconDrip";
-import IconBoxicons from "../Pages/Icons/IconBoxicons"
+import IconBoxicons from "../Pages/Icons/IconBoxicons";
 
 // Import Map Pages
 import VectorMaps from "../Pages/Maps/VectorMap";
 import GoogleMap from "../Pages/Maps/GoogleMap";
-
 
 const authProtectedRoutes = [
   //dashboard
@@ -183,12 +180,11 @@ const authProtectedRoutes = [
 ];
 
 const publicRoutes = [
-
   // Authentication Page
   { path: "/logout", component: <Logout /> },
   { path: "/login", component: <Login /> },
   { path: "/forgot-password", component: <ForgetPasswordPage /> },
-  { path: "/register", component: <Register /> },
+  { path: "/registro", component: <Register /> },
 
   // Authentication Inner Pages
   { path: "/auth-login", component: <Login1 /> },

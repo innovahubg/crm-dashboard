@@ -7,10 +7,10 @@ import { calenderDefaultCategories, events } from "../../CommonData/Data";
 let users = [
   {
     uid: 1,
-    username: "admin",
+    username: "user",
     role: "admin",
     password: "123456",
-    email: "admin@Themesdesign.com",
+    email: "user@ihubg.com",
   },
 ];
 
@@ -197,7 +197,6 @@ const fakeBackend = () => {
   mock.onGet(url.GET_EVENTS).reply(() => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-       
         if (events) {
           // Passing fake JSON data as response
           resolve([200, events]);

@@ -1,9 +1,20 @@
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
-import logolight from "../../assets/images/logo-light.png";
-import logodark from "../../assets/images/logo-dark.png";
+import logolight from "../../assets/images/logo.png";
+import logodark from "../../assets/images/logo.png";
 
-import { Row, Col, CardBody, Card, Alert, Container, Form, Input, FormFeedback, Label } from "reactstrap";
+import {
+  Row,
+  Col,
+  CardBody,
+  Card,
+  Alert,
+  Container,
+  Form,
+  Input,
+  FormFeedback,
+  Label,
+} from "reactstrap";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -26,8 +37,8 @@ import { loginUser, socialLogin } from "../../store/actions";
 //Import config
 import { facebook, google } from "../../config";
 
-const Login = props => {
-  document.title = "Login | Upzet - React Admin & Dashboard Template";
+const Login = (props) => {
+  document.title = "CRM IHG";
 
   const dispatch = useDispatch();
 
@@ -36,8 +47,8 @@ const Login = props => {
     enableReinitialize: true,
 
     initialValues: {
-      email: "admin@Themesdesign.com" || '',
-      password: "123456" || '',
+      email: "user@ihubg.com" || "",
+      password: "123456" || "",
     },
     validationSchema: Yup.object({
       email: Yup.string().required("Please Enter Your Email"),
@@ -45,10 +56,10 @@ const Login = props => {
     }),
     onSubmit: (values) => {
       dispatch(loginUser(values, props.router.navigate));
-    }
+    },
   });
 
-  const { error } = useSelector(state => ({
+  const { error } = useSelector((state) => ({
     error: state.login.error,
   }));
 
@@ -78,7 +89,7 @@ const Login = props => {
   };
 
   //handleGoogleLoginResponse
-  const googleResponse = response => {
+  const googleResponse = (response) => {
     signIn(response, "google");
   };
 
@@ -86,12 +97,12 @@ const Login = props => {
   // const twitterResponse = e => {}
 
   //handleFacebookLoginResponse
-  const facebookResponse = response => {
+  const facebookResponse = (response) => {
     signIn(response, "facebook");
   };
 
   useEffect(() => {
-    document.body.className = "bg-pattern";
+    //document.body.className = "bg-pattern";
     // remove classname when component will unmount
     return function cleanup() {
       document.body.className = "";
@@ -100,37 +111,29 @@ const Login = props => {
 
   return (
     <React.Fragment>
-    
-    <div className="bg-overlay"></div>
-    <div className="account-pages my-5 pt-5">
-      <Container>
-        <Row className="justify-content-center">
-          <Col lg={6} md={8} xl={4}>
-            <Card>
+      {/*
+        <div className="bg-overlay"></div>
+      */}
+      <div className="loginSpace">
+        <div className="leftColLogin"></div>
+        <div className="rightColLogin">
+          <div className="d-flex flex-column">
+            <Card className="w-full flex-column d-flex">
               <CardBody className="p-4">
                 <div>
                   <div className="text-center">
-                    <Link to="/">
-                      <img
-                        src={logodark}
-                        alt=""
-                        height="24"
-                        className="auth-logo logo-dark mx-auto"
-                      />
-                      <img
-                        src={logolight}
-                        alt=""
-                        height="24"
-                        className="auth-logo logo-light mx-auto"
-                      />
-                    </Link>
+                    <img
+                      src={logodark}
+                      alt="InnovaHubGroup"
+                      className="auth-logo logo-dark mx-auto"
+                    />
+                    <img
+                      src={logolight}
+                      alt="InnovaHubGroup"
+                      className="auth-logo logo-light mx-auto"
+                    />
                   </div>
-                  <h4 className="font-size-18 text-muted mt-2 text-center">
-                    Welcome Back !
-                  </h4>
-                  <p className="mb-5 text-center">
-                    Sign in to continue to Upzet.
-                  </p>
+
                   <Form
                     className="form-horizontal"
                     onSubmit={(e) => {
@@ -139,69 +142,84 @@ const Login = props => {
                       return false;
                     }}
                   >
-                    {error ? <Alert color="danger"><div>{error}</div></Alert> : null}
+                    {error ? (
+                      <Alert color="danger">
+                        <div>{error}</div>
+                      </Alert>
+                    ) : null}
                     <Row>
                       <Col md={12}>
                         <div className="mb-4">
-                        <Label className="form-label">Email</Label>
-                        <Input
-                          name="email"
-                          className="form-control"
-                          placeholder="Enter email"
-                          type="email"
-                          onChange={validation.handleChange}
-                          onBlur={validation.handleBlur}
-                          value={validation.values.email || ""}
-                          invalid={
-                            validation.touched.email && validation.errors.email ? true : false
-                          }
-                        />
-                        {validation.touched.email && validation.errors.email ? (
-                          <FormFeedback type="invalid"><div>{validation.errors.email}</div></FormFeedback>
-                        ) : null}
+                          <Label className="form-label">
+                            Correo electrónico
+                          </Label>
+                          <Input
+                            name="email"
+                            className="form-control"
+                            placeholder="Ingresar correo electrónico"
+                            type="email"
+                            onChange={validation.handleChange}
+                            onBlur={validation.handleBlur}
+                            value={validation.values.email || ""}
+                            invalid={
+                              validation.touched.email &&
+                              validation.errors.email
+                                ? true
+                                : false
+                            }
+                          />
+                          {validation.touched.email &&
+                          validation.errors.email ? (
+                            <FormFeedback type="invalid">
+                              <div>{validation.errors.email}</div>
+                            </FormFeedback>
+                          ) : null}
                         </div>
                         <div className="mb-4">
-                          <Label className="form-label">Password</Label>
+                          <Label className="form-label">Contraseña</Label>
                           <Input
                             name="password"
                             value={validation.values.password || ""}
                             type="password"
-                            placeholder="Enter Password"
+                            placeholder="Ingresar contraseña"
                             onChange={validation.handleChange}
                             onBlur={validation.handleBlur}
                             invalid={
-                              validation.touched.password && validation.errors.password ? true : false
+                              validation.touched.password &&
+                              validation.errors.password
+                                ? true
+                                : false
                             }
                           />
-                          {validation.touched.password && validation.errors.password ? (
-                            <FormFeedback type="invalid"><div> {validation.errors.password} </div></FormFeedback>
+                          {validation.touched.password &&
+                          validation.errors.password ? (
+                            <FormFeedback type="invalid">
+                              <div> {validation.errors.password} </div>
+                            </FormFeedback>
                           ) : null}
                         </div>
 
                         <Row>
-                          <Col>
-                            <div className="form-check">
-                              <input
-                                type="checkbox"
-                                className="form-check-input"
-                                id="customControlInline"
-                              />
-                              <label
-                                className="form-label form-check-label"
-                                htmlFor="customControlInline"
-                              >
-                                Remember me
-                              </label>
-                            </div>
-                          </Col>
-                          <Col className="col-7">
-                            <div className="text-md-end mt-3 mt-md-0">
-                              <Link
-                                to="/auth-recoverpw"
-                                className="text-muted"
-                              >
-                                <i className="mdi mdi-lock"></i> Forgot your
-                                password?
+                          {/* <Col>
+                              <div className="form-check">
+                                <input
+                                  type="checkbox"
+                                  className="form-check-input"
+                                  id="customControlInline"
+                                />
+                                <label
+                                  className="form-label form-check-label"
+                                  htmlFor="customControlInline"
+                                >
+                                  Remember me
+                                </label>
+                              </div>
+                            </Col> */}
+                          <Col className="text-center">
+                            <div className="text-center mt-3">
+                              <Link to="/auth-recoverpw" className="text-muted">
+                                <i className="mdi mdi-lock"></i> Recuperar
+                                contraseña
                               </Link>
                             </div>
                           </Col>
@@ -211,49 +229,50 @@ const Login = props => {
                             className="btn btn-primary waves-effect waves-light"
                             type="submit"
                           >
-                            Log In
+                            Acceder
                           </button>
                         </div>
-                        <div className="mt-4 text-center">
-                      <h5 className="font-size-14 mb-3">Sign in with</h5>
+                        {/*
+                          <div className="mt-4 text-center">
+                            <h5 className="font-size-14 mb-3">Sign in with</h5>
 
-                      <ul className="list-inline">
-                        <li className="list-inline-item">
-                          <FacebookLogin
-                            appId={facebook.APP_ID}
-                            autoLoad={false}
-                            callback={facebookResponse}
-                            render={renderProps => (
-                              <Link
-                                to="#"
-                                className="social-list-item bg-primary text-white border-primary"
-                                onClick={renderProps.onClick}
-                              >
-                                <i className="mdi mdi-facebook" />
-                              </Link>
-                            )}
-                          />
-                        </li>
+                            <ul className="list-inline">
+                              <li className="list-inline-item">
+                                <FacebookLogin
+                                  appId={facebook.APP_ID}
+                                  autoLoad={false}
+                                  callback={facebookResponse}
+                                  render={(renderProps) => (
+                                    <Link
+                                      to="#"
+                                      className="social-list-item bg-primary text-white border-primary"
+                                      onClick={renderProps.onClick}
+                                    >
+                                      <i className="mdi mdi-facebook" />
+                                    </Link>
+                                  )}
+                                />
+                              </li>
 
-                        <li className="list-inline-item">
-                          <GoogleLogin
-                            clientId={google.CLIENT_ID}
-                            render={renderProps => (
-                              <Link
-                                to="#"
-                                className="social-list-item bg-danger text-white border-danger"
-                                onClick={renderProps.onClick}
-                              >
-                                <i className="mdi mdi-google" />
-                              </Link>
-                            )}
-                            onSuccess={googleResponse}
-                            onFailure={() => { }}
-                          />
-                        </li>
-                      </ul>
-                    </div>
-
+                              <li className="list-inline-item">
+                                <GoogleLogin
+                                  clientId={google.CLIENT_ID}
+                                  render={(renderProps) => (
+                                    <Link
+                                      to="#"
+                                      className="social-list-item bg-danger text-white border-danger"
+                                      onClick={renderProps.onClick}
+                                    >
+                                      <i className="mdi mdi-google" />
+                                    </Link>
+                                  )}
+                                  onSuccess={googleResponse}
+                                  onFailure={() => {}}
+                                />
+                              </li>
+                            </ul>
+                          </div>
+                          */}
                       </Col>
                     </Row>
                   </Form>
@@ -261,23 +280,20 @@ const Login = props => {
               </CardBody>
             </Card>
             <div className="mt-5 text-center">
-              <p className="text-white-50">
-                Don't have an account ?{" "}
-                <Link to="/register" className="fw-medium text-primary">
-                  {" "}
-                  Register{" "}
-                </Link>{" "}
+              <p className="text-black">
+                <Link to="/registro" className="fw-medium text-primary">
+                  Registrarse
+                </Link>
               </p>
-              <p className="text-white-50">
-                © {new Date().getFullYear()} Upzet. Crafted with{" "}
-                <i className="mdi mdi-heart text-danger"></i> by Themesdesign
+              <p className="text-black">
+                © {new Date().getFullYear()}
+                <i className="mdi mdi-heart text-danger"></i> InnovaHubGroup
               </p>
             </div>
-          </Col>
-        </Row>
-      </Container>
-    </div>
-  </React.Fragment>
+          </div>
+        </div>
+      </div>
+    </React.Fragment>
   );
 };
 
