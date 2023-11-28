@@ -19,7 +19,7 @@ import {
 //redux
 import { useSelector, useDispatch } from "react-redux";
 
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import withRouter from "../../components/Common/withRouter";
 
 // Formik validation
@@ -48,14 +48,28 @@ const Login = (props) => {
 
     initialValues: {
       email: "user@ihubg.com" || "",
-      password: "123456" || "",
+      password: "pass1234" || "",
     },
     validationSchema: Yup.object({
       email: Yup.string().required("Please Enter Your Email"),
       password: Yup.string().required("Please Enter Your Password"),
     }),
-    onSubmit: (values) => {
-      dispatch(loginUser(values, props.router.navigate));
+    onSubmit: async (values) => {
+      const req = await fetch(`${process.env.REACT_APP_API}/security/auth`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+      const res = await req.json();
+      console.log(res);
+
+      if(!error)
+
+      //redirect("/dashboard");
+
+      dispatch(loginUser(res, props.router.navigate));
     },
   });
 
@@ -114,9 +128,9 @@ const Login = (props) => {
       {/*
         <div className="bg-overlay"></div>
       */}
-      <div className="loginSpace">
-        <div className="leftColLogin"></div>
-        <div className="rightColLogin">
+      <div className="accessSpace">
+        <div className="leftColAccess"></div>
+        <div className="rightColAccess">
           <div className="d-flex flex-column">
             <Card className="w-full flex-column d-flex">
               <CardBody className="p-4">

@@ -9,7 +9,7 @@ let users = [
     uid: 1,
     username: "user",
     role: "admin",
-    password: "123456",
+    password: "pass1234",
     email: "user@ihubg.com",
   },
 ];
@@ -35,14 +35,13 @@ const fakeBackend = () => {
       (usr) => usr.email === user.email && usr.password === user.password
     );
 
+    console.log({ validUser });
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        if (validUser["length"] === 1) {
+        if (validUser) {
           resolve([200, validUser[0]]);
         } else {
-          reject([
-            "Username and password are invalid. Please enter correct username and password",
-          ]);
+          reject(["Credenciales inválidas"]);
         }
       });
     });

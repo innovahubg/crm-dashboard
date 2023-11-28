@@ -1,5 +1,16 @@
 import React, { useEffect } from "react";
-import { Row, Col, CardBody, Card, Alert, Container, Input, Label, Form, FormFeedback } from "reactstrap";
+import {
+  Row,
+  Col,
+  CardBody,
+  Card,
+  Alert,
+  Container,
+  Input,
+  Label,
+  Form,
+  FormFeedback,
+} from "reactstrap";
 
 // Formik Validation
 import * as Yup from "yup";
@@ -11,15 +22,13 @@ import { registerUser, apiError } from "../../store/actions";
 //redux
 import { useSelector, useDispatch } from "react-redux";
 
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 
 // import images
-import logolight from '../../assets/images/logo-light.png';
-import logodark from '../../assets/images/logo-dark.png';
+import logolight from "../../assets/images/logo.png";
+import logodark from "../../assets/images/logo.png";
 
-const Register = props => {
-    document.title = "Register | Upzet - React Admin & Dashboard Template";
-
+const Register = (props) => {
   const dispatch = useDispatch();
 
   const validation = useFormik({
@@ -27,21 +36,31 @@ const Register = props => {
     enableReinitialize: true,
 
     initialValues: {
-      email: '',
-      username: '',
-      password: '',
+      email: "",
+      password: "",
+      name: "",
+      lastName: "",
     },
     validationSchema: Yup.object({
-      email: Yup.string().required("Please Enter Your Email"),
-      username: Yup.string().required("Please Enter Your Username"),
-      password: Yup.string().required("Please Enter Your Password"),
+      email: Yup.string().required("Ingresa un correo"),
+      password: Yup.string().required("Ingresa una contraseña valida"),
+      name: Yup.string().required("Ingresa un nombre valido"),
+      lastName: Yup.string().required("Ingresa un apellido valido"),
+      phone: Yup.string().required("Ingresa un numero valido"),
     }),
-    onSubmit: (values) => {
-      dispatch(registerUser(values));
-    }
+    onSubmit: async (values) => {
+      console.log("send data", values);
+      const req = await fetch(`${process.env.REACT_APP_API}/users/signup`, {
+        method: "POST",
+      });
+      const res = await req.json();
+      console.log(res);
+      redirect("/login");
+      //dispatch(registerUser(values));
+    },
   });
 
-  const { user, registrationError } = useSelector(state => ({
+  const { user, registrationError } = useSelector((state) => ({
     user: state.account.user,
     registrationError: state.account.registrationError,
   }));
@@ -56,117 +75,209 @@ const Register = props => {
   }, [dispatch]);
 
   return (
-    <div className="bg-pattern" style={{height:"100vh"}}>
-    <div className="bg-overlay"></div>
-    <div className="account-pages pt-5">
-        <Container>
-            <Row className="justify-content-center">
-                <Col lg={6} md={8} xl={4}>
-                    <Card className='mt-5'>
-                        <CardBody className="p-4">
-                            <div className="text-center">
-                                <Link to="/" className="">
-                                    <img src={logodark} alt="" height="24" className="auth-logo logo-dark mx-auto" />
-                                    <img src={logolight} alt="" height="24" className="auth-logo logo-light mx-auto" />
-                                </Link>
-                            </div>
+    <div className="accessSpace">
+      <div className="leftColAccess"></div>
+      <div className="rightColAccess">
+        <div className="d-flex flex-column">
+          <Card className="w-full flex-column d-flex">
+            <CardBody className="p-4">
+              <div className="text-center">
+                <Link to="/" className="">
+                  <div className="text-center">
+                    <img
+                      src={logodark}
+                      alt="InnovaHubGroup"
+                      className="auth-logo logo-dark mx-auto"
+                    />
+                    <img
+                      src={logolight}
+                      alt="InnovaHubGroup"
+                      className="auth-logo logo-light mx-auto"
+                    />
+                  </div>
+                </Link>
+              </div>
 
-                            <h4 className="font-size-18 text-muted text-center mt-2">Free Register</h4>
-                            <p className="text-muted text-center mb-4">Get your free Upzet account now.</p>
-                            <Form
-                                className="form-horizontal"
-                                onSubmit={(e) => {
-                                    e.preventDefault();
-                                    validation.handleSubmit();
-                                    return false;
-                                }}
-                                >
-                                {user && user ? (
-                                    <Alert color="success">
-                                    Register User Successfully
-                                    </Alert>
-                                ) : null}
+              <Form
+                className="form-horizontal"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  validation.handleSubmit();
+                  return false;
+                }}
+              >
+                {user && user ? (
+                  <Alert color="success">Register User Successfully</Alert>
+                ) : null}
 
-                                {registrationError && registrationError ? (
-                                    <Alert color="danger"><div>{registrationError}</div></Alert>
-                                ) : null}
+                {registrationError && registrationError ? (
+                  <Alert color="danger">
+                    <div>{registrationError}</div>
+                  </Alert>
+                ) : null}
 
-                                <Row>
-                                    <Col md={12}>
-                                        <div className="mb-4">
-                                        <Label className="form-label">Email</Label>
-                                            <Input
-                                            id="email"
-                                            name="email"
-                                            className="form-control"
-                                            placeholder="Enter email"
-                                            type="email"
-                                            onChange={validation.handleChange}
-                                            onBlur={validation.handleBlur}
-                                            value={validation.values.email || ""}
-                                            invalid={
-                                                validation.touched.email && validation.errors.email ? true : false
-                                            }
-                                            />
-                                            {validation.touched.email && validation.errors.email ? (
-                                            <FormFeedback type="invalid"><div>{validation.errors.email}</div></FormFeedback>
-                                            ) : null}
-                                        </div>
-                                        <div className="mb-4">
-                                        <Label className="form-label">Username</Label>
-                                            <Input
-                                            name="username"
-                                            type="text"
-                                            placeholder="Enter username"
-                                            onChange={validation.handleChange}
-                                            onBlur={validation.handleBlur}
-                                            value={validation.values.username || ""}
-                                            invalid={
-                                                validation.touched.username && validation.errors.username ? true : false
-                                            }
-                                            />
-                                            {validation.touched.username && validation.errors.username ? (
-                                            <FormFeedback type="invalid"><div>{validation.errors.username}</div></FormFeedback>
-                                            ) : null}
-                                        </div>
-                                        <div className="mb-4">
-                                        <Label className="form-label">Password</Label>
-                                            <Input
-                                            name="password"
-                                            type="password"
-                                            placeholder="Enter Password"
-                                            onChange={validation.handleChange}
-                                            onBlur={validation.handleBlur}
-                                            value={validation.values.password || ""}
-                                            invalid={
-                                                validation.touched.password && validation.errors.password ? true : false
-                                            }
-                                            />
-                                            {validation.touched.password && validation.errors.password ? (
-                                            <FormFeedback type="invalid"><div>{validation.errors.password}</div></FormFeedback>
-                                            ) : null}
-                                        </div>
-                                        <div className="form-check">
-                                            <input type="checkbox" className="form-check-input" id="term-conditionCheck" />
-                                            <label className="form-check-label fw-normal" htmlFor="term-conditionCheck">I accept <Link to="#" className="text-primary">Terms and Conditions</Link></label>
-                                        </div>
-                                        <div className="d-grid mt-4">
-                                            <button className="btn btn-primary waves-effect waves-light" type="submit">Register</button>
-                                        </div>
-                                    </Col>
-                                </Row>
-                            </Form>
-                        </CardBody>
-                    </Card>
-                    <div className="mt-5 text-center">
-                        <p className="text-white-50">Already have an account ?<Link to="/login" className="fw-medium text-primary"> Login </Link> </p>
-                        <p className="text-white-50">© {new Date().getFullYear()} Upzet. Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesdesign</p>
+                <Row>
+                  <Col md={12}>
+                    <div className="d-flex">
+                      <div className="mb-4 w-40">
+                        <Label className="form-label">Nombre(s)</Label>
+                        <Input
+                          name="name"
+                          type="text"
+                          placeholder="Ingresa tu nombre"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.name || ""}
+                          invalid={
+                            validation.touched.name && validation.errors.name
+                              ? true
+                              : false
+                          }
+                        />
+                        {validation.touched.name && validation.errors.name ? (
+                          <FormFeedback type="invalid">
+                            <div>{validation.errors.name}</div>
+                          </FormFeedback>
+                        ) : null}
+                      </div>
+                      <div className="mb-4 w-40">
+                        <Label className="form-label">Apellido(s)</Label>
+                        <Input
+                          name="lastName"
+                          type="text"
+                          placeholder="Ingresa tus apellidos"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.lastName || ""}
+                          invalid={
+                            validation.touched.lastName &&
+                            validation.errors.lastName
+                              ? true
+                              : false
+                          }
+                        />
+                        {validation.touched.lastName &&
+                        validation.errors.lastName ? (
+                          <FormFeedback type="invalid">
+                            <div>{validation.errors.lastName}</div>
+                          </FormFeedback>
+                        ) : null}
+                      </div>
                     </div>
-                </Col>
-            </Row>
-        </Container>
+
+                    <div className="mb-4">
+                      <Label className="form-label">Correo electrónico</Label>
+                      <Input
+                        id="email"
+                        name="email"
+                        className="form-control"
+                        placeholder="Ingresa tu correo electrónico"
+                        type="email"
+                        onChange={validation.handleChange}
+                        onBlur={validation.handleBlur}
+                        value={validation.values.email || ""}
+                        invalid={
+                          validation.touched.email && validation.errors.email
+                            ? true
+                            : false
+                        }
+                      />
+                      {validation.touched.email && validation.errors.email ? (
+                        <FormFeedback type="invalid">
+                          <div>{validation.errors.email}</div>
+                        </FormFeedback>
+                      ) : null}
+                    </div>
+
+                    <div className="mb-4">
+                      <Label className="form-label">Contraseña</Label>
+                      <Input
+                        name="password"
+                        type="password"
+                        placeholder="Ingresar contraseña"
+                        onChange={validation.handleChange}
+                        onBlur={validation.handleBlur}
+                        value={validation.values.password || ""}
+                        invalid={
+                          validation.touched.password &&
+                          validation.errors.password
+                            ? true
+                            : false
+                        }
+                      />
+                      {validation.touched.password &&
+                      validation.errors.password ? (
+                        <FormFeedback type="invalid">
+                          <div>{validation.errors.password}</div>
+                        </FormFeedback>
+                      ) : null}
+                    </div>
+                    <div className="mb-4">
+                      <Label className="form-label">Número telefónico</Label>
+                      <Input
+                        name="phone"
+                        type="text"
+                        placeholder="Ingresar número telefónico"
+                        onChange={validation.handleChange}
+                        onBlur={validation.handleBlur}
+                        value={validation.values.phone || ""}
+                        invalid={
+                          validation.touched.phone && validation.errors.phone
+                            ? true
+                            : false
+                        }
+                      />
+                      {validation.touched.phone && validation.errors.phone ? (
+                        <FormFeedback type="invalid">
+                          <div>{validation.errors.phone}</div>
+                        </FormFeedback>
+                      ) : null}
+                    </div>
+                    <div className="form-check">
+                      <input
+                        type="checkbox"
+                        className="form-check-input"
+                        id="term-conditionCheck"
+                      />
+                      <label
+                        className="form-check-label fw-normal"
+                        htmlFor="term-conditionCheck"
+                      >
+                        Acepto los&nbsp;
+                        <Link to="#" className="text-primary">
+                          Términos y Condiciones
+                        </Link>
+                      </label>
+                    </div>
+                    <div className="d-grid mt-4">
+                      <button
+                        className="btn btn-primary waves-effect waves-light"
+                        type="submit"
+                      >
+                        Registro
+                      </button>
+                    </div>
+                  </Col>
+                </Row>
+              </Form>
+            </CardBody>
+          </Card>
+          <div className="mt-5 text-center">
+            <p className="text-black">
+              ¿Ya tienes una cuenta?
+              <Link to="/login" className="fw-medium text-primary">
+                {" "}
+                Iniciar sesión{" "}
+              </Link>{" "}
+            </p>
+            <p className="text-black">
+              © {new Date().getFullYear()}
+              <i className="mdi mdi-heart text-danger"></i> InnovaHubGroup
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
   );
 };
 

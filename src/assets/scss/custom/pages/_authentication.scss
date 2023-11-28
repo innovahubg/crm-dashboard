@@ -18,4 +18,11 @@
     &.logo-dark {
         display: $display-block !important;
     }
+    
+}
+
+@media only screen and (max-width: 600px) {
+    .auth-logo{
+        width: 70%;       
+    }
 }
