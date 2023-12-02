@@ -7,7 +7,10 @@ import Dashboard from "../Pages/Dashboard";
 // Import Calender
 import Calender from "../Pages/Calender";
 
+//Modules
 import Campanas from "../Pages/Campanas";
+import Automation from "../Pages/Automation";
+
 
 // Import E-mail
 import Inbox from "../Pages/E-mail/Inbox";
@@ -101,7 +104,9 @@ const authProtectedRoutes = [
   // Calender
   { path: "/calendar", component: <Calender /> },
 
+  //Modules
   { path: "/campaigns", component: <Campanas /> },
+  { path: "/automation", component: <Automation /> },
 
   // Profile
   { path: "/userprofile", component: <UserProfile /> },
