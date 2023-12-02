@@ -24,6 +24,12 @@ const SidebarData = [
     url: "/campaigns",
   },
   {
+    label: "Automatización",
+    icon: "mdi mdi-account-group-outline",
+    isHasArrow: true,
+    url: "/automation",
+  },
+  {
     label: "Email",
     icon: "mdi mdi-email-outline",
     subItem: [
