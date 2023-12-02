@@ -1,4 +1,4 @@
-import firebase from 'firebase/compat/app';
+import firebase from "firebase/compat/app";
 
 // Add the Firebase products that you want to use
 import "firebase/compat/auth";
@@ -9,7 +9,7 @@ class FirebaseAuthBackend {
     if (firebaseConfig) {
       // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
-      firebase.auth().onAuthStateChanged(user => {
+      firebase.auth().onAuthStateChanged((user) => {
         if (user) {
           localStorage.setItem("authUser", JSON.stringify(user));
         } else {
@@ -28,10 +28,10 @@ class FirebaseAuthBackend {
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then(
-          user => {
+          (user) => {
             resolve(firebase.auth().currentUser);
           },
-          error => {
+          (error) => {
             reject(this._handleError(error));
           }
         );
@@ -47,10 +47,10 @@ class FirebaseAuthBackend {
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then(
-          user => {
+          (user) => {
             resolve(firebase.auth().currentUser);
           },
-          error => {
+          (error) => {
             reject(this._handleError(error));
           }
         );
@@ -61,25 +61,26 @@ class FirebaseAuthBackend {
    * Login user with given details
    */
   loginUser = (email, password) => {
-    return new Promise((resolve, reject) => {
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
-        .then(
-          user => {
-            resolve(firebase.auth().currentUser);
-          },
-          error => {
-            reject(this._handleError(error));
-          }
-        );
-    });
+    console.log("Login user");
+    // return new Promise((resolve, reject) => {
+    //   firebase
+    //     .auth()
+    //     .signInWithEmailAndPassword(email, password)
+    //     .then(
+    //       user => {
+    //         resolve(firebase.auth().currentUser);
+    //       },
+    //       error => {
+    //         reject(this._handleError(error));
+    //       }
+    //     );
+    // });
   };
 
   /**
    * forget Password user with given details
    */
-  forgetPassword = email => {
+  forgetPassword = (email) => {
     return new Promise((resolve, reject) => {
       firebase
         .auth()
@@ -90,7 +91,7 @@ class FirebaseAuthBackend {
         .then(() => {
           resolve(true);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(this._handleError(error));
         });
     });
@@ -107,7 +108,7 @@ class FirebaseAuthBackend {
         .then(() => {
           resolve(true);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(this._handleError(error));
         });
     });
@@ -119,17 +120,22 @@ class FirebaseAuthBackend {
   socialLoginUser = (data, type) => {
     let credential = {};
     if (type === "google") {
-      credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.token);
+      credential = firebase.auth.GoogleAuthProvider.credential(
+        data.idToken,
+        data.token
+      );
     } else if (type === "facebook") {
       credential = firebase.auth.FacebookAuthProvider.credential(data.token);
     }
     return new Promise((resolve, reject) => {
       if (!!credential) {
-        firebase.auth().signInWithCredential(credential)
-          .then(user => {
+        firebase
+          .auth()
+          .signInWithCredential(credential)
+          .then((user) => {
             resolve(this.addNewUserToFirestore(user));
           })
-          .catch(error => {
+          .catch((error) => {
             reject(this._handleError(error));
           });
       } else {
@@ -148,13 +154,13 @@ class FirebaseAuthBackend {
       email: profile.email,
       picture: profile.picture,
       createdDtm: firebase.firestore.FieldValue.serverTimestamp(),
-      lastLoginTime: firebase.firestore.FieldValue.serverTimestamp()
+      lastLoginTime: firebase.firestore.FieldValue.serverTimestamp(),
     };
     collection.doc(firebase.auth().currentUser.uid).set(details);
     return { user, details };
   };
 
-  setLoggeedInUser = user => {
+  setLoggeedInUser = (user) => {
     localStorage.setItem("authUser", JSON.stringify(user));
   };
 
@@ -183,7 +189,7 @@ let _fireBaseBackend = null;
  * Initilize the backend
  * @param {*} config
  */
-const initFirebaseBackend = config => {
+const initFirebaseBackend = (config) => {
   if (!_fireBaseBackend) {
     _fireBaseBackend = new FirebaseAuthBackend(config);
   }

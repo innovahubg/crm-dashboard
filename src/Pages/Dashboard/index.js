@@ -18,7 +18,7 @@ const Dashboard = () => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid={true}>
-          <Breadcrumbs title="Upzet" breadcrumbItem="Dashboard" />
+          <Breadcrumbs title="IHubG" breadcrumbItem="Dashboard" />
           {/* User Panel Charts */}
           <UsePanel />
 

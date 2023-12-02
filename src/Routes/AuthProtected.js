@@ -5,7 +5,7 @@ import { useProfile } from "../Hooks/UserHooks";
 
 const AuthProtected = (props) => {
   const { userProfile, loading } = useProfile();
-
+  console.log(userProfile);
   /*
     redirect is un-auth access protected routes via url
     */
@@ -23,8 +23,13 @@ const AccessRoute = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={props => {
-        return (<> <Component {...props} /> </>);
+      render={(props) => {
+        return (
+          <>
+            {" "}
+            <Component {...props} />{" "}
+          </>
+        );
       }}
     />
   );

@@ -37,8 +37,13 @@ import { loginUser, socialLogin } from "../../store/actions";
 //Import config
 import { facebook, google } from "../../config";
 
+import { useNavigate } from "react-router-dom";
+
+import { LoginService } from "../../services/auth";
+
 const Login = (props) => {
   document.title = "CRM IHG";
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -47,29 +52,26 @@ const Login = (props) => {
     enableReinitialize: true,
 
     initialValues: {
-      email: "user@ihubg.com" || "",
-      password: "pass1234" || "",
+      email: "hola@arcemunoz.tech" || "",
+      password: "amocampo" || "",
     },
     validationSchema: Yup.object({
       email: Yup.string().required("Please Enter Your Email"),
       password: Yup.string().required("Please Enter Your Password"),
     }),
     onSubmit: async (values) => {
-      const req = await fetch(`${process.env.REACT_APP_API}/security/auth`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
-      const res = await req.json();
-      console.log(res);
+      try {
+        const next = await LoginService(values);
+        if (next) {
+          navigate("/dashboard");
+        }
+      } catch (err) {
+        console.log(err);
+      }
 
-      if(!error)
+      // if(!error)
 
-      //redirect("/dashboard");
-
-      dispatch(loginUser(res, props.router.navigate));
+      // dispatch(loginUser(res, props.router.navigate));
     },
   });
 
