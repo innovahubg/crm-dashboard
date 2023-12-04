@@ -21,3 +21,11 @@ export const GetData = async (url) => {
   );
   return getData;
 };
+
+export const PostData = async (url,data) => {
+  const postData = await axiosApiInstance.post(
+    `${process.env.REACT_APP_API}${url}`,
+    data
+  );
+  return postData;
+};
