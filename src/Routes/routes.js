@@ -4,6 +4,11 @@ import { Navigate } from "react-router-dom";
 //Dashboard
 import Dashboard from "../Pages/Dashboard";
 
+// IHG
+import ContactList from "../Pages/Dashboard/contact-list";
+import BotBuilder from "../Pages/Dashboard/botbuilder";
+import EditBot from "../Pages/Dashboard/botbuilder/EditBot";
+
 // Import Calender
 import Calender from "../Pages/Calender";
 
@@ -95,6 +100,10 @@ import GoogleMap from "../Pages/Maps/GoogleMap";
 const authProtectedRoutes = [
   //dashboard
   { path: "/dashboard", component: <Dashboard /> },
+
+  { path: "/dashboard/contact-list", component: <ContactList /> },
+  { path: "/dashboard/bot-builder", component: <BotBuilder /> },
+  { path: "/dashboard/bot-builder/:idBot", component: <EditBot /> },
 
   // Calender
   { path: "/calendar", component: <Calender /> },

@@ -12,10 +12,10 @@ const SidebarData = [
         badgeValue: "3"
     },
     {
-        label: "Calendar",
-        icon: "mdi mdi-calendar-outline",
+        label: "Listas de Contactos",
+        icon: "mdi mdi-contacts",
         isHasArrow: true,
-        url: "/calendar",
+        url: "/dashboard/contact-list",
     },
     {
         label: "Email",
@@ -25,6 +25,16 @@ const SidebarData = [
             { sublabel: "Read Email", link: "/read-email" },
             { sublabel: "Email Compose", link: "/compose-email" },
         ],
+    },
+    {
+        label: "AI",
+        isMainMenu: true,
+    },
+    {
+        label: "Chatbot Builder",
+        icon: "mdi mdi-robot",
+        isHasArrow: true,
+        url: "/dashboard/bot-builder",
     },
     {
         label: "Pages",

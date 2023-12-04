@@ -9,7 +9,7 @@ import Switch from "react-switch";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 //Import Flatepicker
-import "flatpickr/dist/themes/material_blue.css";
+// import "flatpickr/dist/themes/material_blue.css";
 import Flatpickr from "react-flatpickr";
 
 //Import Breadcrumb
