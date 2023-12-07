@@ -63,6 +63,7 @@
     "react-super-responsive-table": "^5.2.0",
     "react-switch": "^6.0.0",
     "react-table": "^7.7.0",
+    "reactflow": "^11.10.1",
     "reactstrap": "^9.0.1",
     "recharts": "^2.1.6",
     "redux": "^4.1.2",
