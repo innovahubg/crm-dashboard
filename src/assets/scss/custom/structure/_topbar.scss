@@ -197,7 +197,10 @@
     }
 }
 
-body[data-topbar="dark"] {
+
+//navbar dark theme
+// body[data-topbar="dark"] {
+body {
     #page-topbar {
         background-color: $header-dark-bg;
     }

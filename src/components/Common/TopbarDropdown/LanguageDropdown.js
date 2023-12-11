@@ -16,7 +16,7 @@ import languages from "../../../CommonData/languages";
 
 const LanguageDropdown = () => {
   const [singlebtn, setSinglebtn] = useState(false);
-  const [selectLang, setselectLang] = useState("en");
+  const [selectLang, setselectLang] = useState("sp");
 
   useEffect(() => {
     const selectLang = localStorage.getItem("I18N_LANGUAGE");
@@ -55,7 +55,7 @@ const LanguageDropdown = () => {
             >
               <img
                 src={languages[key].flag}
-                alt="Upzet"
+                alt="IHubG"
                 className="me-1"
                 height="12"
               />

@@ -8,6 +8,9 @@ import Dashboard from "../Pages/Dashboard";
 import Calender from "../Pages/Calender";
 
 import Campanas from "../Pages/Campanas";
+import CampaignDetails from "../Pages/Campanas/details.js";
+
+import LandingBuilder from "../Pages/LandingBuilder/index.js";
 
 // Import E-mail
 import Inbox from "../Pages/E-mail/Inbox";
@@ -102,6 +105,10 @@ const authProtectedRoutes = [
   { path: "/calendar", component: <Calender /> },
 
   { path: "/campaigns", component: <Campanas /> },
+  { path: "/campaigns/:id", component: <CampaignDetails /> },
+
+  { path: "/landing-builder", component: <LandingBuilder /> },
+  { path: "/landing-builder/:id", component: <LandingBuilder /> },
 
   // Profile
   { path: "/userprofile", component: <UserProfile /> },

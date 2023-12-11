@@ -10,19 +10,23 @@ import {
   Container,
   Row,
 } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 
-const Campaigns = () => {
+const CampaignDetails = () => {
   const [data, setData] = useState([]);
+  const [name, setName] = useState("");
+  const { id } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await GetData("/contact-lists");
+      // const campaign = await GetData(`/contact-lists/${id}`);
+      const { data } = await GetData(`/contact-lists/${id}/customers`);
+      // setName(campaign.name);
       setData(data);
     };
     fetchData();
-  }, []);
+  }, [id]);
 
   const columns = [
     {
@@ -54,8 +58,18 @@ const Campaigns = () => {
       sortable: true,
     },
     {
-      name: <span className="font-weight-bold fs-13">Compañia</span>,
-      selector: (row) => row.companyId,
+      name: <span className="font-weight-bold fs-13">Apellidos</span>,
+      selector: (row) => row.lastName,
+      sortable: true,
+    },
+    {
+      name: <span className="font-weight-bold fs-13">Email</span>,
+      selector: (row) => row.email,
+      sortable: true,
+    },
+    {
+      name: <span className="font-weight-bold fs-13">Teléfono</span>,
+      selector: (row) => row.phone,
       sortable: true,
     },
     {
@@ -97,13 +111,17 @@ const Campaigns = () => {
   return (
     <div className="page-content">
       <Container fluid={true}>
-        <Breadcrumbs title="IHubG" breadcrumbItem="Campañas" />
+        <Breadcrumbs title="IHubG" breadcrumbItem={`Campañas/${data.name}`} />
         <Row className="mb-4">
-          <DataTable data={data} columns={columns} />
+          <DataTable
+            data={data}
+            columns={columns}
+            noDataComponent="Sin datos"
+          />
         </Row>
       </Container>
     </div>
   );
 };
 
-export default Campaigns;
+export default CampaignDetails;

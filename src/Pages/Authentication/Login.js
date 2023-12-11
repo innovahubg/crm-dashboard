@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import logolight from "../../assets/images/logo.png";
 import logodark from "../../assets/images/logo.png";
 
@@ -45,6 +45,9 @@ const Login = (props) => {
   document.title = "CRM IHG";
   const navigate = useNavigate();
 
+  const [errorAlert, setEA] = useState();
+  const [passInput, setPassInput] = useState("password");
+
   const dispatch = useDispatch();
 
   const validation = useFormik({
@@ -64,6 +67,8 @@ const Login = (props) => {
         const next = await LoginService(values);
         if (next) {
           navigate("/dashboard");
+        } else {
+          setEA(true);
         }
       } catch (err) {
         console.log(err);
@@ -75,9 +80,9 @@ const Login = (props) => {
     },
   });
 
-  const { error } = useSelector((state) => ({
-    error: state.login.error,
-  }));
+  // const { error } = useSelector((state) => ({
+  //   error: state.login.error,
+  // }));
 
   // handleValidSubmit
   // const handleValidSubmit = (event, values) => {
@@ -158,9 +163,9 @@ const Login = (props) => {
                       return false;
                     }}
                   >
-                    {error ? (
+                    {errorAlert ? (
                       <Alert color="danger">
-                        <div>{error}</div>
+                        <div>Credenciales incorrectas</div>
                       </Alert>
                     ) : null}
                     <Row>
@@ -193,20 +198,34 @@ const Login = (props) => {
                         </div>
                         <div className="mb-4">
                           <Label className="form-label">Contraseña</Label>
-                          <Input
-                            name="password"
-                            value={validation.values.password || ""}
-                            type="password"
-                            placeholder="Ingresar contraseña"
-                            onChange={validation.handleChange}
-                            onBlur={validation.handleBlur}
-                            invalid={
-                              validation.touched.password &&
-                              validation.errors.password
-                                ? true
-                                : false
-                            }
-                          />
+                          <div className="d-flex align-items-center">
+                            <Input
+                              name="password"
+                              value={validation.values.password || ""}
+                              type={passInput}
+                              placeholder="Ingresar contraseña"
+                              onChange={validation.handleChange}
+                              onBlur={validation.handleBlur}
+                              invalid={
+                                validation.touched.password &&
+                                validation.errors.password
+                                  ? true
+                                  : false
+                              }
+                            />
+                            {passInput === "password" && (
+                              <i
+                                className="mdi mdi-eye"
+                                onClick={() => setPassInput("text")}
+                              ></i>
+                            )}
+                            {passInput === "text" && (
+                              <i
+                                className="mdi mdi-eye-off"
+                                onClick={() => setPassInput("password")}
+                              ></i>
+                            )}
+                          </div>
                           {validation.touched.password &&
                           validation.errors.password ? (
                             <FormFeedback type="invalid">

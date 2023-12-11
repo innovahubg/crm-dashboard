@@ -8,6 +8,8 @@ export async function LoginService(userData) {
       JSON.stringify(userData)
     );
 
+    console.log(token);
+
     if (token) {
       const userJwt = jwtDecode(token);
       const info = { ...userJwt, token };
@@ -15,6 +17,6 @@ export async function LoginService(userData) {
       return true;
     }
   } catch (err) {
-    console.log(err);
+    console.log("ererer", err);
   }
 }

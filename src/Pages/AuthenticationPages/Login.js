@@ -9,13 +9,13 @@ import { Link } from "react-router-dom";
 
 const Login = () => {
   document.title = "Login | Upzet - React Admin & Dashboard Template";
-    useEffect(() => {
-        document.body.className = "bg-pattern";
-        // remove classname when component will unmount
-        return function cleanup() {
-          document.body.className = "";
-        };
-      });
+  useEffect(() => {
+    document.body.className = "bg-pattern";
+    // remove classname when component will unmount
+    return function cleanup() {
+      document.body.className = "";
+    };
+  });
   return (
     <React.Fragment>
       <div className="bg-overlay"></div>
@@ -126,10 +126,6 @@ const Login = () => {
                     {" "}
                     Register{" "}
                   </Link>{" "}
-                </p>
-                <p className="text-white-50">
-                  © {new Date().getFullYear()} Upzet. Crafted with{" "}
-                  <i className="mdi mdi-heart text-danger"></i> by Themesdesign
                 </p>
               </div>
             </Col>
