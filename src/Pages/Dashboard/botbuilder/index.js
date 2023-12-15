@@ -152,11 +152,11 @@ const BotBuilder = () => {
                                                         <td>
                                                             <div className="d-flex gap-2">
                                                                 <div className="edit">
-                                                                    <button className="btn btn-sm btn-success edit-item-btn"
-                                                                        data-bs-toggle="modal" data-bs-target="#showModal">Edit</button>
+                                                                    <a className="btn btn-sm btn-success edit-item-btn" href='/dashboard/bot-builder/sample-bot-1'
+                                                                        data-bs-toggle="modal" data-bs-target="#showModal">Editar</a>
                                                                 </div>
                                                                 <div className="remove">
-                                                                    <button className="btn btn-sm btn-danger remove-item-btn" data-bs-toggle="modal" data-bs-target="#deleteRecordModal">Remove</button>
+                                                                    <button className="btn btn-sm btn-danger remove-item-btn" data-bs-toggle="modal" data-bs-target="#deleteRecordModal">Eliminar</button>
                                                                 </div>
                                                             </div>
                                                         </td>
