@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import logolight from "../../assets/images/logo.png";
 import logodark from "../../assets/images/logo.png";
 
@@ -37,8 +37,16 @@ import { loginUser, socialLogin } from "../../store/actions";
 //Import config
 import { facebook, google } from "../../config";
 
+import { useNavigate } from "react-router-dom";
+
+import { LoginService } from "../../services/auth";
+
 const Login = (props) => {
   document.title = "CRM IHG";
+  const navigate = useNavigate();
+
+  const [errorAlert, setEA] = useState();
+  const [passInput, setPassInput] = useState("password");
 
   const dispatch = useDispatch();
 
@@ -47,35 +55,34 @@ const Login = (props) => {
     enableReinitialize: true,
 
     initialValues: {
-      email: "user@ihubg.com" || "",
-      password: "pass1234" || "",
+      email: "hola@arcemunoz.tech" || "",
+      password: "amocampo" || "",
     },
     validationSchema: Yup.object({
       email: Yup.string().required("Please Enter Your Email"),
       password: Yup.string().required("Please Enter Your Password"),
     }),
     onSubmit: async (values) => {
-      const req = await fetch(`${process.env.REACT_APP_API}/security/auth`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
-      const res = await req.json();
-      console.log(res);
+      try {
+        const next = await LoginService(values);
+        if (next) {
+          navigate("/dashboard");
+        } else {
+          setEA(true);
+        }
+      } catch (err) {
+        console.log(err);
+      }
 
-      if(!error)
+      // if(!error)
 
-      //redirect("/dashboard");
-
-      dispatch(loginUser(res, props.router.navigate));
+      // dispatch(loginUser(res, props.router.navigate));
     },
   });
 
-  const { error } = useSelector((state) => ({
-    error: state.login.error,
-  }));
+  // const { error } = useSelector((state) => ({
+  //   error: state.login.error,
+  // }));
 
   // handleValidSubmit
   // const handleValidSubmit = (event, values) => {
@@ -156,9 +163,9 @@ const Login = (props) => {
                       return false;
                     }}
                   >
-                    {error ? (
+                    {errorAlert ? (
                       <Alert color="danger">
-                        <div>{error}</div>
+                        <div>Credenciales incorrectas</div>
                       </Alert>
                     ) : null}
                     <Row>
@@ -191,20 +198,34 @@ const Login = (props) => {
                         </div>
                         <div className="mb-4">
                           <Label className="form-label">Contraseña</Label>
-                          <Input
-                            name="password"
-                            value={validation.values.password || ""}
-                            type="password"
-                            placeholder="Ingresar contraseña"
-                            onChange={validation.handleChange}
-                            onBlur={validation.handleBlur}
-                            invalid={
-                              validation.touched.password &&
-                              validation.errors.password
-                                ? true
-                                : false
-                            }
-                          />
+                          <div className="d-flex align-items-center">
+                            <Input
+                              name="password"
+                              value={validation.values.password || ""}
+                              type={passInput}
+                              placeholder="Ingresar contraseña"
+                              onChange={validation.handleChange}
+                              onBlur={validation.handleBlur}
+                              invalid={
+                                validation.touched.password &&
+                                validation.errors.password
+                                  ? true
+                                  : false
+                              }
+                            />
+                            {passInput === "password" && (
+                              <i
+                                className="mdi mdi-eye"
+                                onClick={() => setPassInput("text")}
+                              ></i>
+                            )}
+                            {passInput === "text" && (
+                              <i
+                                className="mdi mdi-eye-off"
+                                onClick={() => setPassInput("password")}
+                              ></i>
+                            )}
+                          </div>
                           {validation.touched.password &&
                           validation.errors.password ? (
                             <FormFeedback type="invalid">

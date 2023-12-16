@@ -1,0 +1,23 @@
+Contactos: Customer
+
+
+Campañas: ContactList, estas se automatizan
+
+    Cuando se registra a una Landing Page llega a una campaña.
+    Cuando se registra una campaña se crea un registro en la col. Automation
+    El id de la Campaña y Automation es el mismo.
+    Se debe poder ir al módulo de Automation.
+
+
+Automation
+
+    Enviar los eventos siempre y cuando este con el flag activo
+    Se debe de crear el flujo para usuarios registrados, nuevos y 
+      para eventos calendarizados
+
+
+
+Generador de landings
+    
+
+Generador de emails

@@ -12,6 +12,13 @@ import EditBot from "../Pages/Dashboard/botbuilder/EditBot";
 // Import Calender
 import Calender from "../Pages/Calender";
 
+//Modules
+import Campanas from "../Pages/Campanas";
+import CampaignDetails from "../Pages/Campanas/details.js";
+
+import LandingBuilder from "../Pages/LandingBuilder/index.js";
+import Automation from "../Pages/Automation";
+
 // Import E-mail
 import Inbox from "../Pages/E-mail/Inbox";
 import ReadEmail from "../Pages/E-mail/ReadEmail";
@@ -107,6 +114,14 @@ const authProtectedRoutes = [
 
   // Calender
   { path: "/calendar", component: <Calender /> },
+
+  //Modules
+  { path: "/campaigns", component: <Campanas /> },
+  { path: "/campaigns/:id", component: <CampaignDetails /> },
+
+  { path: "/landing-builder", component: <LandingBuilder /> },
+  { path: "/landing-builder/:id", component: <LandingBuilder /> },
+  { path: "/automation", component: <Automation /> },
 
   // Profile
   { path: "/userprofile", component: <UserProfile /> },

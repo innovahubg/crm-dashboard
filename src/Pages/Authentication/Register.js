@@ -56,7 +56,7 @@ const Register = (props) => {
       const res = await req.json();
       console.log(res);
       redirect("/login");
-      //dispatch(registerUser(values));
+      dispatch(registerUser(values));
     },
   });
 

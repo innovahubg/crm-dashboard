@@ -1,8 +1,8 @@
 import React from "react";
 
-import logosm from "../../assets/images/logo-sm.png";
-import logodark from "../../assets/images/logo-dark.png";
-import logolight from "../../assets/images/logo-light.png";
+import logosm from "../../assets/images/logo.png";
+import logodark from "../../assets/images/logo.png";
+import logolight from "../../assets/images/logo.png";
 
 // import component
 import ProfileMenu from "./TopbarDropdown/ProfileMenu";
@@ -62,7 +62,7 @@ const TopBar = () => {
           <div className="d-flex">
             <LanguageDropdown />
             <AppsDropdown />
-            <div className="dropdown d-none d-lg-inline-block ms-1">
+            {/* <div className="dropdown d-none d-lg-inline-block ms-1">
               <button
                 type="button"
                 className="btn header-item noti-icon waves-effect"
@@ -70,7 +70,7 @@ const TopBar = () => {
               >
                 <i className="ri-fullscreen-line"></i>
               </button>
-            </div>
+            </div> */}
             <NotificationDropdown />
             <ProfileMenu />
 

@@ -10,9 +10,9 @@ import NotificationDropdown from "../../components/Common/TopbarDropdown/Notific
 import { withTranslation } from "react-i18next";
 
 //import images
-import logoSm from "../../assets/images/logo-sm.png";
-import logoDark from "../../assets/images/logo-dark.png";
-import logoLight from "../../assets/images/logo-light.png";
+import logoSm from "../../assets/images/logo.png";
+import logoDark from "../../assets/images/logo.png";
+import logoLight from "../../assets/images/logo.png";
 
 // Redux Store
 import {
@@ -80,10 +80,10 @@ const Header = (props) => {
 
               <Link to="/" className="logo logo-light">
                 <span className="logo-sm">
-                  <img src={logoSm} alt="logo-sm-light" height="22" />
+                  <img src={logoSm} alt="logo-sm-light" height="66" />
                 </span>
                 <span className="logo-lg">
-                  <img src={logoLight} alt="logo-light" height="24" />
+                  <img src={logoLight} alt="logo-light" height="66" />
                 </span>
               </Link>
             </div>
@@ -152,9 +152,9 @@ const Header = (props) => {
             </div>
 
             <LanguageDropdown />
-            <AppsDropdown />
+            {/* <AppsDropdown /> */}
 
-            <div className="dropdown d-none d-lg-inline-block ms-1">
+            {/* <div className="dropdown d-none d-lg-inline-block ms-1">
               <button
                 type="button"
                 onClick={() => {
@@ -165,13 +165,13 @@ const Header = (props) => {
               >
                 <i className="ri-fullscreen-line" />
               </button>
-            </div>
+            </div> */}
 
             <NotificationDropdown />
 
             <ProfileMenu />
 
-            <div
+            {/* <div
               className="dropdown d-inline-block"
               onClick={() => {
                 props.showRightSidebarAction(!props.showRightSidebar);
@@ -183,7 +183,7 @@ const Header = (props) => {
               >
                 <i className="mdi mdi-cog"></i>
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </header>

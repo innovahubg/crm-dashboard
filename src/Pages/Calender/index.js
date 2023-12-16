@@ -33,7 +33,7 @@ import {
   getCategories as onGetCategories,
   getEvents as onGetEvents,
   updateEvent as onUpdateEvent,
-  resetCalendar
+  resetCalendar,
 } from "../../store/actions";
 
 import DeleteModal from "./DeleteModal";
@@ -103,14 +103,11 @@ const Calender = (props) => {
       category: Yup.string().required("Please Enter Your Billing Name"),
     }),
     onSubmit: (values) => {
-
-
       const newEvent = {
         id: Math.floor(Math.random() * 100),
         title: values["title"],
         start: selectedDay ? selectedDay.date : new Date(),
-        className: values.category + " text-white"
-
+        className: values.category + " text-white",
       };
       // save new event
 
@@ -123,7 +120,7 @@ const Calender = (props) => {
   const { events, categories, isEventUpdated } = useSelector((state) => ({
     events: state.calendar.events,
     categories: state.calendar.categories,
-    isEventUpdated: state.calendar.isEventUpdated
+    isEventUpdated: state.calendar.isEventUpdated,
   }));
 
   const [modal, setModal] = useState(false);
@@ -252,7 +249,10 @@ const Calender = (props) => {
 
     const draggedEl = event.draggedEl;
     const draggedElclass = draggedEl.className;
-    if (draggedEl.classList.contains('external-event') && draggedElclass.indexOf("fc-event-draggable") === -1) {
+    if (
+      draggedEl.classList.contains("external-event") &&
+      draggedElclass.indexOf("fc-event-draggable") === -1
+    ) {
       const modifiedData = {
         id: Math.floor(Math.random() * 100),
         title: draggedEl.innerText,
@@ -273,21 +273,21 @@ const Calender = (props) => {
       />
       <div className="page-content">
         <Container fluid={true}>
-          <Breadcrumbs title="Upzet" breadcrumbItem="Calendar" />
+          <Breadcrumbs title="Upzet" breadcrumbItem="Calendario" />
           <Row className="mb-4">
             <Col xl={3}>
               <Card className="h-100">
                 <CardBody>
-
-
                   <Button
-                    color="primary" className="btn font-16 btn-primary waves-effect waves-light w-100" onClick={toggleCategory}>
+                    color="primary"
+                    className="btn font-16 btn-primary waves-effect waves-light w-100"
+                    onClick={toggleCategory}
+                  >
                     Create New Event
                   </Button>
 
                   <div id="external-events">
                     <br />
-
 
                     <p className="text-muted">
                       Drag and drop your event or click in the calendar
@@ -314,11 +314,7 @@ const Calender = (props) => {
                 <CardBody>
                   {/* fullcalendar control */}
                   <FullCalendar
-                    plugins={[
-                      BootstrapTheme,
-                      dayGridPlugin,
-                      interactionPlugin,
-                    ]}
+                    plugins={[BootstrapTheme, dayGridPlugin, interactionPlugin]}
                     slotDuration={"00:15:00"}
                     handleWindowResize={true}
                     themeSystem="bootstrap"
@@ -351,9 +347,7 @@ const Calender = (props) => {
                       >
                         <Row>
                           <Col className="col-12 mb-3">
-                            <Label className="form-label">
-                              Event Name
-                            </Label>
+                            <Label className="form-label">Event Name</Label>
                             <Input
                               name="title"
                               type="text"
@@ -363,13 +357,13 @@ const Calender = (props) => {
                               value={validation.values.title || ""}
                               invalid={
                                 validation.touched.title &&
-                                  validation.errors.title
+                                validation.errors.title
                                   ? true
                                   : false
                               }
                             />
                             {validation.touched.title &&
-                              validation.errors.title ? (
+                            validation.errors.title ? (
                               <FormFeedback type="invalid">
                                 {validation.errors.title}
                               </FormFeedback>
@@ -388,7 +382,7 @@ const Calender = (props) => {
                               value={validation.values.category || ""}
                               invalid={
                                 validation.touched.category &&
-                                  validation.errors.category
+                                validation.errors.category
                                   ? true
                                   : false
                               }
@@ -402,7 +396,7 @@ const Calender = (props) => {
                               <option value="bg-warning">Warning</option>
                             </Input>
                             {validation.touched.category &&
-                              validation.errors.category ? (
+                            validation.errors.category ? (
                               <FormFeedback type="invalid">
                                 {validation.errors.category}
                               </FormFeedback>
@@ -459,27 +453,23 @@ const Calender = (props) => {
                       >
                         <Row form>
                           <Col className="col-12 mb-3">
-                            <Label className="form-label">
-                              Event Name
-                            </Label>
+                            <Label className="form-label">Event Name</Label>
                             <Input
                               name="title"
                               type="text"
                               // value={event ? event.title : ""}
                               onChange={categoryValidation.handleChange}
                               onBlur={categoryValidation.handleBlur}
-                              value={
-                                categoryValidation.values.title || ""
-                              }
+                              value={categoryValidation.values.title || ""}
                               invalid={
                                 categoryValidation.touched.title &&
-                                  categoryValidation.errors.title
+                                categoryValidation.errors.title
                                   ? true
                                   : false
                               }
                             />
                             {categoryValidation.touched.title &&
-                              categoryValidation.errors.title ? (
+                            categoryValidation.errors.title ? (
                               <FormFeedback type="invalid">
                                 {categoryValidation.errors.title}
                               </FormFeedback>
@@ -495,12 +485,10 @@ const Calender = (props) => {
                               // value={event ? event.category : "bg-primary"}
                               onChange={categoryValidation.handleChange}
                               onBlur={categoryValidation.handleBlur}
-                              value={
-                                categoryValidation.values.category || ""
-                              }
+                              value={categoryValidation.values.category || ""}
                               invalid={
                                 categoryValidation.touched.category &&
-                                  categoryValidation.errors.category
+                                categoryValidation.errors.category
                                   ? true
                                   : false
                               }
@@ -514,7 +502,7 @@ const Calender = (props) => {
                               <option value="bg-warning">Warning</option>
                             </Input>
                             {categoryValidation.touched.category &&
-                              categoryValidation.errors.category ? (
+                            categoryValidation.errors.category ? (
                               <FormFeedback type="invalid">
                                 {categoryValidation.errors.category}
                               </FormFeedback>

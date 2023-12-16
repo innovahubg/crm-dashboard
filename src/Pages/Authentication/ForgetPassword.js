@@ -1,6 +1,17 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Row, Col, Alert, Card, CardBody, Container, FormFeedback, Input, Label, Form } from "reactstrap";
+import {
+  Row,
+  Col,
+  Alert,
+  Card,
+  CardBody,
+  Container,
+  FormFeedback,
+  Input,
+  Label,
+  Form,
+} from "reactstrap";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -19,7 +30,7 @@ import { userForgetPassword } from "../../store/actions";
 import profile from "../../assets/images/bg.png";
 import logo from "../../assets/images/logo-sm.png";
 
-const ForgetPasswordPage = props => {
+const ForgetPasswordPage = (props) => {
   const dispatch = useDispatch();
   document.title = "Forget Password | Upzet - React Admin & Dashboard Template";
 
@@ -28,24 +39,23 @@ const ForgetPasswordPage = props => {
     enableReinitialize: true,
 
     initialValues: {
-      email: '',
+      email: "",
     },
     validationSchema: Yup.object({
       email: Yup.string().required("Please Enter Your Email"),
     }),
     onSubmit: (values) => {
       dispatch(userForgetPassword(values, props.router.navigate));
-    }
+    },
   });
 
-  const { forgetError, forgetSuccessMsg } = useSelector(state => ({
+  const { forgetError, forgetSuccessMsg } = useSelector((state) => ({
     // forgetError: state.ForgetPassword.forgetError,
     forgetSuccessMsg: state.forgetPassword.forgetSuccessMsg,
   }));
 
   return (
     <React.Fragment>
-      
       <div className="account-pages my-5 pt-sm-5">
         <Container>
           <Row className="justify-content-center">
@@ -110,11 +120,15 @@ const ForgetPasswordPage = props => {
                           onBlur={validation.handleBlur}
                           value={validation.values.email || ""}
                           invalid={
-                            validation.touched.email && validation.errors.email ? true : false
+                            validation.touched.email && validation.errors.email
+                              ? true
+                              : false
                           }
                         />
                         {validation.touched.email && validation.errors.email ? (
-                          <FormFeedback type="invalid"><div>{validation.errors.email}</div></FormFeedback>
+                          <FormFeedback type="invalid">
+                            <div>{validation.errors.email}</div>
+                          </FormFeedback>
                         ) : null}
                       </div>
                       <Row className="mb-3">
@@ -137,10 +151,6 @@ const ForgetPasswordPage = props => {
                   <Link to="login" className="font-weight-medium text-primary">
                     Login
                   </Link>{" "}
-                </p>
-                <p>
-                  © {new Date().getFullYear()} Upzet. Crafted with{" "}
-                  <i className="mdi mdi-heart text-danger" /> by Themesdesign
                 </p>
               </div>
             </Col>
