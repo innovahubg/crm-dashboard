@@ -6604,6 +6604,18 @@ graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.2.0, graceful-fs@^4.2.4, 
   resolved "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.10.tgz"
   integrity sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA==
 
+grapesjs-mjml@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.npmjs.org/grapesjs-mjml/-/grapesjs-mjml-1.0.5.tgz"
+  integrity sha512-w2WsIAtK9nfy52PJP6gv+gbuvbXm8CgOCVhdmTqlUTB4lQDvO30fTTWfORKPqK/p2UtKl0NYcC4C0sk+TEl/ag==
+  dependencies:
+    mjml-browser "^4.13.0"
+
+grapesjs-preset-newsletter@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.npmjs.org/grapesjs-preset-newsletter/-/grapesjs-preset-newsletter-1.0.2.tgz"
+  integrity sha512-z8KJ1ZrTXfASSJZ/tHOcnpcWu4AMr2F/ZfQit+QjimNi3UGowwl7+Yjefuh3R7lbDTrXMMaxhCannCaJo/kPJw==
+
 grapesjs-preset-webpage@^1.0.3:
   version "1.0.3"
   resolved "https://registry.npmjs.org/grapesjs-preset-webpage/-/grapesjs-preset-webpage-1.0.3.tgz"
@@ -8584,6 +8596,11 @@ minizlib@^2.0.0, minizlib@^2.1.1, minizlib@^2.1.2:
   dependencies:
     minipass "^3.0.0"
     yallist "^4.0.0"
+
+mjml-browser@^4.13.0:
+  version "4.14.1"
+  resolved "https://registry.npmjs.org/mjml-browser/-/mjml-browser-4.14.1.tgz"
+  integrity sha512-kkY43kYTGfw0qL251GrG3hdQvKeeKAzxgM+zFd97Pay2nZX06W9V6rm03zCfnOQdwGM90xMOBF+x9SIhRPkiJQ==
 
 mkdirp@^1.0.3, mkdirp@^1.0.4:
   version "1.0.4"

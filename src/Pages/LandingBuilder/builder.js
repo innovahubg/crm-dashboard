@@ -2,6 +2,8 @@ import React from "react";
 import grapesjs, { Editor } from "grapesjs";
 import GjsEditor from "@grapesjs/react";
 import plugin from "grapesjs-preset-webpage";
+import newsLetterPlugin from "grapesjs-preset-newsletter";
+import grapesJSMJML from "grapesjs-mjml";
 
 const Builder = () => {
   const onEditor = (editor) => {
@@ -23,7 +25,7 @@ const Builder = () => {
           storageManager: false,
         }}
         onEditor={onEditor}
-        plugins={[plugin]}
+        plugins={[plugin, newsLetterPlugin]}
       />
     </div>
   );

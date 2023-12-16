@@ -25,6 +25,8 @@
     "formik": "^2.2.9",
     "google-maps-react": "^2.0.6",
     "grapesjs": "^0.21.7",
+    "grapesjs-mjml": "^1.0.5",
+    "grapesjs-preset-newsletter": "^1.0.2",
     "grapesjs-preset-webpage": "^1.0.3",
     "i18next": "^21.5.3",
     "i18next-browser-languagedetector": "^6.1.2",
