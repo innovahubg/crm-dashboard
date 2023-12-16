@@ -16,7 +16,8 @@ import Calender from "../Pages/Calender";
 import Campanas from "../Pages/Campanas";
 import CampaignDetails from "../Pages/Campanas/details.js";
 
-import LandingBuilder from "../Pages/LandingBuilder/index.js";
+import LandingTemplates from "../Pages/LandingTemplates/index.js";
+import EmailTemplates from "../Pages/EmailTemplates/index.js";
 import Automation from "../Pages/Automation";
 
 // Import E-mail
@@ -119,8 +120,10 @@ const authProtectedRoutes = [
   { path: "/campaigns", component: <Campanas /> },
   { path: "/campaigns/:id", component: <CampaignDetails /> },
 
-  { path: "/landing-builder", component: <LandingBuilder /> },
-  { path: "/landing-builder/:id", component: <LandingBuilder /> },
+  { path: "/landing-templates", component: <LandingTemplates /> },
+  { path: "/landing-templates/:id", component: <LandingTemplates /> },
+  { path: "/email-templates", component: <EmailTemplates /> },
+  { path: "/email-templates/:id", component: <EmailTemplates /> },
   { path: "/automation", component: <Automation /> },
 
   // Profile

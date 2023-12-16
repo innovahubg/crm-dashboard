@@ -22,12 +22,13 @@ import RightSidebar from "../../components/Common/RightSideBar";
 const Layout = (props) => {
   const dispatch = useDispatch();
 
-  const { topbarTheme, layoutWidth, showRightSidebar } =
-    useSelector((state) => ({
+  const { topbarTheme, layoutWidth, showRightSidebar } = useSelector(
+    (state) => ({
       topbarTheme: state.Layout.topbarTheme,
       layoutWidth: state.Layout.layoutWidth,
       showRightSidebar: state.Layout.showRightSidebar,
-    }));
+    })
+  );
 
   /*
   document title
@@ -36,7 +37,7 @@ const Layout = (props) => {
     const title = props.router.location.pathname;
     let currentage = title.charAt(1).toUpperCase() + title.slice(2);
 
-    document.title = currentage + " | Upzet - React Admin & Dashboard Template";
+    document.title = currentage + " IHG";
   }, [props.router.location.pathname]);
 
   useEffect(() => {
@@ -89,7 +90,6 @@ const Layout = (props) => {
 
   return (
     <React.Fragment>
-
       <div id="layout-wrapper">
         <Header
           theme={topbarTheme}

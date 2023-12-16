@@ -13,6 +13,7 @@ import { withTranslation } from "react-i18next";
 import logoSm from "../../assets/images/logo.png";
 import logoDark from "../../assets/images/logo.png";
 import logoLight from "../../assets/images/logo.png";
+import logoComplete from "../../assets/images/logo-2.png";
 
 // Redux Store
 import {
@@ -25,6 +26,7 @@ import AppsDropdown from "../../components/Common/TopbarDropdown/AppsDropdown";
 
 const Header = (props) => {
   const [search, setsearch] = useState(false);
+  const [menuLateral, setMenuLateral] = useState(true);
 
   function toggleFullscreen() {
     if (
@@ -57,8 +59,10 @@ const Header = (props) => {
     var body = document.body;
     if (window.screen.width <= 998) {
       body.classList.toggle("sidebar-enable");
+      setMenuLateral(logoComplete);
     } else {
       body.classList.toggle("vertical-collpsed");
+      setMenuLateral(!menuLateral);
       body.classList.toggle("sidebar-enable");
     }
   }
@@ -71,19 +75,35 @@ const Header = (props) => {
             <div className="navbar-brand-box text-center">
               <Link to="/" className="logo logo-dark">
                 <span className="logo-sm">
-                  <img src={logoSm} alt="logo-sm-dark" height="22" />
+                  <img
+                    src={menuLateral ? logoComplete : logoSm}
+                    alt="logo-sm-dark"
+                    height="22"
+                  />
                 </span>
                 <span className="logo-lg">
-                  <img src={logoDark} alt="logo-dark" height="24" />
+                  <img
+                    src={menuLateral ? logoComplete : logoSm}
+                    alt="logo-dark"
+                    height="24"
+                  />
                 </span>
               </Link>
 
               <Link to="/" className="logo logo-light">
                 <span className="logo-sm">
-                  <img src={logoSm} alt="logo-sm-light" height="66" />
+                  <img
+                    src={menuLateral ? logoComplete : logoSm}
+                    alt="logo-sm-light"
+                    height="66"
+                  />
                 </span>
                 <span className="logo-lg">
-                  <img src={logoLight} alt="logo-light" height="66" />
+                  <img
+                    src={menuLateral ? logoComplete : logoSm}
+                    alt="logo-light"
+                    height="66"
+                  />
                 </span>
               </Link>
             </div>

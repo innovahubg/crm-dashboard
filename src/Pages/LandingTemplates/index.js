@@ -9,6 +9,7 @@ const LandingBuilder = () => {
       <Container fluid={true}>
         <Breadcrumbs title="IHubG" breadcrumbItem="Landings" />
         <Row className="mb-4">
+          <h1>Landing Templates</h1>
           <Builder />
         </Row>
       </Container>

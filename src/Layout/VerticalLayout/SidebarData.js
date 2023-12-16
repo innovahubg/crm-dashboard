@@ -24,10 +24,22 @@ const SidebarData = [
     url: "/campaigns",
   },
   {
-    label: "Constructor Landings",
-    icon: "mdi mdi-account-hard-hat",
+    label: "Campañas",
+    icon: "mdi mdi-account-convert-outline",
     isHasArrow: true,
-    url: "/landing-builder",
+    url: "/leads",
+  },
+  {
+    label: "Email templates",
+    icon: "mdi mdi-email-plus-outline",
+    isHasArrow: true,
+    url: "/email-templates",
+  },
+  {
+    label: "Landing templates",
+    icon: "dripicons-device-desktop",
+    isHasArrow: true,
+    url: "/landing-templates",
   },
   {
     label: "AI",
@@ -123,16 +135,16 @@ const SidebarData = [
   //     { sublabel: "Sparkline Charts", link: "/chart-sparklinecharts" },
   //   ],
   // },
-  // {
-  //   label: "Icons",
-  //   icon: "ri-brush-line",
-  //   subItem: [
-  //     { sublabel: "Box Icons", link: "/icon-boxicon" },
-  //     { sublabel: "Material Design", link: "/icons-materialdesign" },
-  //     { sublabel: "Dripicons", link: "/icon-dripicons" },
-  //     { sublabel: "Font Awesome", link: "/icons-fontawesome" },
-  //   ],
-  // },
+  {
+    label: "Icons",
+    icon: "ri-brush-line",
+    subItem: [
+      { sublabel: "Box Icons", link: "/icon-boxicon" },
+      { sublabel: "Material Design", link: "/icons-materialdesign" },
+      { sublabel: "Dripicons", link: "/icon-dripicons" },
+      { sublabel: "Font Awesome", link: "/icons-fontawesome" },
+    ],
+  },
   // {
   //   label: "Maps",
   //   icon: "ri-map-pin-line",
