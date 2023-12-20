@@ -24,7 +24,7 @@ const SidebarData = [
     url: "/campaigns",
   },
   {
-    label: "Campañas",
+    label: "Leads",
     icon: "mdi mdi-account-convert-outline",
     isHasArrow: true,
     url: "/leads",
@@ -40,6 +40,12 @@ const SidebarData = [
     icon: "dripicons-device-desktop",
     isHasArrow: true,
     url: "/landing-templates",
+  },
+  {
+    label: "Validación emails",
+    icon: "mdi-email-check",
+    isHasArrow: true,
+    url: "/email-validation",
   },
   {
     label: "AI",
