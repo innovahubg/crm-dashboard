@@ -12,14 +12,17 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
+import { RingLoader } from "react-spinners";
 
 const Campaigns = () => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await GetData("/contact-lists");
       setData(data);
+      setLoading(false);
     };
     fetchData();
   }, []);
@@ -99,7 +102,17 @@ const Campaigns = () => {
       <Container fluid={true}>
         <Breadcrumbs title="IHubG" breadcrumbItem="Campañas" />
         <Row className="mb-4">
-          <DataTable data={data} columns={columns} />
+          {loading ? (
+            <div className="d-flex justify-content-center p-5 w-full">
+              <RingLoader color="#E9553E" />
+            </div>
+          ) : (
+            <DataTable
+              data={data}
+              columns={columns}
+              noDataComponent={<span className="py-4">Sin resultados</span>}
+            />
+          )}
         </Row>
       </Container>
     </div>

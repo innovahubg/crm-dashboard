@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { GetData } from "../../services/api";
+import { RingLoader } from "react-spinners";
 import {
   DropdownItem,
   DropdownMenu,
@@ -11,6 +12,10 @@ import {
   Container,
   Row,
   Col,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
   Button,
 } from "reactstrap";
 import { Link } from "react-router-dom";
@@ -18,11 +23,15 @@ import DataTable from "react-data-table-component";
 
 const EmailTemplates = () => {
   const [templates, setTemplates] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [modal, setModal] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await GetData("/templates/email");
       setTemplates(data);
       console.log(data);
+      setLoading(false);
     };
     fetchData();
   }, []);
@@ -101,7 +110,9 @@ const EmailTemplates = () => {
                 <Button
                   color="success"
                   className="add-btn"
-                  onClick={() => {}}
+                  onClick={() => {
+                    setModal(true);
+                  }}
                   id="create-btn"
                 >
                   <i className="ri-add-line align-bottom me-1"></i> Nuevo
@@ -126,10 +137,85 @@ const EmailTemplates = () => {
             </Col>
           </Row>
           <Row className="mb-4">
-            <DataTable data={templates} columns={columns} />
+            {loading ? (
+              <div className="d-flex justify-content-center p-5 w-full">
+                <RingLoader color="#E9553E" />
+              </div>
+            ) : (
+              <DataTable
+                data={templates}
+                columns={columns}
+                noDataComponent={<span className="py-4">Sin resultados</span>}
+              />
+            )}
           </Row>
         </Row>
       </Container>
+      <Modal
+        isOpen={modal}
+        toggle={() => {
+          setModal(false);
+        }}
+        centered
+      >
+        <ModalHeader
+          className="bg-light p-3"
+          id="exampleModalLabel"
+          toggle={() => {}}
+        >
+          Nuevo template
+        </ModalHeader>
+        <form className="tablelist-form">
+          <ModalBody style={{ height: "50vh" }}>
+            <div className="mb-3">
+              <label htmlFor="titlebot-field" className="form-label">
+                Nombre
+              </label>
+              <input
+                type="text"
+                id="titlebot-field"
+                className="form-control"
+                placeholder="Ingresa un nombre a tu template"
+                required
+              />
+            </div>
+
+            <div className="">
+              <label htmlFor="typeChannel-field" className="form-label">
+                Crear con:
+              </label>
+              <div className="d-flex justify-content-around">
+                <div className="d-flex flex-column justify-content-center align-items-center optionHover">
+                  <i className="mdi mdi-robot"></i>
+                  <span>IA</span>
+                </div>
+                <div className="d-flex flex-column justify-content-center align-items-center optionHover">
+                  <i className="mdi mdi-ballot"></i>
+                  <span>Template</span>
+                </div>
+                <div className="d-flex flex-column justify-content-center align-items-center optionHover">
+                  <i className="bx bx-code"></i>
+                  <span>Código</span>
+                </div>
+              </div>
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <div className="">
+              <button
+                type="button"
+                className="btn btn-light"
+                onClick={() => setModal(false)}
+              >
+                Cerrar
+              </button>
+              <button type="submit" className="btn btn-success" id="add-btn">
+                Crear
+              </button>
+            </div>
+          </ModalFooter>
+        </form>
+      </Modal>
     </div>
   );
 };

@@ -83,3 +83,17 @@ File: Main Css File
     // height: calc(100vh - 120px); /* Ajusta según tus necesidades, considerando el espacio de la cabecera y el pie de página del modal */
     overflow-y: auto; /* Agrega desplazamiento vertical si el contenido es más grande que la altura del modal */
   }
+
+
+  .optionHover{
+    border: 2px solid #666666;
+    border-radius: 10px;
+    background-color: #efefef;
+    width: 20%;
+  }
+
+  .optionHover:hover{
+    border: 2px solid #E9553E;
+    color: #E9553E;
+    cursor: pointer;
+  }

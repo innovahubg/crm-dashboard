@@ -104,6 +104,8 @@ import IconBoxicons from "../Pages/Icons/IconBoxicons";
 // Import Map Pages
 import VectorMaps from "../Pages/Maps/VectorMap";
 import GoogleMap from "../Pages/Maps/GoogleMap";
+import Leads from "../Pages/Leads/index.js";
+import EmailValidation from "../Pages/EmailValidation/index.js";
 
 const authProtectedRoutes = [
   //dashboard
@@ -124,6 +126,8 @@ const authProtectedRoutes = [
   { path: "/landing-templates/:id", component: <LandingTemplates /> },
   { path: "/email-templates", component: <EmailTemplates /> },
   { path: "/email-templates/:id", component: <EmailTemplates /> },
+  { path: "/leads", component: <Leads /> },
+  { path: "/email-validation", component: <EmailValidation /> },
   { path: "/automation", component: <Automation /> },
 
   // Profile
