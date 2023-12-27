@@ -16,8 +16,40 @@ axiosApiInstance.interceptors.request.use(
   }
 );
 export const GetData = async (url) => {
-  const getData = await axiosApiInstance.get(
-    `${process.env.REACT_APP_API}${url}`
-  );
-  return getData;
+  try{
+    const getData = await axiosApiInstance.get(
+      `${process.env.REACT_APP_API}${url}`
+    );
+    return getData;
+  }catch(err){
+    handledErrors(err);
+  }
 };
+
+export const PostData = async (url, data, options) => {
+  try{
+    const getData = await axiosApiInstance.post(
+      `${process.env.REACT_APP_API}${url}`,
+      data,
+      options
+    );
+    return getData;
+  }catch(err){
+    handledErrors(err);
+  }
+}
+
+const handledErrors = (fullError) => {
+  switch (fullError.response.status) {
+    case 401:
+      localStorage.removeItem("authUser");
+      window.location.href = "/login";
+      return {success : false, message : "Unauthorized"};
+    break;
+    case 500:
+      console.log(fullError.response);
+      throw new Error("Internal Server Error");
+    default:
+      break;
+  }
+}

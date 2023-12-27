@@ -1,29 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Card, CardBody, CardHeader, Col, Container, ListGroup, ListGroupItem, Modal, ModalBody, ModalFooter, Row, ModalHeader } from 'reactstrap';
+import { Button, Card, CardBody, CardHeader, Col, Container, Badge, ListGroupItem, Modal, ModalBody, ModalFooter, Row, ModalHeader } from 'reactstrap';
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
-import SimpleBar from 'simplebar-react';
 import { Link } from 'react-router-dom';
-import List from 'list.js';
-// Import Flatepicker
-import Flatpickr from "react-flatpickr";
-
-// Import Images
-import avatar1 from "../../../assets/images/users/avatar-1.jpg";
-import avatar2 from "../../../assets/images/users/avatar-2.jpg";
-import avatar3 from "../../../assets/images/users/avatar-3.jpg";
-import avatar4 from "../../../assets/images/users/avatar-4.jpg";
-import avatar5 from "../../../assets/images/users/avatar-5.jpg";
+import { GetData, PostData } from '../../../services/api';
+import axios from 'axios';
 
 const BotBuilder = () => {
 
-    /* IHG */
-    const blankList = {
-        id : null,
-        name : '',
-        companyId : '',
-        userId : ''
+    const [botList, setBotList] = useState([]);
+    const initInfoChatBot = {
+        name: '',
+        companyId: '6566598fe8d1d898b12af425',
+        typeInteraction : '',
+        channel : '',
+        status : true
     }
-    const [contactList, setContactList] = useState(blankList);
+    const [infoBot, setInfoBot] = useState(initInfoChatBot);
 
     const [modal_list, setmodal_list] = useState(false);
     function tog_list() {
@@ -35,51 +27,29 @@ const BotBuilder = () => {
         setmodal_delete(!modal_delete);
     }
 
+    const getListBot = async () => {
+        const path = `/chatbots?company=6566598fe8d1d898b12af425`;
+        const { data } = await GetData(path);
+        if(!data){
+            console.log('Error');
+        }
+        setBotList(data);
+    }
+
+    const upserBot = async (e) => {
+        e.preventDefault();
+        const path = `/chatbots`;
+        const { data } = await PostData(path, infoBot);
+        getListBot();
+        console.log(data);
+
+    }
+
     useEffect(() => {
-
-        const attroptions = {
-            valueNames: [
-                'name',
-                'born',
-                {
-                    data: ['id']
-                },
-                {
-                    attr: 'src',
-                    name: 'image'
-                },
-                {
-                    attr: 'href',
-                    name: 'link'
-                },
-                {
-                    attr: 'data-timestamp',
-                    name: 'timestamp'
-                }
-            ]
-        };
-        
-
-        // Existing List
-        const existOptionsList = {
-            valueNames: ['contact-name', 'contact-message']
-        };
-
-        new List('contact-existing-list', existOptionsList);
-
-        // Fuzzy Search list
-        new List('fuzzysearch-list', {
-            valueNames: ['name']
-        });
-
-        // pagination list
-
-        new List('pagination-list', {
-            valueNames: ['pagi-list'],
-            page: 3,
-            pagination: true
-        });
-    });
+        if(botList.length <= 0){
+            getListBot();
+        }
+    }, []);
 
     return (
         <>
@@ -124,43 +94,40 @@ const BotBuilder = () => {
                                                                 <input className="form-check-input" type="checkbox" id="checkAll" value="option" />
                                                             </div>
                                                         </th>
+                                                        <th className="sort" data-sort="id">Identificador</th>
                                                         <th className="sort" data-sort="name">Nombre</th>
-                                                        <th className="sort" data-sort="typeBot">Tipo</th>
-                                                        <th className="sort" data-sort="channel">Canal</th>
-                                                        <th className="sort" data-sort="date">Creado</th>
-                                                        <th className="sort" data-sort="num_chats">Número de Chats</th>
-                                                        <th className="sort" data-sort="num_chats_end">Chats Finalizados</th>
-                                                        <th className="sort" data-sort="status">Status</th>
-                                                        <th className="sort" data-sort="action"></th>
+                                                        <th className="sort" data-sort="company">Compañia</th>
+                                                        <th className="sort" data-sort="status">Estatus</th>
+                                                        {/* <th className="sort" data-sort="createdAt">Fecha de Creación</th> */}
+                                                        <th className="sort" data-sort="actions"></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody className="list form-check-all">
-                                                    <tr>
-                                                        <th scope="row">
-                                                            <div className="form-check">
-                                                                <input className="form-check-input" type="checkbox" name="chk_child" value="option1" />
-                                                            </div>
-                                                        </th>
-                                                        <td className="id" style={{ display: "none" }}><Link to="#" className="fw-medium link-primary">#VZ2101</Link></td>
-                                                        <td className="customer_name">Chat bot para dar información de ventas</td>
-                                                        <td className="email">Chat</td>
-                                                        <td className="phone">WhatsApp</td>
-                                                        <td className="date">06 Apr, 2024</td>
-                                                        <td className="date">10</td>
-                                                        <td className="date">7</td>
-                                                        <td className="status"><span className="badge badge-soft-success text-uppercase">Active</span></td>
-                                                        <td>
-                                                            <div className="d-flex gap-2">
-                                                                <div className="edit">
-                                                                    <a className="btn btn-sm btn-success edit-item-btn" href='/dashboard/bot-builder/sample-bot-1'
-                                                                        data-bs-toggle="modal" data-bs-target="#showModal">Editar</a>
+                                                    {
+                                                        botList.map((x, index) => (<tr key={`bot-${x.id}`}>
+                                                            <th scope="row">
+                                                                <div className="form-check">
+                                                                    <input className="form-check-input" type="checkbox" name="chk_child" value="option1" />
                                                                 </div>
-                                                                <div className="remove">
-                                                                    <button className="btn btn-sm btn-danger remove-item-btn" data-bs-toggle="modal" data-bs-target="#deleteRecordModal">Eliminar</button>
+                                                            </th>
+                                                            <td>{x.id}</td>
+                                                            <td>{x.name}</td>
+                                                            <td>{x.companyId}</td>
+                                                            <td>{x.status ? <Badge color="success">Activo</Badge> : <Badge color="danger">Inactivo</Badge>}</td>
+                                                            {/* <td>{x._id}</td> */}
+                                                            <td>
+                                                                <div className="d-flex gap-2">
+                                                                    <div className="edit">
+                                                                        <a className="btn btn-sm btn-success edit-item-btn" href='/dashboard/bot-builder/sample-bot-1'
+                                                                            data-bs-toggle="modal" data-bs-target="#showModal">Editar</a>
+                                                                    </div>
+                                                                    <div className="remove">
+                                                                        <button className="btn btn-sm btn-danger remove-item-btn" data-bs-toggle="modal" data-bs-target="#deleteRecordModal">Eliminar</button>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
+                                                            </td>
+                                                        </tr>))
+                                                    }
                                                 </tbody>
                                             </table>
                                             <div className="noresult" style={{ display: "none" }}>
@@ -196,7 +163,7 @@ const BotBuilder = () => {
             </div>
 
             {/* Add Modal */}
-            <Modal isOpen={modal_list} toggle={() => { tog_list(); }} centered >
+            <Modal isOpen={modal_list} toggle={() => { tog_list(); }} >
                 <ModalHeader className="bg-light p-3" id="exampleModalLabel" toggle={() => { tog_list(); }}> Nuevo ChatBot </ModalHeader>
                 <form className="tablelist-form">
                     <ModalBody>
@@ -207,21 +174,29 @@ const BotBuilder = () => {
 
                         <div className="mb-3">
                             <label htmlFor="titlebot-field" className="form-label">Título del Chatbot</label>
-                            <input type="text" id="titlebot-field" className="form-control" placeholder="Ingresa un título" required />
+                            <input type="text" id="titlebot-field" className="form-control" placeholder="Ingresa un título" required 
+                                onChange={(e) => setInfoBot({...infoBot, name: e.target.value})}
+                            />
                         </div>
 
                         <div className='mb-3'>
-                            <label htmlFor="typeChannel-field" className="form-label">Tipo de mensajería</label>
-                            <select className="form-control" data-trigger name="typeChannel-field" id="typeChannel-field" >
+                            <label htmlFor="typeInteraction-field" className="form-label">Tipo de mensajería</label>
+                            <select className="form-control" data-trigger name="typeInteraction-field" id="typeInteraction-field"
+                                onChange={(e) => setInfoBot({...infoBot, typeInteraction: e.target.value})}
+                                value={infoBot.typeInteraction}
+                            >
                                 <option value="">Selecciona un tipo de mensajería</option>
-                                <option value="Active">Chat</option>
-                                <option value="Block">Mail</option>
+                                <option value="Chat">Chat</option>
+                                <option value="Mail">Mail</option>
                             </select>
                         </div>
 
                         <div className='mb-3'>
                             <label htmlFor="channel-field" className="form-label">Canal</label>
-                            <select className="form-control" data-trigger name="channel-field" id="channel-field" >
+                            <select className="form-control" data-trigger name="channel-field" id="channel-field"
+                                onChange={(e) => setInfoBot({...infoBot, channel: e.target.value})}
+                                value={infoBot.channel}
+                            >
                                 <option value="">Selecciona un tipo de mensajería</option>
                                 <option value="Active">WhatsApp 1</option>
                                 <option value="Active">WhatsApp 2</option>
@@ -231,7 +206,10 @@ const BotBuilder = () => {
 
                         <div>
                             <label htmlFor="status-field" className="form-label">Estatus</label>
-                            <select className="form-control" data-trigger name="status-field" id="status-field" >
+                            <select className="form-control" data-trigger name="status-field" id="status-field"
+                                onChange={(e) => setInfoBot({...infoBot, status: e.target.value})}
+                                value={infoBot.status}
+                            >
                                 <option value="Active">Active</option>
                                 <option value="Block">Block</option>
                             </select>
@@ -240,7 +218,7 @@ const BotBuilder = () => {
                     <ModalFooter>
                         <div className="hstack gap-2 justify-content-end">
                             <button type="button" className="btn btn-light" onClick={() => setmodal_list(false)}>Cerrar</button>
-                            <button type="submit" className="btn btn-success" id="add-btn">Crear y Editar Chatbot</button>
+                            <button type="submit" className="btn btn-success" id="add-btn" onClick={upserBot}>Crear y Editar Chatbot</button>
                             {/* <button type="button" className="btn btn-success" id="edit-btn">Update</button> */}
                         </div>
                     </ModalFooter>
