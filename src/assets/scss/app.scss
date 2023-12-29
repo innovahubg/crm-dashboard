@@ -80,7 +80,7 @@ File: Main Css File
 
   .modal-body {
     border-radius: 0;
-    height: calc(100vh - 120px); /* Ajusta según tus necesidades, considerando el espacio de la cabecera y el pie de página del modal */
+    // height: calc(100vh - 120px); /* Ajusta según tus necesidades, considerando el espacio de la cabecera y el pie de página del modal */
     overflow-y: auto; /* Agrega desplazamiento vertical si el contenido es más grande que la altura del modal */
   }
 

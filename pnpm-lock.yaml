@@ -26,6 +26,9 @@ dependencies:
   '@fullcalendar/react':
     specifier: ^6.1.4
     version: 6.1.4(@fullcalendar/core@6.1.4)(react-dom@18.2.0)(react@18.2.0)
+  '@grapesjs/react':
+    specifier: ^1.0.0
+    version: 1.0.0
   '@testing-library/jest-dom':
     specifier: ^5.16.5
     version: 5.16.5
@@ -68,12 +71,27 @@ dependencies:
   google-maps-react:
     specifier: ^2.0.6
     version: 2.0.6(react-dom@18.2.0)(react@18.2.0)
+  grapesjs:
+    specifier: ^0.21.7
+    version: 0.21.7
+  grapesjs-mjml:
+    specifier: ^1.0.5
+    version: 1.0.5
+  grapesjs-preset-newsletter:
+    specifier: ^1.0.2
+    version: 1.0.2
+  grapesjs-preset-webpage:
+    specifier: ^1.0.3
+    version: 1.0.3
   i18next:
     specifier: ^21.5.3
     version: 21.5.3
   i18next-browser-languagedetector:
     specifier: ^6.1.2
     version: 6.1.2
+  jwt-decode:
+    specifier: ^4.0.0
+    version: 4.0.0
   list.js:
     specifier: ^2.3.1
     version: 2.3.1
@@ -2763,6 +2781,10 @@ packages:
     resolution: {integrity: sha512-k2Ty1JcVojjJFwrg/ThKi2ujJ7XNLYaFGNB/bWT9wGR+oSMJHMa5w+CUq6p/pVrKeNNgA7pCqEcjSnHVoqJQFw==}
     dev: false
 
+  /@grapesjs/react@1.0.0:
+    resolution: {integrity: sha512-HHttzxwgvhbxQqqsiiQzb+OJtKFl8yWI9Yp3IgPgiKXqwY19lEJWSkCukvfqxugbYRxi0M1uERLAt209AmY5vQ==}
+    dev: false
+
   /@grpc/grpc-js@1.9.12:
     resolution: {integrity: sha512-Um5MBuge32TS3lAKX02PGCnFM4xPT996yLgZNb5H03pn6NyJ4Iwn5YcPq6Jj9yxGRk7WOgaZFtVRH5iTdYBeUg==}
     engines: {node: ^8.13.0 || >=10.10.0}
@@ -3735,6 +3757,13 @@ packages:
       '@babel/types': 7.23.4
     dev: false
 
+  /@types/backbone@1.4.18:
+    resolution: {integrity: sha512-/qo5+GegJsBPrvHnKLf6dhfe9sazHB/usPGv1vMii1nHkLIe/2aT/ArLc3/dabKd1a0VzDgdJhoaTdeextWl8Q==}
+    dependencies:
+      '@types/jquery': 3.5.29
+      '@types/underscore': 1.11.15
+    dev: false
+
   /@types/body-parser@1.19.5:
     resolution: {integrity: sha512-fB3Zu92ucau0iQ0JMCFQE7b/dv8Ot07NI3KaZIkIUNXq82k4eBAqUaneXfleGY9JWskeS9y+u0nXMyspcuQrCg==}
     dependencies:
@@ -4034,6 +4063,12 @@ packages:
       pretty-format: 29.7.0
     dev: false
 
+  /@types/jquery@3.5.29:
+    resolution: {integrity: sha512-oXQQC9X9MOPRrMhPHHOsXqeQDnWeCDT3PelUIg/Oy8FAbzSZtFHRjc7IpbfFVmpLtJ+UOoywpRsuO5Jxjybyeg==}
+    dependencies:
+      '@types/sizzle': 2.3.8
+    dev: false
+
   /@types/json-schema@7.0.15:
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
     dev: false
@@ -4182,6 +4217,10 @@ packages:
       '@types/node': 20.10.0
     dev: false
 
+  /@types/sizzle@2.3.8:
+    resolution: {integrity: sha512-0vWLNK2D5MT9dg0iOo8GlKguPAU02QjmZitPEsXRuJXU/OGIOt9vT9Fc26wtYuavLxtO45v9PGleoL9Z0k1LHg==}
+    dev: false
+
   /@types/sockjs@0.3.36:
     resolution: {integrity: sha512-MK9V6NzAS1+Ud7JV9lJLFqW85VbC9dq3LmwZCuBe4wBDgKC0Kj/jd8Xl+nSviU+Qc3+m7umHHyHg//2KSa0a0Q==}
     dependencies:
@@ -4200,6 +4239,10 @@ packages:
 
   /@types/trusted-types@2.0.7:
     resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
+    dev: false
+
+  /@types/underscore@1.11.15:
+    resolution: {integrity: sha512-HP38xE+GuWGlbSRq9WrZkousaQ7dragtZCruBVMi0oX1migFZavZ3OROKHSkNp/9ouq82zrWtZpg18jFnVN96g==}
     dev: false
 
   /@types/ws@8.5.10:
@@ -5122,6 +5165,20 @@ packages:
       - supports-color
     dev: false
 
+  /backbone-undo@0.2.6:
+    resolution: {integrity: sha512-AsfpNiljLXlk7TcffDUu3EAUq7CxWbyTNwARWrql5XTzN4vh6WzEEBZYaKK4kTTz+iW1tSzqUooaGRIwO83kWA==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+    dependencies:
+      backbone: 1.4.1
+      underscore: 1.13.6
+    dev: false
+
+  /backbone@1.4.1:
+    resolution: {integrity: sha512-ADy1ztN074YkWbHi8ojJVFe3vAanO/lrzMGZWUClIP7oDD/Pjy2vrASraUP+2EVCfIiTtCW4FChVow01XneivA==}
+    dependencies:
+      underscore: 1.13.6
+    dev: false
+
   /balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
     dev: false
@@ -5537,6 +5594,14 @@ packages:
       '@types/q': 1.5.8
       chalk: 2.4.2
       q: 1.5.1
+    dev: false
+
+  /codemirror-formatting@1.0.0:
+    resolution: {integrity: sha512-br9yM6eJI3pJHekEnoyHaBEb1B7XxxDjju+vRyBe8QGLp5saTIXXkZ+eFCTqXSAtI8QEZDFVEX2/SOjH2sVWRQ==}
+    dev: false
+
+  /codemirror@5.65.16:
+    resolution: {integrity: sha512-br21LjYmSlVL0vFCPWPfhzUCT34FM/pAdK7rRIZwa0rrtrIdotvP4Oh4GUHsu2E3IrQMCfRkL/fN3ytMNxVQvg==}
     dev: false
 
   /collect-v8-coverage@1.0.2:
@@ -7758,6 +7823,32 @@ packages:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
     dev: false
 
+  /grapesjs-mjml@1.0.5:
+    resolution: {integrity: sha512-w2WsIAtK9nfy52PJP6gv+gbuvbXm8CgOCVhdmTqlUTB4lQDvO30fTTWfORKPqK/p2UtKl0NYcC4C0sk+TEl/ag==}
+    dependencies:
+      mjml-browser: 4.14.1
+    dev: false
+
+  /grapesjs-preset-newsletter@1.0.2:
+    resolution: {integrity: sha512-z8KJ1ZrTXfASSJZ/tHOcnpcWu4AMr2F/ZfQit+QjimNi3UGowwl7+Yjefuh3R7lbDTrXMMaxhCannCaJo/kPJw==}
+    dev: false
+
+  /grapesjs-preset-webpage@1.0.3:
+    resolution: {integrity: sha512-C0VOKLAdhv0j1f81c6F2uk3JpJvxgXl5DeHUtDa5qGf/HZzaCmQxsvd8Re3Oh5Cah4uUCqoi9uB5FYx3hLND2w==}
+    dev: false
+
+  /grapesjs@0.21.7:
+    resolution: {integrity: sha512-XSUIPD8M2bOsrqtKar8I2jpWOITmVXiq0+OMVD0NhBOjsI0s7Vm6tzvyY6hY2uSObDiy+qQg4EfdcHUPjnP1zg==}
+    dependencies:
+      '@types/backbone': 1.4.18
+      backbone: 1.4.1
+      backbone-undo: 0.2.6
+      codemirror: 5.65.16
+      codemirror-formatting: 1.0.0
+      promise-polyfill: 8.1.3
+      underscore: 1.13.6
+    dev: false
+
   /graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
     dev: false
@@ -9310,6 +9401,11 @@ packages:
       jquery: 3.7.1
     dev: false
 
+  /jwt-decode@4.0.0:
+    resolution: {integrity: sha512-+KJGIyHgkGuIq3IEBNftfhW/LfWhXUIY6OmyVWjliu5KH1y0fw7VQ8YndE2O4qZdMSd9SqbnC8GOcZEy0Om7sA==}
+    engines: {node: '>=18'}
+    dev: false
+
   /keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
     dependencies:
@@ -9840,6 +9936,10 @@ packages:
     dependencies:
       minipass: 3.3.6
       yallist: 4.0.0
+    dev: false
+
+  /mjml-browser@4.14.1:
+    resolution: {integrity: sha512-kkY43kYTGfw0qL251GrG3hdQvKeeKAzxgM+zFd97Pay2nZX06W9V6rm03zCfnOQdwGM90xMOBF+x9SIhRPkiJQ==}
     dev: false
 
   /mkdirp@0.5.6:
@@ -13799,6 +13899,10 @@ packages:
 
   /underscore@1.12.1:
     resolution: {integrity: sha512-hEQt0+ZLDVUMhebKxL4x1BTtDY7bavVofhZ9KZ4aI26X9SRaE+Y3m83XUL1UP2jn8ynjndwCCpEHdUG+9pP1Tw==}
+    dev: false
+
+  /underscore@1.13.6:
+    resolution: {integrity: sha512-+A5Sja4HP1M08MaXya7p5LvjuM7K6q/2EaC0+iovj/wOcMsTzMvDFbasi/oSapiwOlt252IqsKqPjCl7huKS0A==}
     dev: false
 
   /undici-types@5.26.5:
