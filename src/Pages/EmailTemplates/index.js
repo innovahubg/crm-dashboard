@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import moment from "moment";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { GetData } from "../../services/api";
 import { RingLoader } from "react-spinners";
@@ -25,6 +25,10 @@ const EmailTemplates = () => {
   const [templates, setTemplates] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
+  const [newTemplate, setNewTemplate] = useState({
+    name: "IA",
+    type: "",
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,6 +39,10 @@ const EmailTemplates = () => {
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    console.log(newTemplate);
+  }, [newTemplate]);
   const columns = [
     {
       name: (
@@ -60,8 +68,8 @@ const EmailTemplates = () => {
       sortable: true,
     },
     {
-      name: <span className="font-weight-bold fs-13">Fecha creación</span>,
-      selector: (row) => row.createdAt,
+      name: <span className="font-weight-bold fs-13">Creado</span>,
+      selector: (row) => moment(row.createdAt).format("DD/MM/YYYY HH:mm"),
       sortable: true,
     },
     {
@@ -161,12 +169,12 @@ const EmailTemplates = () => {
         <ModalHeader
           className="bg-light p-3"
           id="exampleModalLabel"
-          toggle={() => {}}
+          toggle={() => setModal(false)}
         >
           Nuevo template
         </ModalHeader>
         <form className="tablelist-form">
-          <ModalBody style={{ height: "50vh" }}>
+          <ModalBody style={{ height: "20vh" }}>
             <div className="mb-3">
               <label htmlFor="titlebot-field" className="form-label">
                 Nombre
@@ -177,6 +185,10 @@ const EmailTemplates = () => {
                 className="form-control"
                 placeholder="Ingresa un nombre a tu template"
                 required
+                value={newTemplate.name}
+                onChange={(e) =>
+                  setNewTemplate({ ...newTemplate, name: e.target.value })
+                }
               />
             </div>
 
@@ -185,15 +197,34 @@ const EmailTemplates = () => {
                 Crear con:
               </label>
               <div className="d-flex justify-content-around">
-                <div className="d-flex flex-column justify-content-center align-items-center optionHover">
+                <div
+                  className={`d-flex flex-column justify-content-center align-items-center optionHover ${
+                    newTemplate.type === "IA" && "optionSelected"
+                  }`}
+                  onClick={() => setNewTemplate({ ...newTemplate, type: "IA" })}
+                >
                   <i className="mdi mdi-robot"></i>
                   <span>IA</span>
                 </div>
-                <div className="d-flex flex-column justify-content-center align-items-center optionHover">
+                <div
+                  className={`d-flex flex-column justify-content-center align-items-center optionHover ${
+                    newTemplate.type === "Template" && "optionSelected"
+                  }`}
+                  onClick={() =>
+                    setNewTemplate({ ...newTemplate, type: "Template" })
+                  }
+                >
                   <i className="mdi mdi-ballot"></i>
                   <span>Template</span>
                 </div>
-                <div className="d-flex flex-column justify-content-center align-items-center optionHover">
+                <div
+                  className={`d-flex flex-column justify-content-center align-items-center optionHover ${
+                    newTemplate.type === "Code" && "optionSelected"
+                  }`}
+                  onClick={() =>
+                    setNewTemplate({ ...newTemplate, type: "Code" })
+                  }
+                >
                   <i className="bx bx-code"></i>
                   <span>Código</span>
                 </div>
@@ -204,7 +235,7 @@ const EmailTemplates = () => {
             <div className="">
               <button
                 type="button"
-                className="btn btn-light"
+                className="btn btn-light mr-4"
                 onClick={() => setModal(false)}
               >
                 Cerrar

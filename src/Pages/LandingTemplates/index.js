@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import moment from "moment";
 import {
   DropdownItem,
   DropdownMenu,
@@ -56,8 +57,8 @@ const LandingBuilder = () => {
       sortable: true,
     },
     {
-      name: <span className="font-weight-bold fs-13">Fecha creación</span>,
-      selector: (row) => row.createdAt,
+      name: <span className="font-weight-bold fs-13">Creado</span>,
+      selector: (row) => moment(row.createdAt).format("DD/MM/YYYY HH:mm"),
       sortable: true,
     },
     {
@@ -145,7 +146,6 @@ const LandingBuilder = () => {
             )}
           </Row>
         </Row>
-        <Builder />
       </Container>
     </div>
   );

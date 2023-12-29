@@ -20,9 +20,8 @@ const CampaignDetails = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      // const campaign = await GetData(`/contact-lists/${id}`);
       const { data } = await GetData(`/contact-lists/${id}/customers`);
-      // setName(campaign.name);
+      console.log({ data });
       setData(data);
     };
     fetchData();
@@ -30,14 +29,6 @@ const CampaignDetails = () => {
 
   const columns = [
     {
-      name: (
-        <Input
-          className="form-check-input fs-15"
-          type="checkbox"
-          name="checkAll"
-          value="option1"
-        />
-      ),
       cell: () => (
         <input
           className="form-check-input fs-15"

@@ -22,35 +22,13 @@ const Campaigns = () => {
     const fetchData = async () => {
       const { data } = await GetData("/contact-lists");
       setData(data);
+      console.log({ data });
       setLoading(false);
     };
     fetchData();
   }, []);
 
   const columns = [
-    {
-      name: (
-        <Input
-          className="form-check-input fs-15"
-          type="checkbox"
-          name="checkAll"
-          value="option1"
-        />
-      ),
-      cell: () => (
-        <input
-          className="form-check-input fs-15"
-          type="checkbox"
-          name="checkAll"
-          value="option1"
-        />
-      ),
-    },
-    {
-      name: <span className="font-weight-bold fs-13">ID</span>,
-      selector: (row) => row.id,
-      sortable: true,
-    },
     {
       name: <span className="font-weight-bold fs-13">Nombre</span>,
       selector: (row) => row.name,
