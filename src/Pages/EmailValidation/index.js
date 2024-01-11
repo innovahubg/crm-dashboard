@@ -184,6 +184,18 @@ const EmailValidation = () => {
                 required
               />
             </div>
+            <div className="mb-3">
+              <label htmlFor="titlebot-field" className="form-label">
+                Remitente
+              </label>
+              <input
+                type="email"
+                id="titlebot-field"
+                className="form-control"
+                placeholder="Ingresa el remitente a registrar"
+                required
+              />
+            </div>
           </ModalBody>
           <ModalFooter>
             <div className="">
