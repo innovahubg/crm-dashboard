@@ -5,9 +5,10 @@ import plugin from "grapesjs-preset-webpage";
 import newsLetterPlugin from "grapesjs-preset-newsletter";
 import grapesJSMJML from "grapesjs-mjml";
 
-const Builder = () => {
+const Builder = ({ html, setHTML }) => {
   const onEditor = (editor) => {
     console.log("Editor loaded", { editor });
+    editor.setComponents(html);
     // editor.setComponents(`<!-- Free to use, HTML email template designed & built by FullSphere. Learn more about us at www.fullsphere.co.uk -->
 
     // <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -237,8 +238,7 @@ const Builder = () => {
     // // Resources`);
 
     editor.on("change:changesCount", (e) => {
-      // Change!
-      console.log("change", e);
+      setHTML(editor.runCommand("gjs-get-inlined-html"));
     });
   };
 

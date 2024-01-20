@@ -64,7 +64,7 @@ const Leads = () => {
               <DropdownItem>
                 <Link to={`/campaigns/${data.id}`} className="text-muted">
                   <i className="ri-eye-fill align-bottom me-2 text-muted"></i>
-                  Detalle {data.name}
+                  Detalle
                 </Link>
               </DropdownItem>
               <DropdownItem className="edit-item-btn">
@@ -72,9 +72,8 @@ const Leads = () => {
                 Edit
               </DropdownItem>
               <DropdownItem className="remove-item-btn">
-                {" "}
                 <i className="ri-delete-bin-fill align-bottom me-2 text-muted"></i>{" "}
-                Delete{" "}
+                Delete
               </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>

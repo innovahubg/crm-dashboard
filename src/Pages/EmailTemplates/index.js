@@ -28,6 +28,8 @@ const EmailTemplates = () => {
   const [newTemplate, setNewTemplate] = useState({
     name: "IA",
     type: "",
+    subject: "",
+    from: "",
   });
 
   const navigate = useNavigate();
@@ -45,6 +47,8 @@ const EmailTemplates = () => {
     e.preventDefault();
     const { type } = newTemplate;
 
+    localStorage.setItem("newEmailTemplate", JSON.stringify(newTemplate));
+
     if (type === "IA") {
       navigate("/email-templates/new/ai");
     } else if (type === "Template") {
@@ -55,24 +59,6 @@ const EmailTemplates = () => {
   };
 
   const columns = [
-    {
-      name: (
-        <Input
-          className="form-check-input fs-15"
-          type="checkbox"
-          name="checkAll"
-          value="option1"
-        />
-      ),
-      cell: () => (
-        <input
-          className="form-check-input fs-15"
-          type="checkbox"
-          name="checkAll"
-          value="option1"
-        />
-      ),
-    },
     {
       name: <span className="font-weight-bold fs-13">Nombre</span>,
       selector: (row) => row.name,
@@ -98,9 +84,9 @@ const EmailTemplates = () => {
             </DropdownToggle>
             <DropdownMenu className="dropdown-menu-end">
               <DropdownItem>
-                <Link to={`/campaigns/${data.id}`} className="text-muted">
+                <Link to={`/email-templates/${data.id}`} className="text-muted">
                   <i className="ri-eye-fill align-bottom me-2 text-muted"></i>
-                  Detalle {data.name}
+                  Detalle
                 </Link>
               </DropdownItem>
               <DropdownItem className="edit-item-btn">
@@ -199,6 +185,38 @@ const EmailTemplates = () => {
                 value={newTemplate.name}
                 onChange={(e) =>
                   setNewTemplate({ ...newTemplate, name: e.target.value })
+                }
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="titlebot-field" className="form-label">
+                Subject
+              </label>
+              <input
+                type="text"
+                id="titlebot-field"
+                className="form-control"
+                placeholder="Ingresa un asunto a tu template"
+                required
+                value={newTemplate.subject}
+                onChange={(e) =>
+                  setNewTemplate({ ...newTemplate, subject: e.target.value })
+                }
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="titlebot-field" className="form-label">
+                Remitente
+              </label>
+              <input
+                type="email"
+                id="titlebot-field"
+                className="form-control"
+                placeholder="Ingresa un remitente de tu template"
+                required
+                value={newTemplate.from}
+                onChange={(e) =>
+                  setNewTemplate({ ...newTemplate, from: e.target.value })
                 }
               />
             </div>
