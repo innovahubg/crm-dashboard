@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
-import { GetData, PostData } from "../../services/api";
+import { GetData } from "../../services/api";
 import { RingLoader } from "react-spinners";
 import {
   DropdownItem,
@@ -18,7 +18,7 @@ import {
   ModalHeader,
   Button,
 } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
 
 const EmailTemplates = () => {
@@ -30,46 +30,7 @@ const EmailTemplates = () => {
     type: "",
   });
 
-  const [prompt, setPrompt] = useState(
-    "Un website de invitacion para un evento de venta de lotes residenciales en Merida Yucatan Mexico, el dia 10 de Febrero a las 12:00."
-  );
-
-  const [htmlPrompt, setHtmlPrompt] = useState("");
-
-  const generateTemplateHtml = async () => {
-    console.log({
-      prompt,
-      brand: {},
-    });
-    const data = await PostData("/generate-template-email", {
-      prompt: prompt + " solo envia el codigo HTML",
-      brand: {
-        logoUrl: "https://cdn.arcemunoz.tech/assets/arcemunoz.png",
-        logoWith: "250px",
-        personalBrand: "Arce Muñoz | Líder Digital",
-        contact: {
-          email: "hola@arcemunoz.tech",
-          whatsapp: {
-            link: "https://api.whatsapp.com/send/?phone=522291171708&text=Hola+Arce!",
-            logoImage:
-              "https://upload.wikimedia.org/wikipedia/commons/7/75/Whatsapp_logo_svg.png",
-          },
-          instagram: {
-            link: "https://www.instagram.com/arcemunoz_tech",
-            logoImage:
-              "https://freelogopng.com/images/all_img/1658586823instagram-logo-transparent.png",
-          },
-        },
-        brandingColors: {
-          color1: "#ffffff",
-          color2: "#000000",
-        },
-      },
-    });
-
-    setHtmlPrompt(data.data);
-    console.log(data);
-  };
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -80,9 +41,19 @@ const EmailTemplates = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    console.log(newTemplate);
-  }, [newTemplate]);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const { type } = newTemplate;
+
+    if (type === "IA") {
+      navigate("/email-templates/new/ai");
+    } else if (type === "Template") {
+      navigate("/email-templates/new/template");
+    } else {
+      navigate("/email-templates/new/builder");
+    }
+  };
+
   const columns = [
     {
       name: (
@@ -214,7 +185,7 @@ const EmailTemplates = () => {
           Nuevo template
         </ModalHeader>
         <form className="tablelist-form">
-          <ModalBody style={{ height: "40vh" }}>
+          <ModalBody style={{ height: "20vh" }}>
             <div className="mb-3">
               <label htmlFor="titlebot-field" className="form-label">
                 Nombre
@@ -270,36 +241,6 @@ const EmailTemplates = () => {
                 </div>
               </div>
             </div>
-            {newTemplate.type === "IA" && (
-              <div className="my-6">
-                <span>
-                  Define tu idea y nuestra IA te generará un template:
-                </span>
-                <textarea
-                  className="w-100"
-                  onChange={(e) => setPrompt(e.target.value)}
-                  value={prompt}
-                  rows="6"
-                ></textarea>
-
-                <iframe
-                  name="frame"
-                  title="frame"
-                  srcDoc={htmlPrompt}
-                  className="w-100"
-                ></iframe>
-
-                <button
-                  className="btn btn-success"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    generateTemplateHtml();
-                  }}
-                >
-                  Generar template
-                </button>
-              </div>
-            )}
           </ModalBody>
           <ModalFooter>
             <div className="">
@@ -310,7 +251,11 @@ const EmailTemplates = () => {
               >
                 Cerrar
               </button>
-              <button type="submit" className="btn btn-success" id="add-btn">
+              <button
+                onClick={handleSubmit}
+                className="btn btn-success"
+                id="add-btn"
+              >
                 Crear
               </button>
             </div>

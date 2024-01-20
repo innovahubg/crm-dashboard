@@ -18,6 +18,12 @@ const SidebarData = [
   //   url: "/calendar",
   // },
   {
+    label: "Automatización",
+    icon: "mdi mdi-cogs",
+    isHasArrow: true,
+    url: "/automation",
+  },
+  {
     label: "Campañas",
     icon: "mdi mdi-account-group-outline",
     isHasArrow: true,

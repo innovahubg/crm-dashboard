@@ -106,6 +106,9 @@ import VectorMaps from "../Pages/Maps/VectorMap";
 import GoogleMap from "../Pages/Maps/GoogleMap";
 import Leads from "../Pages/Leads/index.js";
 import EmailValidation from "../Pages/EmailValidation/index.js";
+import NewAITemplate from "../Pages/EmailTemplates/NewAITemplate.js";
+import NewBuilder from "../Pages/EmailTemplates/NewBuilder.js";
+import NewTemplate from "../Pages/EmailTemplates/NewTemplate.js";
 
 const authProtectedRoutes = [
   //dashboard
@@ -125,6 +128,9 @@ const authProtectedRoutes = [
   { path: "/landing-templates", component: <LandingTemplates /> },
   { path: "/landing-templates/:id", component: <LandingTemplates /> },
   { path: "/email-templates", component: <EmailTemplates /> },
+  { path: "/email-templates/new/ai", component: <NewAITemplate /> },
+  { path: "/email-templates/new/builder", component: <NewBuilder /> },
+  { path: "/email-templates/new/template", component: <NewTemplate /> },
   { path: "/email-templates/:id", component: <EmailTemplates /> },
   { path: "/leads", component: <Leads /> },
   { path: "/email-validation", component: <EmailValidation /> },

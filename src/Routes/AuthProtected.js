@@ -9,7 +9,7 @@ import { logoutUser } from "../store/actions";
 const AuthProtected = (props) => {
   const { userProfile, loading } = useProfile();
   const dispatch = useDispatch();
-  console.log(userProfile);
+  // console.log(userProfile);
 
   // if (userProfile.exp - Date.now() / 1000) {
   //   dispatch(logoutUser());
