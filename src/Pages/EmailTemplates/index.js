@@ -26,7 +26,7 @@ const EmailTemplates = () => {
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
   const [newTemplate, setNewTemplate] = useState({
-    name: "IA",
+    name: "",
     type: "",
     subject: "",
     from: "",
@@ -171,7 +171,7 @@ const EmailTemplates = () => {
           Nuevo template
         </ModalHeader>
         <form className="tablelist-form">
-          <ModalBody style={{ height: "20vh" }}>
+          <ModalBody style={{ height: "30vh" }}>
             <div className="mb-3">
               <label htmlFor="titlebot-field" className="form-label">
                 Nombre
