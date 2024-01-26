@@ -3,6 +3,8 @@ import moment from "moment";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { GetData } from "../../services/api";
 import { RingLoader } from "react-spinners";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import {
   DropdownItem,
   DropdownMenu,
@@ -30,6 +32,23 @@ const EmailTemplates = () => {
     type: "",
     subject: "",
     from: "",
+  });
+
+  const validation = useFormik({
+    // enableReinitialize : use this flag when initial values needs to be changed
+    enableReinitialize: true,
+
+    initialValues: {
+      name: "",
+      subject: "",
+    },
+    validationSchema: Yup.object({
+      name: Yup.string().required("Ingresa "),
+      subject: Yup.string().required("Ingresa "),
+    }),
+    onSubmit: (values) => {
+      // dispatch(userForgetPassword(values, props.router.navigate));
+    },
   });
 
   const navigate = useNavigate();
@@ -171,7 +190,7 @@ const EmailTemplates = () => {
           Nuevo template
         </ModalHeader>
         <form className="tablelist-form">
-          <ModalBody style={{ height: "30vh" }}>
+          <ModalBody style={{ height: "auto" }}>
             <div className="mb-3">
               <label htmlFor="titlebot-field" className="form-label">
                 Nombre
