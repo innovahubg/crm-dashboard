@@ -17,55 +17,77 @@ import {
 } from "reactstrap";
 import { RingLoader } from "react-spinners";
 import DataTable from "react-data-table-component";
-import { GetData } from "../../services/api";
+import { GetData, PostData } from "../../services/api";
 import { Link } from "react-router-dom";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
+import validateEmail from "../../helpers/validateEmail";
 
 const EmailValidation = () => {
   const [emails, setEmails] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
+  const [email, setEmail] = useState("");
+  const [valid, setValid] = useState(false);
+
+  const fetchData = async () => {
+    const { data } = await GetData("/email-senders");
+
+    const realData = data[0];
+    const mailsObj = Object.keys(realData);
+    const mails = [];
+
+    mailsObj.forEach((email) => {
+      let valid = realData[email]["VerificationStatus"];
+      mails.push({ email, valid: valid === "Success" ? true : false });
+    });
+
+    setEmails(mails);
+    setModal(false);
+    setEmail("");
+  };
 
   useEffect(() => {
     try {
-      const fetchData = async () => {
-        const { data } = await GetData("/emails");
-        setEmails(data);
-        console.log(data);
-      };
       fetchData();
+    } catch (err) {
+      console.log(err);
     } finally {
       setLoading(false);
     }
   }, []);
 
+  const updateInput = (e) => {
+    const text = e.target.value;
+    setEmail(text);
+    setValid(validateEmail(text));
+  };
+
+  const sendEmail = async (e) => {
+    e.preventDefault();
+    await PostData("/email-senders", { email });
+    await fetchData();
+  };
+
   const columns = [
     {
-      name: (
-        <Input
-          className="form-check-input fs-15"
-          type="checkbox"
-          name="checkAll"
-          value="option1"
-        />
-      ),
-      cell: () => (
-        <input
-          className="form-check-input fs-15"
-          type="checkbox"
-          name="checkAll"
-          value="option1"
-        />
-      ),
-    },
-    {
-      name: <span className="font-weight-bold fs-13">Nombre</span>,
-      selector: (row) => row.name,
+      name: <span className="font-weight-bold fs-13">Email</span>,
+      selector: (row) => row.email,
       sortable: true,
     },
     {
-      name: <span className="font-weight-bold fs-13">Creado</span>,
-      selector: (row) => moment(row.createdAt).format("DD/MM/YYYY HH:mm"),
+      name: <span className="font-weight-bold fs-13">Válido</span>,
+      selector: (row) => (
+        <span>
+          <i
+            className={
+              "mdi " +
+              (row.valid
+                ? "mdi-check-circle checkGreen"
+                : "mdi-close-circle closeRed")
+            }
+          ></i>
+        </span>
+      ),
       sortable: true,
     },
     {
@@ -93,7 +115,6 @@ const EmailValidation = () => {
                 Edit
               </DropdownItem>
               <DropdownItem className="remove-item-btn">
-                {" "}
                 <i className="ri-delete-bin-fill align-bottom me-2 text-muted"></i>{" "}
                 Delete{" "}
               </DropdownItem>
@@ -170,30 +191,17 @@ const EmailValidation = () => {
         >
           Registrar correo electrónico
         </ModalHeader>
-        <form className="tablelist-form">
-          <ModalBody style={{ height: "20vh" }}>
+        <div className="tablelist-form">
+          <ModalBody style={{ height: "auto" }}>
             <div className="mb-3">
               <label htmlFor="titlebot-field" className="form-label">
                 Correo electrónico
               </label>
               <input
-                type="email"
-                id="titlebot-field"
                 className="form-control"
                 placeholder="Ingresa el email a registrar"
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="titlebot-field" className="form-label">
-                Remitente
-              </label>
-              <input
-                type="email"
-                id="titlebot-field"
-                className="form-control"
-                placeholder="Ingresa el remitente a registrar"
-                required
+                value={email}
+                onChange={updateInput}
               />
             </div>
           </ModalBody>
@@ -206,12 +214,15 @@ const EmailValidation = () => {
               >
                 Cerrar
               </button>
-              <button type="submit" className="btn btn-success" id="add-btn">
+              <button
+                className={"btn btn-success " + (!valid && "disabled")}
+                onClick={sendEmail}
+              >
                 Registrar
               </button>
             </div>
           </ModalFooter>
-        </form>
+        </div>
       </Modal>
     </div>
   );

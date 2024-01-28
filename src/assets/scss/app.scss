@@ -109,3 +109,26 @@ File: Main Css File
     height: 800px;
     z-index: 500;
   }
+
+
+  /*Templates*/
+
+  .templateSelection {
+    border: 2px solid transparent;
+  }
+  .templateSelection:hover{
+    border: 2px solid orange;
+    cursor: pointer;
+  }
+  
+  .templateSelected{
+    border: 2px solid orange;
+  }
+
+  .checkGreen{
+    color: rgb(22,163,74) !important;
+  }
+
+  .closeRed{
+    color: rgb(220,38,38) !important;
+  }

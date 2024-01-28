@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import {
   Container,
@@ -31,7 +30,7 @@ import avatar from "../../assets/images/users/avatar-1.jpg";
 import { editProfile, resetProfileFlag } from "../../store/actions";
 
 const UserProfile = () => {
-  document.title = "Profile | Upzet - React Admin & Dashboard Template";
+  document.title = "CRM IHG";
 
   const dispatch = useDispatch();
 
@@ -83,94 +82,92 @@ const UserProfile = () => {
 
   return (
     <React.Fragment>
-        <div className="page-content">
-          <Container fluid>
-            <Breadcrumb title="Upzet" breadcrumbItem="Profile" />
+      <div className="page-content">
+        <Container fluid>
+          <Breadcrumb title="Upzet" breadcrumbItem="Profile" />
 
-            <Row>
-              <Col lg="12">
-                {error && error ? (
-                  <Alert color="danger">
-                    <div>{error}</div>
-                  </Alert>
-                ) : null}
-                {success ? (
-                  <Alert color="success">
-                    <div>{success}</div>
-                  </Alert>
-                ) : null}
+          <Row>
+            <Col lg="12">
+              {error && error ? (
+                <Alert color="danger">
+                  <div>{error}</div>
+                </Alert>
+              ) : null}
+              {success ? (
+                <Alert color="success">
+                  <div>{success}</div>
+                </Alert>
+              ) : null}
 
-                <Card>
-                  <CardBody>
-                    <div className="d-flex">
-                      <div className="ms-3">
-                        <img
-                          src={avatar}
-                          alt=""
-                          className="avatar-md rounded-circle img-thumbnail"
-                        />
-                      </div>
-                      <div className="flex-grow-1 align-self-center">
-                        <div className="text-muted">
-                          <h5>{name}</h5>
-                          <p className="mb-1">{email}</p>
-                          <p className="mb-0">Id no: #{idx}</p>
-                        </div>
+              <Card>
+                <CardBody>
+                  <div className="d-flex">
+                    <div className="ms-3">
+                      <img
+                        src={avatar}
+                        alt=""
+                        className="avatar-md rounded-circle img-thumbnail"
+                      />
+                    </div>
+                    <div className="flex-grow-1 align-self-center">
+                      <div className="text-muted">
+                        <h5>{name}</h5>
+                        <p className="mb-1">{email}</p>
+                        <p className="mb-0">Id no: #{idx}</p>
                       </div>
                     </div>
-                  </CardBody>
-                </Card>
-              </Col>
-            </Row>
-
-            <h4 className="card-title mb-4">Change User Name</h4>
-
-            <Card>
-              <CardBody>
-                <Form
-                  className="form-horizontal"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    validation.handleSubmit();
-                    return false;
-                  }}
-                >
-                  <div className="form-group">
-                    <Label className="form-label">User Name</Label>
-                    <Input
-                      name="username"
-                      // value={name}
-                      className="form-control"
-                      placeholder="Enter User Name"
-                      type="text"
-                      onChange={validation.handleChange}
-                      onBlur={validation.handleBlur}
-                      value={validation.values.username || ""}
-                      invalid={
-                        validation.touched.username &&
-                        validation.errors.username
-                          ? true
-                          : false
-                      }
-                    />
-                    {validation.touched.username &&
-                    validation.errors.username ? (
-                      <FormFeedback type="invalid">
-                        <div>{validation.errors.username}</div>
-                      </FormFeedback>
-                    ) : null}
-                    <Input name="idx" value={idx} type="hidden" />
                   </div>
-                  <div className="text-center mt-4">
-                    <Button type="submit" color="danger">
-                      Update User Name
-                    </Button>
-                  </div>
-                </Form>
-              </CardBody>
-            </Card>
-          </Container>
-        </div>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+
+          <h4 className="card-title mb-4">Change User Name</h4>
+
+          <Card>
+            <CardBody>
+              <Form
+                className="form-horizontal"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  validation.handleSubmit();
+                  return false;
+                }}
+              >
+                <div className="form-group">
+                  <Label className="form-label">User Name</Label>
+                  <Input
+                    name="username"
+                    // value={name}
+                    className="form-control"
+                    placeholder="Enter User Name"
+                    type="text"
+                    onChange={validation.handleChange}
+                    onBlur={validation.handleBlur}
+                    value={validation.values.username || ""}
+                    invalid={
+                      validation.touched.username && validation.errors.username
+                        ? true
+                        : false
+                    }
+                  />
+                  {validation.touched.username && validation.errors.username ? (
+                    <FormFeedback type="invalid">
+                      <div>{validation.errors.username}</div>
+                    </FormFeedback>
+                  ) : null}
+                  <Input name="idx" value={idx} type="hidden" />
+                </div>
+                <div className="text-center mt-4">
+                  <Button type="submit" color="danger">
+                    Update User Name
+                  </Button>
+                </div>
+              </Form>
+            </CardBody>
+          </Card>
+        </Container>
+      </div>
     </React.Fragment>
   );
 };
