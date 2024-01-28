@@ -32,7 +32,6 @@ const NewTemplate = () => {
 
   const handleCreateTemplate = async () => {
     try {
-      console.log({ html });
       const { data } = await PostData("templates/escape-html", html, {
         headers: {
           "Content-Length": 0,
@@ -50,7 +49,10 @@ const NewTemplate = () => {
         template: data,
         subject,
         from,
-        params: {},
+        params: {
+          name: "string",
+          name2: "string",
+        },
       });
 
       if (status === 200) {

@@ -33,6 +33,7 @@ const EmailTemplates = () => {
     subject: "",
     from: "",
   });
+  const [emails, setEmails] = useState([]);
 
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
@@ -56,11 +57,27 @@ const EmailTemplates = () => {
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await GetData("/templates/email");
-      setTemplates(data);
+      const sorted = data.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
+      setTemplates(sorted);
       setLoading(false);
     };
     fetchData();
   }, []);
+
+  const getEmails = async () => {
+    const { data } = await GetData("/email-senders");
+    const realData = data[0];
+    const mailsObj = Object.keys(realData);
+    const mails = [];
+
+    mailsObj.forEach((email) => {
+      let valid = realData[email]["VerificationStatus"];
+      mails.push({ email, valid: valid === "Success" ? true : false });
+    });
+    setEmails(mails);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -136,6 +153,7 @@ const EmailTemplates = () => {
                   className="add-btn"
                   onClick={() => {
                     setModal(true);
+                    getEmails();
                   }}
                   id="create-btn"
                 >
@@ -227,17 +245,18 @@ const EmailTemplates = () => {
               <label htmlFor="titlebot-field" className="form-label">
                 Remitente
               </label>
-              <input
-                type="email"
-                id="titlebot-field"
-                className="form-control"
-                placeholder="Ingresa un remitente de tu template"
-                required
-                value={newTemplate.from}
+              <select
+                className="form-select"
                 onChange={(e) =>
                   setNewTemplate({ ...newTemplate, from: e.target.value })
                 }
-              />
+              >
+                {emails.map(({ email }) => (
+                  <option key={email} value={email}>
+                    {email}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="">
