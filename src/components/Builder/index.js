@@ -255,7 +255,7 @@ const Builder = ({ html, setHTML }) => {
         options={{
           height: "80vh",
           storageManager: false,
-          setComponents: `<strong>HOLA</strong>`,
+          setComponents: ``,
         }}
         onEditor={onEditor}
         plugins={[plugin, newsLetterPlugin]}

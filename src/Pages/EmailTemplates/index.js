@@ -71,11 +71,14 @@ const EmailTemplates = () => {
     const realData = data[0];
     const mailsObj = Object.keys(realData);
     const mails = [];
-
+    console.log(realData);
     mailsObj.forEach((email) => {
       let valid = realData[email]["VerificationStatus"];
-      mails.push({ email, valid: valid === "Success" ? true : false });
+      if (valid === "Success") {
+        mails.push({ email, valid: true });
+      }
     });
+    console.log(mails);
     setEmails(mails);
   };
 

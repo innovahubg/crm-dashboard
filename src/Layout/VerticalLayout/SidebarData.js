@@ -49,9 +49,21 @@ const SidebarData = [
   },
   {
     label: "Validación emails",
-    icon: "mdi-email-check",
+    icon: "mdi mdi-email-check",
     isHasArrow: true,
     url: "/email-validation",
+  },
+  {
+    label: "Identidad Corporativa",
+    icon: "mdi mdi-palette-outline",
+    isHasArrow: true,
+    url: "/corporate-identity",
+  },
+  {
+    label: "Plantillas whatsapp",
+    icon: "mdi mdi-whatsapp",
+    isHasArrow: true,
+    url: "/whatsapp-templates",
   },
   {
     label: "AI",

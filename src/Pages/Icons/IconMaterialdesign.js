@@ -6,7 +6,6 @@ import { Card, CardBody, CardTitle, Col, Container, Row } from "reactstrap";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 const IconMaterialdesign = () => {
-  document.title = "Material Design Icon | Upzet - React Admin & Dashboard Template";
   useEffect(() => {
     const isNew = (icon) => {
       return icon.version === "5.0.45";
@@ -29327,7 +29326,6 @@ const IconMaterialdesign = () => {
   return (
     <React.Fragment>
       <div className="page-content">
-
         <Container fluid>
           <Breadcrumbs title="Icons" breadcrumbItem="Material Design Icon" />
 
