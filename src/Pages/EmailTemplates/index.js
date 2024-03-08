@@ -130,12 +130,12 @@ const EmailTemplates = () => {
               </DropdownItem>
               <DropdownItem className="edit-item-btn">
                 <i className="ri-pencil-fill align-bottom me-2 text-muted"></i>
-                Edit
+                Editar
               </DropdownItem>
               <DropdownItem className="remove-item-btn">
                 {" "}
                 <i className="ri-delete-bin-fill align-bottom me-2 text-muted"></i>{" "}
-                Delete{" "}
+                Eliminar{" "}
               </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
@@ -268,18 +268,16 @@ const EmailTemplates = () => {
               </label>
               <div className="d-flex justify-content-around">
                 <div
-                  className={`d-flex flex-column justify-content-center align-items-center optionHover ${
-                    newTemplate.type === "IA" && "optionSelected"
-                  }`}
+                  className={`d-flex flex-column justify-content-center align-items-center optionHover ${newTemplate.type === "IA" && "optionSelected"
+                    }`}
                   onClick={() => setNewTemplate({ ...newTemplate, type: "IA" })}
                 >
                   <i className="mdi mdi-robot"></i>
                   <span>IA</span>
                 </div>
                 <div
-                  className={`d-flex flex-column justify-content-center align-items-center optionHover ${
-                    newTemplate.type === "Template" && "optionSelected"
-                  }`}
+                  className={`d-flex flex-column justify-content-center align-items-center optionHover ${newTemplate.type === "Template" && "optionSelected"
+                    }`}
                   onClick={() =>
                     setNewTemplate({ ...newTemplate, type: "Template" })
                   }
@@ -288,9 +286,8 @@ const EmailTemplates = () => {
                   <span>Template</span>
                 </div>
                 <div
-                  className={`d-flex flex-column justify-content-center align-items-center optionHover ${
-                    newTemplate.type === "Code" && "optionSelected"
-                  }`}
+                  className={`d-flex flex-column justify-content-center align-items-center optionHover ${newTemplate.type === "Code" && "optionSelected"
+                    }`}
                   onClick={() =>
                     setNewTemplate({ ...newTemplate, type: "Code" })
                   }

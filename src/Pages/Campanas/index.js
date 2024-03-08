@@ -61,12 +61,16 @@ const Campaigns = () => {
               </DropdownItem>
               <DropdownItem className="edit-item-btn">
                 <i className="ri-pencil-fill align-bottom me-2 text-muted"></i>
-                Edit
+                Editar
+              </DropdownItem>
+              <DropdownItem className="edit-item-btn">
+                <i className="mdi mdi-cog-outline align-bottom me-2 text-muted" />
+                Automatizar
               </DropdownItem>
               <DropdownItem className="remove-item-btn">
                 {" "}
                 <i className="ri-delete-bin-fill align-bottom me-2 text-muted"></i>{" "}
-                Delete{" "}
+                Eliminar{" "}
               </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>

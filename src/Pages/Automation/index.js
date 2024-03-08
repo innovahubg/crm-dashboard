@@ -27,6 +27,8 @@ import DataTable from "react-data-table-component";
 const Automation = () => {
 
   const [modal, setModal] = useState(false)
+  const [newModal, setNewModal] = useState(false)
+  const [newAuto, setNewAuto] = useState({})
   const [type, setType] = useState("")
   const [details, setDetails] = useState({})
   const [data, setData] = useState([]);
@@ -95,6 +97,38 @@ const Automation = () => {
         <Container fluid={true}>
           <Breadcrumbs title="Inicio" breadcrumbItem="Automatización" />
         </Container>
+
+        <Row className="g-4 mb-3">
+          <Col className="col-sm-auto">
+            <div className="d-flex gap-1 justify-content-end">
+              <Button
+                color="success"
+                className="add-btn"
+                onClick={() => {
+                  setNewModal(true)
+                }}
+                id="create-btn"
+              >
+                <i className="ri-add-line align-bottom me-1"></i> Nueva Automatización
+              </Button>
+              {/* <Button color="soft-danger"
+                                                    onClick="deleteMultiple()"
+                                                    ><i className="ri-delete-bin-2-line"></i></Button> */}
+            </div>
+          </Col>
+          <Col className="col-sm">
+            <div className="d-flex justify-content-sm-end">
+              <div className="search-box ms-2">
+                <input
+                  type="text"
+                  className="form-control search"
+                  placeholder="Buscar..."
+                />
+                <i className="ri-search-line search-icon"></i>
+              </div>
+            </div>
+          </Col>
+        </Row>
 
         <Tabs>
           <TabList>
@@ -175,6 +209,149 @@ const Automation = () => {
                   />
                 </div>)
               }
+
+              {
+                type === "details" && (<div className="mb-3">
+                  <h4 htmlFor="titlebot-field" className="form-label">
+                    Titulo: {details.title}
+                  </h4>
+
+                </div>)
+              }
+
+            </ModalBody>
+            <ModalFooter>
+              <div className="">
+                <button
+                  type="button"
+                  className="btn btn-light mx-4"
+                  onClick={() => setModal(false)}
+                >
+                  Cerrar
+                </button>
+                <button
+                  onClick={() => { }}
+                  className="btn btn-success"
+                  id="add-btn"
+                >
+                  Crear
+                </button>
+              </div>
+            </ModalFooter>
+          </form>
+        </Modal>
+
+        <Modal
+          isOpen={newModal}
+          toggle={() => {
+            setNewModal(false);
+          }}
+          centered
+        >
+          <ModalHeader
+            className="bg-light p-3"
+            id="exampleModalLabel"
+            toggle={() => setNewModal(false)}
+          >
+            Nueva Automatización
+          </ModalHeader>
+          <form className="tablelist-form">
+            <ModalBody style={{ height: "auto" }}>
+              <div className="mb-3">
+                <label htmlFor="titlebot-field" className="form-label">
+                  Nombre
+                </label>
+                <input
+                  type="text"
+                  id="titlebot-field"
+                  className="form-control"
+                  placeholder="Ingresa un nombre de automatizacion"
+                  required
+                  value={""}
+                  onChange={(e) =>
+                    console.log({})
+                  }
+                />
+              </div>
+
+              <div className="mb-3">
+                <label htmlFor="titlebot-field" className="form-label">
+                  Campaña
+                </label>
+                <select className="form-control">
+                  <option>crm_list</option>
+                  <option>dev autoevaluacion</option>
+                  <option>Marca Personal</option>
+                  <option>Masterclass Desbloquea Potencial 2</option>
+                </select>
+              </div>
+              <div className="mb-3">
+                <label htmlFor="titlebot-field" className="form-label">
+                  Tipo
+                </label>
+                <div>
+                  <button
+                    type="button"
+                    className={`btn w-50 mr-4 ${newAuto.type === "registered" ? "btn-success" : "btn-light"} `}
+                    onClick={() => setNewAuto((data) => ({ ...data, type: "registered" }))}
+                  >
+                    Registro
+                  </button>
+                  <button
+                    type="button"
+                    className={`btn w-50 ${newAuto.type === "scheduled" ? "btn-success" : "btn-light"}`}
+                    onClick={() => setNewAuto((data) => ({ ...data, type: "scheduled" }))}
+                  >
+                    Agendado
+                  </button>
+                </div>
+              </div>
+              <div className="mb-3">
+                <label htmlFor="titlebot-field" className="form-label">
+                  Enviar
+                </label>
+                <div>
+                  <button
+                    type="button"
+                    className={`btn w-50 ${newAuto.send === "whatsapp" ? "btn-success" : "btn-light"} `}
+                    onClick={() => setNewAuto((data) => ({ ...data, send: "whatsapp" }))}
+                  >
+                    <i className="mdi mdi-whatsapp align-bottom me-2 text-muted" /> Whatsapp
+                  </button>
+                  <button
+                    type="button"
+                    className={`btn w-50 ${newAuto.send === "email" ? "btn-success" : "btn-light"}`}
+                    onClick={() => setNewAuto((data) => ({ ...data, send: "email" }))}
+                  >
+                    <i className="mdi mdi-email align-bottom me-2 text-muted" /> Email
+                  </button>
+                </div>
+              </div>
+              {
+                newAuto.type === "scheduled" && (
+                  <div className="mb-3">
+                    <label htmlFor="titlebot-field" className="form-label">
+                      Definir horario
+                    </label>
+                    <input
+                      type="datetime-local"
+                      id="titlebot-field"
+                      className="form-control"
+                      placeholder="Ingresa un nombre a tu evento"
+                      required
+                      value={""}
+                      onChange={(e) =>
+                        console.log({})
+                      }
+                    />
+                  </div>
+                )
+              }
+
+
+
+
+
 
               {
                 type === "details" && (<div className="mb-3">
