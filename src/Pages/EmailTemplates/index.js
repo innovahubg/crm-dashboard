@@ -230,7 +230,7 @@ const EmailTemplates = () => {
             </div>
             <div className="mb-3">
               <label htmlFor="titlebot-field" className="form-label">
-                Subject
+                Asunto
               </label>
               <input
                 type="text"

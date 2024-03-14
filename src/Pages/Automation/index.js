@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useId } from "react";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import CalendarComponent from "./CalendarComponent";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -36,6 +36,8 @@ const Automation = () => {
   const [loading, setLoading] = useState(true);
   const [templates, setTemplates] = useState([])
   const [automations, setAutomations] = useState([])
+  const [emailSenders, setEmailSenders] = useState([])
+  const [templateType, setTemplateType] = useState()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,7 +51,7 @@ const Automation = () => {
 
   const getTemplates = async () => {
     console.log(`/templates/${newAuto.send}`)
-    const { data } = await GetData(`/templates/${newAuto.send}`);
+    const { data } = await GetData(`/templates/${templateType}`);
     setTemplates(data)
     console.log(data)
   }
@@ -59,6 +61,11 @@ const Automation = () => {
     const { data } = await GetData(`/automation/${idContactList}`);
     console.log(data)
     setAutomations(data)
+  }
+
+  const getEmailSenders = async () => {
+    const { data } = await GetData(`/email-senders`);
+    setEmailSenders(data)
   }
 
   const columnsRegistered = [
@@ -169,6 +176,29 @@ const Automation = () => {
       },
     },
   ];
+
+  useEffect(() => {
+    if (templateType) {
+      getTemplates()
+    }
+  }, [newAuto])
+
+
+  const handleCreate = () => {
+
+    const scheduledObj = { ...newAuto }
+
+    const dates = newAuto.date.split("-")
+    const day = dates[2].split("T")[0]
+    const time = newAuto.date.split("T")
+    const times = time[1].split(":")
+    const run = ({ year: Number(dates[0]), month: Number(dates[1]), day: Number(day), hour: Number(times[0]), minute: Number(times[1]) })
+    const find = templates.find(t => t.id === newAuto.template)
+
+    scheduledObj["run"] = run
+    scheduledObj["from"] = find["from"]
+    console.log(scheduledObj)
+  }
 
   return (
     <React.Fragment>
@@ -368,10 +398,8 @@ const Automation = () => {
                   className="form-control"
                   placeholder="Ingresa un nombre de automatizacion"
                   required
-                  value={""}
-                  onChange={(e) =>
-                    console.log({})
-                  }
+                  value={newAuto.name}
+                  onChange={(e) => setNewAuto((data) => ({ ...data, name: e.target.value }))}
                 />
               </div>
 
@@ -379,11 +407,10 @@ const Automation = () => {
                 <label htmlFor="titlebot-field" className="form-label">
                   Campaña
                 </label>
-                <select className="form-control">
-                  <option>crm_list</option>
-                  <option>dev autoevaluacion</option>
-                  <option>Marca Personal</option>
-                  <option>Masterclass Desbloquea Potencial 2</option>
+                <select className="form-control" onChange={(e) => setNewAuto((data) => ({ ...data, idLista: e.target.value }))}>
+                  {
+                    data.map(({ id, name }) => <option value={id} key={id}>{name}</option>)
+                  }
                 </select>
               </div>
               <div className="mb-3">
@@ -417,6 +444,7 @@ const Automation = () => {
                     className={`btn w-50 ${newAuto.send === "whatsapp" ? "btn-success" : "btn-light"} `}
                     onClick={() => {
                       setNewAuto((data) => ({ ...data, send: "whatsapp" }))
+                      setTemplateType("whatsapp")
                     }}
                   >
                     <i className="mdi mdi-whatsapp align-bottom me-2 text-muted" /> Whatsapp
@@ -426,6 +454,7 @@ const Automation = () => {
                     className={`btn w-50 ${newAuto.send === "email" ? "btn-success" : "btn-light"}`}
                     onClick={() => {
                       setNewAuto((data) => ({ ...data, send: "email" }))
+                      setTemplateType("email")
                     }}
                   >
                     <i className="mdi mdi-email align-bottom me-2 text-muted" /> Email
@@ -438,40 +467,36 @@ const Automation = () => {
                     <label htmlFor="titlebot-field" className="form-label">
                       Templates
                     </label>
-                    <select className="form-control">
-                      <option>crm_list</option>
-                      <option>dev autoevaluacion</option>
-                      <option>Marca Personal</option>
-                      <option>Masterclass Desbloquea Potencial 2</option>
+                    <select className="form-control" onChange={(e) => setNewAuto((data) => ({ ...data, template: e.target.value }))}>
+                      {
+                        templates.map(({ id, name }) => <option value={id} key={id}>{name}</option>)
+                      }
                     </select>
                   </div>
                 )
               }
               {
                 newAuto.type === "scheduled" && (
-                  <div className="mb-3">
-                    <label htmlFor="titlebot-field" className="form-label">
-                      Definir horario
-                    </label>
-                    <input
-                      type="datetime-local"
-                      id="titlebot-field"
-                      className="form-control"
-                      placeholder="Ingresa un nombre a tu evento"
-                      required
-                      value={""}
-                      onChange={(e) =>
-                        console.log({})
-                      }
-                    />
-                  </div>
+                  <>
+                    <div className="mb-3">
+                      <label htmlFor="titlebot-field" className="form-label">
+                        Definir horario
+                      </label>
+                      <input
+                        type="datetime-local"
+                        id="titlebot-field"
+                        className="form-control"
+                        placeholder="Ingresa un nombre a tu evento"
+                        required
+                        value={newAuto.date}
+                        onChange={(e) => setNewAuto((data) => ({ ...data, date: e.target.value }))}
+                      />
+                    </div>
+
+
+                  </>
                 )
               }
-
-
-
-
-
 
               {
                 type === "details" && (<div className="mb-3">
@@ -493,7 +518,10 @@ const Automation = () => {
                   Cerrar
                 </button>
                 <button
-                  onClick={() => { }}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    handleCreate()
+                  }}
                   className="btn btn-success"
                   id="add-btn"
                 >
