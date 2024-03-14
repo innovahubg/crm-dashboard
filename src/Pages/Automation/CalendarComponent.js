@@ -6,8 +6,9 @@ import interactionPlugin from "@fullcalendar/interaction"
 
 
 
-const CalendarComponent = ({ setModal, setType, setDetails }) => {
+const CalendarComponent = ({ setModal, setType, setDetails, events }) => {
 
+    console.log({ events })
 
     const handleDateClick = (arg) => {
         console.log(arg.dateStr)

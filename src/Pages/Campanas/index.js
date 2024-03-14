@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { GetData } from "../../services/api";
 import DataTable from "react-data-table-component";
+import moment from "moment"
 import {
   DropdownItem,
   DropdownMenu,
@@ -36,7 +37,17 @@ const Campaigns = () => {
     },
     {
       name: <span className="font-weight-bold fs-13">Compañia</span>,
-      selector: (row) => row.companyId,
+      selector: (row) => row.company.name,
+      sortable: true,
+    },
+    {
+      name: <span className="font-weight-bold fs-13">Contactos</span>,
+      selector: (row) => row.count,
+      sortable: true,
+    },
+    {
+      name: <span className="font-weight-bold fs-13">Creada</span>,
+      selector: (row) => moment(row.createdAt).format("DD/MM/YYYY HH:mm"),
       sortable: true,
     },
     {
