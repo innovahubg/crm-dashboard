@@ -106,11 +106,17 @@ File: Main Css File
 
   .gjsEditor-spaces{
     position: absolute;
+    z-index: 1;
     height: 800px;
-    z-index: 500;
   }
 
-
+  .gjsEditor-color-picker{
+    position: absolute !important;
+    top: 100px !important;
+    right: 50px !important;
+    left: auto !important;
+    z-index: 555 !important;
+  }
   /*Templates*/
 
   .templateSelection {

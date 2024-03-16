@@ -256,7 +256,11 @@ const Builder = ({ html, setHTML }) => {
           height: "80vh",
           storageManager: false,
           setComponents: ``,
+          colorPicker: {
+            containerClassName: "gjsEditor-color-picker"
+          }
         }}
+
         onEditor={onEditor}
         plugins={[plugin, newsLetterPlugin]}
       />
