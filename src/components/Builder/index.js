@@ -3,6 +3,8 @@ import grapesjs, { Editor } from "grapesjs";
 import GjsEditor from "@grapesjs/react";
 import plugin from "grapesjs-preset-webpage";
 import newsLetterPlugin from "grapesjs-preset-newsletter";
+import codeEditor from "grapesjs-component-code-editor"
+import pluginForms from "grapesjs-plugin-forms"
 import grapesJSMJML from "grapesjs-mjml";
 
 const Builder = ({ html, setHTML }) => {
@@ -238,7 +240,9 @@ const Builder = ({ html, setHTML }) => {
     // // Resources`);
 
     editor.on("change:changesCount", (e) => {
-      setHTML(editor.runCommand("gjs-get-inlined-html"));
+      const code = editor.runCommand("gjs-get-inlined-html")
+      console.log(code)
+      setHTML(code);
     });
   };
 
@@ -258,11 +262,28 @@ const Builder = ({ html, setHTML }) => {
           setComponents: ``,
           colorPicker: {
             containerClassName: "gjsEditor-color-picker"
-          }
-        }}
+          },
+          // panels: {
+          //   defaults: [
+          //     {
+          //       buttons: [
+          //         //...
+          //         {
+          //           attributes: { title: 'Open Code' },
+          //           className: 'fa fa-code',
+          //           command: 'open-code',
+          //           id: 'open-code'
+          //         }
+          //         //...
+          //       ],
+          //       id: 'views'
+          //     }
+          //   ]
+          // }
 
+        }}
         onEditor={onEditor}
-        plugins={[plugin, newsLetterPlugin]}
+        plugins={[pluginForms, plugin, codeEditor]}
       />
     </div>
   );
