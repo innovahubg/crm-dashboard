@@ -213,11 +213,11 @@ const Register = (props) => {
                       ) : null}
                     </div>
                     <div className="mb-4">
-                      <Label className="form-label">Número telefónico</Label>
+                      <Label className="form-label">Número celular</Label>
                       <Input
                         name="phone"
                         type="text"
-                        placeholder="Ingresar número telefónico"
+                        placeholder="Ingresar número celular"
                         onChange={validation.handleChange}
                         onBlur={validation.handleBlur}
                         value={validation.values.phone || ""}

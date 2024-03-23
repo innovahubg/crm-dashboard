@@ -6705,6 +6705,11 @@
   "resolved" "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
   "version" "1.0.0"
 
+"fsevents@^2.3.2", "fsevents@~2.3.2":
+  "integrity" "sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA=="
+  "resolved" "https://registry.npmjs.org/fsevents/-/fsevents-2.3.2.tgz"
+  "version" "2.3.2"
+
 "function-bind@^1.1.1":
   "integrity" "sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A=="
   "resolved" "https://registry.npmjs.org/function-bind/-/function-bind-1.1.1.tgz"
@@ -6931,13 +6936,6 @@
   "integrity" "sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA=="
   "resolved" "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.10.tgz"
   "version" "4.2.10"
-
-"grapesjs-component-code-editor@^1.0.20":
-  "integrity" "sha512-t/KqfzkvMBxDfZEc/0kRN08pDKC5a3dMlrRwxI3PLVvyH/iIMNkz1LlUTgkPujykR4EoFveGLfKe5yXcTvQhAw=="
-  "resolved" "https://registry.npmjs.org/grapesjs-component-code-editor/-/grapesjs-component-code-editor-1.0.20.tgz"
-  "version" "1.0.20"
-  dependencies:
-    "split.js" "^1.6.2"
 
 "grapesjs-mjml@^1.0.5":
   "integrity" "sha512-w2WsIAtK9nfy52PJP6gv+gbuvbXm8CgOCVhdmTqlUTB4lQDvO30fTTWfORKPqK/p2UtKl0NYcC4C0sk+TEl/ag=="
@@ -11673,11 +11671,6 @@
     "http-deceiver" "^1.2.7"
     "select-hose" "^2.0.0"
     "spdy-transport" "^3.0.0"
-
-"split.js@^1.6.2":
-  "integrity" "sha512-mPTnGCiS/RiuTNsVhCm9De9cCAUsrNFFviRbADdKiiV+Kk8HKp/0fWu7Kr8pi3/yBmsqLFHuXGT9UUZ+CNLwFw=="
-  "resolved" "https://registry.npmjs.org/split.js/-/split.js-1.6.5.tgz"
-  "version" "1.6.5"
 
 "split@^1.0.1":
   "integrity" "sha512-mTyOoPbrivtXnwnIxZRFYRrPNtEFKlpB2fvjSnCQUiAA6qAZzqwna5envK4uk6OIeP17CsdF3rSBGYVBsU0Tkg=="

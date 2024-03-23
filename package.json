@@ -26,7 +26,6 @@
     "formik": "^2.2.9",
     "google-maps-react": "^2.0.6",
     "grapesjs": "^0.21.7",
-    "grapesjs-component-code-editor": "^1.0.20",
     "grapesjs-mjml": "^1.0.5",
     "grapesjs-plugin-forms": "^2.0.6",
     "grapesjs-preset-newsletter": "^1.0.2",
