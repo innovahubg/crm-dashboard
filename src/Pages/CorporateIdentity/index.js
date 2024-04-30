@@ -62,6 +62,29 @@ const CorporateIdentity = () => {
     setValid(validateEmail(text));
   };
 
+  const handleUpdateImg = (e) => {
+    let base64String = "";
+    console.log(e.target.value)
+    let file = document.querySelector(
+      'input[type=file]')['files'][0];
+    //let file = e.target.value
+
+    let reader = new FileReader();
+    console.log("next");
+
+    reader.onload = function () {
+      base64String = reader.result.replace("data:", "")
+        .replace(/^.+,/, "");
+
+      //imageBase64Stringsep = base64String;
+
+      // alert(imageBase64Stringsep);
+      console.log(base64String);
+    }
+    reader.readAsDataURL(file);
+
+  }
+
   const sendEmail = async (e) => {
     e.preventDefault();
     await PostData("/email-senders", { email });
@@ -199,10 +222,21 @@ const CorporateIdentity = () => {
               </label>
               <input
                 className="form-control"
-                placeholder="Ingresa el email a registrar"
+                placeholder="Ingresa el logotipo a registrar"
+                value={email}
+                onChange={handleUpdateImg}
+                type="file"
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="titlebot-field" className="form-label">
+                Nombre del brand
+              </label>
+              <input
+                className="form-control"
+                placeholder="Ingresa un nombre de referencia"
                 value={email}
                 onChange={updateInput}
-                type="file"
               />
             </div>
             <div className="mb-3">
@@ -216,6 +250,7 @@ const CorporateIdentity = () => {
                 onChange={updateInput}
               />
             </div>
+
             <div className="mb-3">
               <label htmlFor="titlebot-field" className="form-label">
                 Link whatsapp

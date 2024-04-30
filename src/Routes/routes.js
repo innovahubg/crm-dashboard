@@ -105,6 +105,7 @@ import IconBoxicons from "../Pages/Icons/IconBoxicons";
 import VectorMaps from "../Pages/Maps/VectorMap";
 import GoogleMap from "../Pages/Maps/GoogleMap";
 import Leads from "../Pages/Leads/index.js";
+import LeadsDetails from "../Pages/Leads/details.js";
 import EmailValidation from "../Pages/EmailValidation/index.js";
 import NewAITemplate from "../Pages/EmailTemplates/NewAITemplate.js";
 import NewBuilder from "../Pages/EmailTemplates/NewBuilder.js";
@@ -135,6 +136,7 @@ const authProtectedRoutes = [
   { path: "/email-templates/new/template", component: <NewTemplate /> },
   { path: "/email-templates/:id", component: <EmailTemplates /> },
   { path: "/leads", component: <Leads /> },
+  { path: "/leads/:id", component: <LeadsDetails /> },
   { path: "/email-validation", component: <EmailValidation /> },
   { path: "/corporate-identity", component: <CorporateIdentity /> },
   { path: "/whatsapp-templates", component: <WhatsAppTemplates /> },

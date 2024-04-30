@@ -24,7 +24,7 @@ const Leads = () => {
   const columns = [
     {
       name: <span className="font-weight-bold fs-13">Nombre</span>,
-      selector: (row) => row.name,
+      selector: (row) => <Link to={`/leads/${row.id}`} className="text-muted">{row.name}</Link>,
       sortable: true,
     },
     {
@@ -46,40 +46,7 @@ const Leads = () => {
       name: <span className="font-weight-bold fs-13">Creado</span>,
       selector: (row) => moment(row.createdAt).format("DD/MM/YYYY HH:mm"),
       sortable: true,
-    },
-    {
-      name: <span className="font-weight-bold fs-13">Acción</span>,
-      sortable: true,
-
-      cell: (data) => {
-        return (
-          <UncontrolledDropdown className="dropdown d-inline-block">
-            <DropdownToggle
-              className="btn btn-soft-secondary btn-sm"
-              tag="button"
-            >
-              <i className="ri-more-fill align-middle"></i>
-            </DropdownToggle>
-            <DropdownMenu className="dropdown-menu-end">
-              <DropdownItem>
-                <Link to={`/campaigns/${data.id}`} className="text-muted">
-                  <i className="ri-eye-fill align-bottom me-2 text-muted"></i>
-                  Detalle
-                </Link>
-              </DropdownItem>
-              <DropdownItem className="edit-item-btn">
-                <i className="ri-pencil-fill align-bottom me-2 text-muted"></i>
-                Edit
-              </DropdownItem>
-              <DropdownItem className="remove-item-btn">
-                <i className="ri-delete-bin-fill align-bottom me-2 text-muted"></i>{" "}
-                Delete
-              </DropdownItem>
-            </DropdownMenu>
-          </UncontrolledDropdown>
-        );
-      },
-    },
+    }
   ];
 
   useEffect(() => {
@@ -116,3 +83,6 @@ const Leads = () => {
 };
 
 export default Leads;
+
+
+

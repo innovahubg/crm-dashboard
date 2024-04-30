@@ -82,17 +82,17 @@ const Register = (props) => {
           <Card className="w-full flex-column d-flex">
             <CardBody className="p-4">
               <div className="text-center">
-                <Link to="/" className="">
+                <Link to="/registro" className="">
                   <div className="text-center">
                     <img
                       src={logodark}
                       alt="InnovaHubGroup"
-                      className="auth-logo logo-dark mx-auto"
+                      className="auth-logo logo-dark mx-auto w-25"
                     />
                     <img
                       src={logolight}
                       alt="InnovaHubGroup"
-                      className="auth-logo logo-light mx-auto"
+                      className="auth-logo logo-light mx-auto w-25"
                     />
                   </div>
                 </Link>
@@ -117,55 +117,54 @@ const Register = (props) => {
                 ) : null}
 
                 <Row>
-                  <Col md={12}>
-                    <div className="d-flex">
-                      <div className="mb-4 w-40">
-                        <Label className="form-label">Nombre(s)</Label>
-                        <Input
-                          name="name"
-                          type="text"
-                          placeholder="Ingresa tu nombre"
-                          onChange={validation.handleChange}
-                          onBlur={validation.handleBlur}
-                          value={validation.values.name || ""}
-                          invalid={
-                            validation.touched.name && validation.errors.name
-                              ? true
-                              : false
-                          }
-                        />
-                        {validation.touched.name && validation.errors.name ? (
-                          <FormFeedback type="invalid">
-                            <div>{validation.errors.name}</div>
-                          </FormFeedback>
-                        ) : null}
-                      </div>
-                      <div className="mb-4 w-40">
-                        <Label className="form-label">Apellido(s)</Label>
-                        <Input
-                          name="lastName"
-                          type="text"
-                          placeholder="Ingresa tus apellidos"
-                          onChange={validation.handleChange}
-                          onBlur={validation.handleBlur}
-                          value={validation.values.lastName || ""}
-                          invalid={
-                            validation.touched.lastName &&
+                  <Col md={12} className="bg-orange-500">
+                    <div className="mb-2">
+                      <Label className="form-label ">Nombre(s)</Label>
+                      <Input
+                        name="name"
+                        type="text"
+                        placeholder="Ingresa tu nombre"
+                        className="w-full mr-3"
+                        onChange={validation.handleChange}
+                        onBlur={validation.handleBlur}
+                        value={validation.values.name || ""}
+                        invalid={
+                          validation.touched.name && validation.errors.name
+                            ? true
+                            : false
+                        }
+                      />
+                      {validation.touched.name && validation.errors.name ? (
+                        <FormFeedback type="invalid">
+                          <div>{validation.errors.name}</div>
+                        </FormFeedback>
+                      ) : null}
+                    </div>
+                    <div className="mb-2">
+                      <Label className="form-label">Apellido(s)</Label>
+                      <Input
+                        name="lastName"
+                        type="text"
+                        placeholder="Ingresa tus apellidos"
+                        onChange={validation.handleChange}
+                        onBlur={validation.handleBlur}
+                        value={validation.values.lastName || ""}
+                        invalid={
+                          validation.touched.lastName &&
                             validation.errors.lastName
-                              ? true
-                              : false
-                          }
-                        />
-                        {validation.touched.lastName &&
+                            ? true
+                            : false
+                        }
+                      />
+                      {validation.touched.lastName &&
                         validation.errors.lastName ? (
-                          <FormFeedback type="invalid">
-                            <div>{validation.errors.lastName}</div>
-                          </FormFeedback>
-                        ) : null}
-                      </div>
+                        <FormFeedback type="invalid">
+                          <div>{validation.errors.lastName}</div>
+                        </FormFeedback>
+                      ) : null}
                     </div>
 
-                    <div className="mb-4">
+                    <div className="mb-2">
                       <Label className="form-label">Correo electrónico</Label>
                       <Input
                         id="email"
@@ -189,7 +188,7 @@ const Register = (props) => {
                       ) : null}
                     </div>
 
-                    <div className="mb-4">
+                    <div className="mb-2">
                       <Label className="form-label">Contraseña</Label>
                       <Input
                         name="password"
@@ -200,19 +199,19 @@ const Register = (props) => {
                         value={validation.values.password || ""}
                         invalid={
                           validation.touched.password &&
-                          validation.errors.password
+                            validation.errors.password
                             ? true
                             : false
                         }
                       />
                       {validation.touched.password &&
-                      validation.errors.password ? (
+                        validation.errors.password ? (
                         <FormFeedback type="invalid">
                           <div>{validation.errors.password}</div>
                         </FormFeedback>
                       ) : null}
                     </div>
-                    <div className="mb-4">
+                    <div className="mb-2">
                       <Label className="form-label">Número telefónico</Label>
                       <Input
                         name="phone"
@@ -233,6 +232,17 @@ const Register = (props) => {
                         </FormFeedback>
                       ) : null}
                     </div>
+                    <div className="mb-2">
+                      <label htmlFor="titlebot-field" className="form-label">
+                        Pais
+                      </label>
+                      <div className="d-flex">
+                        <select className="form-control">
+                          <option value="mx">Mexico</option>
+                        </select>
+                      </div>
+                    </div>
+
                     <div className="form-check">
                       <input
                         type="checkbox"
