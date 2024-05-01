@@ -19,8 +19,8 @@ import { Link } from "react-router-dom";
 //Lightbox
 import Lightbox from "react-image-lightbox";
 import "react-image-lightbox/style.css";
-import ModalVideo from "react-modal-video";
-import "react-modal-video/scss/modal-video.scss";
+// import ModalVideo from "react-modal-video";
+// import "react-modal-video/scss/modal-video.scss";
 
 // import image
 import img1 from "../../assets/images/small/img-1.jpg";
@@ -313,11 +313,11 @@ const UiLightbox = () => {
                                                 color="light"
                                                 className="popup-gmaps btn btn-light"
                                                 href="https://maps.google.com/maps?q=221B+Baker+Street,+London,+United+Kingdom&amp;hl=en&amp;t=v&amp;hnear=221B+Baker+St,+London+NW1+6XE,+United+Kingdom"
-                                               
+
                                             >
                                                 Open Google Map
                                             </Button>{" "}
-                                            <ModalVideo
+                                            {/* <ModalVideo
                                                 videoId="L61p2uyiMSo"
                                                 channel="youtube"
                                                 isOpen={isOpen}
@@ -332,7 +332,7 @@ const UiLightbox = () => {
                                                 onClose={() => {
                                                     setisOpen1(false);
                                                 }}
-                                            />
+                                            /> */}
                                         </Col>
                                     </Row>
                                 </CardBody>

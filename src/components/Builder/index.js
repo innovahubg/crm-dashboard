@@ -1,11 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import grapesjs, { Editor } from "grapesjs";
 import GjsEditor from "@grapesjs/react";
 import plugin from "grapesjs-preset-webpage";
 import newsLetterPlugin from "grapesjs-preset-newsletter";
-import codeEditor from "grapesjs-component-code-editor"
-import pluginForms from "grapesjs-plugin-forms"
-import grapesJSMJML from "grapesjs-mjml";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
 const Builder = ({ html, setHTML }) => {
   const onEditor = (editor) => {
@@ -240,51 +238,55 @@ const Builder = ({ html, setHTML }) => {
     // // Resources`);
 
     editor.on("change:changesCount", (e) => {
-      const code = editor.runCommand("gjs-get-inlined-html")
-      console.log(code)
+      const code = editor.runCommand("gjs-get-inlined-html");
+      console.log(editor.getHtml());
+      console.log(editor.getCss());
+      let t = "abc";
+      console.log(typeof t);
       setHTML(code);
     });
   };
 
   return (
     <div className="gjsEditor-space">
-      <GjsEditor
-        // Pass the core GrapesJS library to the wrapper (required).
-        // You can also pass the CDN url (eg. "https://unpkg.com/grapesjs")
-        grapesjs={grapesjs}
-        // Load the GrapesJS CSS file asynchronously from URL.
-        // This is an optional prop, you can always import the CSS directly in your JS if you wish.
-        grapesjsCss="https://unpkg.com/grapesjs/dist/css/grapes.min.css"
-        // GrapesJS init options
-        options={{
-          height: "80vh",
-          storageManager: false,
-          setComponents: ``,
-          colorPicker: {
-            containerClassName: "gjsEditor-color-picker"
-          },
-          // panels: {
-          //   defaults: [
-          //     {
-          //       buttons: [
-          //         //...
-          //         {
-          //           attributes: { title: 'Open Code' },
-          //           className: 'fa fa-code',
-          //           command: 'open-code',
-          //           id: 'open-code'
-          //         }
-          //         //...
-          //       ],
-          //       id: 'views'
-          //     }
-          //   ]
-          // }
+      <Tabs>
+        <TabList>
+          <Tab>Visual</Tab>
+          <Tab>Codigo</Tab>
+        </TabList>
 
-        }}
-        onEditor={onEditor}
-        plugins={[pluginForms, plugin, codeEditor]}
-      />
+        <TabPanel>
+          <GjsEditor
+            // Pass the core GrapesJS library to the wrapper (required).
+            // You can also pass the CDN url (eg. "https://unpkg.com/grapesjs")
+            grapesjs={grapesjs}
+            // Load the GrapesJS CSS file asynchronously from URL.
+            // This is an optional prop, you can always import the CSS directly in your JS if you wish.
+            grapesjsCss="https://unpkg.com/grapesjs/dist/css/grapes.min.css"
+            // GrapesJS init options
+            options={{
+              height: "80vh",
+              storageManager: false,
+              setComponents: ``,
+              colorPicker: {
+                containerClassName: "gjsEditor-color-picker",
+              },
+            }}
+            onEditor={onEditor}
+            plugins={[plugin, newsLetterPlugin]}
+          />
+        </TabPanel>
+        <TabPanel>
+          Codigo
+          <textarea
+            rows={10}
+            cols={100}
+            onChange={(e) => setHTML(e.target.value)}
+          >
+            {html}
+          </textarea>
+        </TabPanel>
+      </Tabs>
     </div>
   );
 };

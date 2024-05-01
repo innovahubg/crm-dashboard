@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useId } from "react";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import CalendarComponent from "./CalendarComponent";
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import 'react-tabs/style/react-tabs.css';
-import { GetData } from "../../services/api";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import "react-tabs/style/react-tabs.css";
+import { GetData, PostData } from "../../services/api";
+import { useNavigate } from "react-router-dom";
 import {
   DropdownItem,
   DropdownMenu,
@@ -22,22 +23,22 @@ import {
 import { Link } from "react-router-dom";
 import { RingLoader } from "react-spinners";
 import DataTable from "react-data-table-component";
-import moment from "moment"
-
+import moment from "moment";
 
 const Automation = () => {
-
-  const [modal, setModal] = useState(false)
-  const [newModal, setNewModal] = useState(false)
-  const [newAuto, setNewAuto] = useState({})
-  const [type, setType] = useState("")
-  const [details, setDetails] = useState({})
+  const [modal, setModal] = useState(false);
+  const [newModal, setNewModal] = useState(false);
+  const [newAuto, setNewAuto] = useState({});
+  const [type, setType] = useState("");
+  const [details, setDetails] = useState({});
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [templates, setTemplates] = useState([])
-  const [automations, setAutomations] = useState([])
-  const [emailSenders, setEmailSenders] = useState([])
-  const [templateType, setTemplateType] = useState()
+  const [templates, setTemplates] = useState([]);
+  const [automations, setAutomations] = useState([]);
+  const [emailSenders, setEmailSenders] = useState([]);
+  const [templateType, setTemplateType] = useState();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,23 +51,22 @@ const Automation = () => {
   }, []);
 
   const getTemplates = async () => {
-    console.log(`/templates/${newAuto.send}`)
+    console.log(`/templates/${newAuto.send}`);
     const { data } = await GetData(`/templates/${templateType}`);
-    setTemplates(data)
-    console.log(data)
-  }
-
+    setTemplates(data);
+    console.log(data);
+  };
 
   const getAutomations = async (idContactList) => {
     const { data } = await GetData(`/automation/${idContactList}`);
-    console.log(data)
-    setAutomations(data)
-  }
+    console.log(data);
+    setAutomations(data);
+  };
 
   const getEmailSenders = async () => {
     const { data } = await GetData(`/email-senders`);
-    setEmailSenders(data)
-  }
+    setEmailSenders(data);
+  };
 
   const columnsRegistered = [
     {
@@ -118,7 +118,6 @@ const Automation = () => {
     },
   ];
 
-
   const columnsScheduled = [
     {
       name: <span className="font-weight-bold fs-13">Nombre</span>,
@@ -132,13 +131,13 @@ const Automation = () => {
     {
       name: <span className="font-weight-bold fs-13">Ejecutar el</span>,
       selector: (row) => {
-        const { run } = row
+        const { run } = row;
 
-        const { day, hour, minute, month, year } = run
+        const { day, hour, minute, month, year } = run;
 
-        const realDate = new Date(year, month, day, hour, minute)
+        const realDate = new Date(year, month, day, hour, minute);
 
-        return moment(realDate).format("DD/MM/YYYY HH:mm")
+        return moment(realDate).format("DD/MM/YYYY HH:mm");
       },
     },
     {
@@ -179,26 +178,39 @@ const Automation = () => {
 
   useEffect(() => {
     if (templateType) {
-      getTemplates()
+      getTemplates();
     }
-  }, [newAuto])
+  }, [newAuto]);
 
+  const handleCreate = async () => {
+    try {
+      const scheduledObj = { ...newAuto };
 
-  const handleCreate = () => {
+      const dates = newAuto.date.split("-");
+      const day = dates[2].split("T")[0];
+      const time = newAuto.date.split("T");
+      const times = time[1].split(":");
+      const run = {
+        year: Number(dates[0]),
+        month: Number(dates[1]),
+        day: Number(day),
+        hour: Number(times[0]),
+        minute: Number(times[1]),
+      };
+      const find = templates.find((t) => t.id === newAuto.template);
 
-    const scheduledObj = { ...newAuto }
+      scheduledObj["run"] = run;
+      scheduledObj["from"] = find["from"];
+      console.log(scheduledObj);
+      const { status } = await PostData("automation/schedule", scheduledObj);
 
-    const dates = newAuto.date.split("-")
-    const day = dates[2].split("T")[0]
-    const time = newAuto.date.split("T")
-    const times = time[1].split(":")
-    const run = ({ year: Number(dates[0]), month: Number(dates[1]), day: Number(day), hour: Number(times[0]), minute: Number(times[1]) })
-    const find = templates.find(t => t.id === newAuto.template)
-
-    scheduledObj["run"] = run
-    scheduledObj["from"] = find["from"]
-    console.log(scheduledObj)
-  }
+      if (status === 200) {
+        navigate("/email-templates");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <React.Fragment>
@@ -214,11 +226,12 @@ const Automation = () => {
                 color="success"
                 className="add-btn"
                 onClick={() => {
-                  setNewModal(true)
+                  setNewModal(true);
                 }}
                 id="create-btn"
               >
-                <i className="ri-add-line align-bottom me-1"></i> Nueva Automatización
+                <i className="ri-add-line align-bottom me-1"></i> Nueva
+                Automatización
               </Button>
               {/* <Button color="soft-danger"
                                                     onClick="deleteMultiple()"
@@ -234,12 +247,23 @@ const Automation = () => {
                     Campaña
                   </label>
                   <div className="d-flex">
-                    <select className="form-control" onChange={(e) => getAutomations(e.target.value)}>
-                      {
-                        data.map(({ id, name }) => <option value={id} key={id}>{name}</option>)
-                      }
+                    <select
+                      className="form-control"
+                      onChange={(e) => getAutomations(e.target.value)}
+                    >
+                      {data.map(({ id, name }) => (
+                        <option value={id} key={id}>
+                          {name}
+                        </option>
+                      ))}
                     </select>
-                    <span className="mx-4">{automations.status === "Activated" ? (<span> Activo </span>) : (<span> Desactivo </span>)}</span>
+                    <span className="mx-4">
+                      {automations.status === "Activated" ? (
+                        <span> Activo </span>
+                      ) : (
+                        <span> Desactivo </span>
+                      )}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -258,7 +282,6 @@ const Automation = () => {
               </div>
             </Col>
           </Row>
-
         </Row>
 
         <Tabs>
@@ -299,10 +322,14 @@ const Automation = () => {
             </Row>
           </TabPanel>
           <TabPanel>
-            <CalendarComponent setModal={setModal} setType={setType} setDetails={setDetails} events={automations.scheduled} />
+            <CalendarComponent
+              setModal={setModal}
+              setType={setType}
+              setDetails={setDetails}
+              events={automations.scheduled}
+            />
           </TabPanel>
         </Tabs>
-
 
         <Modal
           isOpen={modal}
@@ -318,12 +345,11 @@ const Automation = () => {
           >
             {type === "new" && <>Nuevo evento</>}
             {type === "details" && <>Detalles</>}
-
           </ModalHeader>
           <form className="tablelist-form">
             <ModalBody style={{ height: "auto" }}>
-              {
-                type === "new" && (<div className="mb-3">
+              {type === "new" && (
+                <div className="mb-3">
                   <label htmlFor="titlebot-field" className="form-label">
                     Nombre
                   </label>
@@ -334,22 +360,18 @@ const Automation = () => {
                     placeholder="Ingresa un nombre a tu evento"
                     required
                     value={""}
-                    onChange={(e) =>
-                      console.log({})
-                    }
+                    onChange={(e) => console.log({})}
                   />
-                </div>)
-              }
+                </div>
+              )}
 
-              {
-                type === "details" && (<div className="mb-3">
+              {type === "details" && (
+                <div className="mb-3">
                   <h4 htmlFor="titlebot-field" className="form-label">
                     Titulo: {details.title}
                   </h4>
-
-                </div>)
-              }
-
+                </div>
+              )}
             </ModalBody>
             <ModalFooter>
               <div className="">
@@ -361,7 +383,7 @@ const Automation = () => {
                   Cerrar
                 </button>
                 <button
-                  onClick={() => { }}
+                  onClick={() => {}}
                   className="btn btn-success"
                   id="add-btn"
                 >
@@ -399,7 +421,9 @@ const Automation = () => {
                   placeholder="Ingresa un nombre de automatizacion"
                   required
                   value={newAuto.name}
-                  onChange={(e) => setNewAuto((data) => ({ ...data, name: e.target.value }))}
+                  onChange={(e) =>
+                    setNewAuto((data) => ({ ...data, name: e.target.value }))
+                  }
                 />
               </div>
 
@@ -407,10 +431,17 @@ const Automation = () => {
                 <label htmlFor="titlebot-field" className="form-label">
                   Campaña
                 </label>
-                <select className="form-control" onChange={(e) => setNewAuto((data) => ({ ...data, idLista: e.target.value }))}>
-                  {
-                    data.map(({ id, name }) => <option value={id} key={id}>{name}</option>)
+                <select
+                  className="form-control"
+                  onChange={(e) =>
+                    setNewAuto((data) => ({ ...data, idLista: e.target.value }))
                   }
+                >
+                  {data.map(({ id, name }) => (
+                    <option value={id} key={id}>
+                      {name}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className="mb-3">
@@ -420,15 +451,25 @@ const Automation = () => {
                 <div>
                   <button
                     type="button"
-                    className={`btn w-50 mr-4 ${newAuto.type === "registered" ? "btn-success" : "btn-light"} `}
-                    onClick={() => setNewAuto((data) => ({ ...data, type: "registered" }))}
+                    className={`btn w-50 mr-4 ${
+                      newAuto.type === "registered"
+                        ? "btn-success"
+                        : "btn-light"
+                    } `}
+                    onClick={() =>
+                      setNewAuto((data) => ({ ...data, type: "registered" }))
+                    }
                   >
                     Registro
                   </button>
                   <button
                     type="button"
-                    className={`btn w-50 ${newAuto.type === "scheduled" ? "btn-success" : "btn-light"}`}
-                    onClick={() => setNewAuto((data) => ({ ...data, type: "scheduled" }))}
+                    className={`btn w-50 ${
+                      newAuto.type === "scheduled" ? "btn-success" : "btn-light"
+                    }`}
+                    onClick={() =>
+                      setNewAuto((data) => ({ ...data, type: "scheduled" }))
+                    }
                   >
                     Agendado
                   </button>
@@ -441,72 +482,85 @@ const Automation = () => {
                 <div>
                   <button
                     type="button"
-                    className={`btn w-50 ${newAuto.send === "whatsapp" ? "btn-success" : "btn-light"} `}
+                    className={`btn w-50 ${
+                      newAuto.send === "whatsapp" ? "btn-success" : "btn-light"
+                    } `}
                     onClick={() => {
-                      setNewAuto((data) => ({ ...data, send: "whatsapp" }))
-                      setTemplateType("whatsapp")
+                      setNewAuto((data) => ({ ...data, send: "whatsapp" }));
+                      setTemplateType("whatsapp");
                     }}
                   >
-                    <i className="mdi mdi-whatsapp align-bottom me-2 text-muted" /> Whatsapp
+                    <i className="mdi mdi-whatsapp align-bottom me-2 text-muted" />{" "}
+                    Whatsapp
                   </button>
                   <button
                     type="button"
-                    className={`btn w-50 ${newAuto.send === "email" ? "btn-success" : "btn-light"}`}
+                    className={`btn w-50 ${
+                      newAuto.send === "email" ? "btn-success" : "btn-light"
+                    }`}
                     onClick={() => {
-                      setNewAuto((data) => ({ ...data, send: "email" }))
-                      setTemplateType("email")
+                      setNewAuto((data) => ({ ...data, send: "email" }));
+                      setTemplateType("email");
                     }}
                   >
-                    <i className="mdi mdi-email align-bottom me-2 text-muted" /> Email
+                    <i className="mdi mdi-email align-bottom me-2 text-muted" />{" "}
+                    Email
                   </button>
                 </div>
               </div>
-              {
-                templates && (
+              {templates && (
+                <div className="mb-3">
+                  <label htmlFor="titlebot-field" className="form-label">
+                    Templates
+                  </label>
+                  <select
+                    className="form-control"
+                    onChange={(e) =>
+                      setNewAuto((data) => ({
+                        ...data,
+                        template: e.target.value,
+                      }))
+                    }
+                  >
+                    {templates.map(({ id, name }) => (
+                      <option value={id} key={id}>
+                        {name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+              {newAuto.type === "scheduled" && (
+                <>
                   <div className="mb-3">
                     <label htmlFor="titlebot-field" className="form-label">
-                      Templates
+                      Definir horario
                     </label>
-                    <select className="form-control" onChange={(e) => setNewAuto((data) => ({ ...data, template: e.target.value }))}>
-                      {
-                        templates.map(({ id, name }) => <option value={id} key={id}>{name}</option>)
+                    <input
+                      type="datetime-local"
+                      id="titlebot-field"
+                      className="form-control"
+                      placeholder="Ingresa un nombre a tu evento"
+                      required
+                      value={newAuto.date}
+                      onChange={(e) =>
+                        setNewAuto((data) => ({
+                          ...data,
+                          date: e.target.value,
+                        }))
                       }
-                    </select>
+                    />
                   </div>
-                )
-              }
-              {
-                newAuto.type === "scheduled" && (
-                  <>
-                    <div className="mb-3">
-                      <label htmlFor="titlebot-field" className="form-label">
-                        Definir horario
-                      </label>
-                      <input
-                        type="datetime-local"
-                        id="titlebot-field"
-                        className="form-control"
-                        placeholder="Ingresa un nombre a tu evento"
-                        required
-                        value={newAuto.date}
-                        onChange={(e) => setNewAuto((data) => ({ ...data, date: e.target.value }))}
-                      />
-                    </div>
+                </>
+              )}
 
-
-                  </>
-                )
-              }
-
-              {
-                type === "details" && (<div className="mb-3">
+              {type === "details" && (
+                <div className="mb-3">
                   <h4 htmlFor="titlebot-field" className="form-label">
                     Titulo: {details.title}
                   </h4>
-
-                </div>)
-              }
-
+                </div>
+              )}
             </ModalBody>
             <ModalFooter>
               <div className="">
@@ -519,8 +573,8 @@ const Automation = () => {
                 </button>
                 <button
                   onClick={(e) => {
-                    e.preventDefault()
-                    handleCreate()
+                    e.preventDefault();
+                    handleCreate();
                   }}
                   className="btn btn-success"
                   id="add-btn"

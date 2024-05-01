@@ -26,7 +26,6 @@ const NewBuilder = () => {
   const navigate = useNavigate();
 
   const handleCreateTemplate = async () => {
-    // console.log(html);
     try {
       const { data } = await PostData("templates/escape-html", html, {
         headers: {
@@ -71,8 +70,8 @@ const NewBuilder = () => {
                   }}
                   id="create-btn"
                 >
-                  <i className="ri-add-line align-bottom me-1"></i> Nuevo
-                  template
+                  <i className="mdi mdi-content-save align-bottom me-1"></i>{" "}
+                  Guardar
                 </Button>
               </div>
             </Col>

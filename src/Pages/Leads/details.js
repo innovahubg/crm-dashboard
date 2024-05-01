@@ -9,8 +9,13 @@ import {
     Container,
     Row,
     Col,
+    Modal,
+    ModalBody,
+    ModalFooter,
+    ModalHeader,
     Button,
 } from "reactstrap";
+
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { RingLoader } from "react-spinners";
 import DataTable from "react-data-table-component";
@@ -20,8 +25,15 @@ import { Link } from "react-router-dom";
 const Leads = () => {
     const [loading, setLoading] = useState(false);
     const [leads, setLeads] = useState([]);
+    const [modal, setModal] = useState(false);
+    const [edit, setEdit] = useState(false)
 
-
+    const [userData, setUserData] = useState({
+        name: "Harland",
+        lastName: "Lohora",
+        email: "harland@lohora.com",
+        phone: "55 4085 6635"
+    })
 
     useEffect(() => {
         const fetchData = async () => {
@@ -46,22 +58,51 @@ const Leads = () => {
                         ) : (
                             <div>
                                 <div className="w-full d-flex justify-content-end">
-                                    <button type="button" class="btn btn-secondary me-2"> <i className="mdi mdi-account-edit"></i>Editar</button>
-                                    <button type="button" class="btn btn-danger"><i className="mdi mdi-close"></i>Eliminar</button>
+                                    {!edit && <>
+                                        <button type="button" className="btn btn-secondary me-2" onClick={() => setEdit(true)}> <i className="mdi mdi-account-edit"></i>Editar</button>
+                                        <button type="button" className="btn btn-danger" onClick={() => setModal(true)}><i className="mdi mdi-close"></i>Eliminar</button>
+
+                                    </>
+                                    }
+                                    {edit && <>
+                                        <button type="button" className="btn btn-success me-2" onClick={() => {
+                                            alert("Editar --> ")
+                                            setEdit(false)
+                                        }}> <i className="mdi mdi-account-edit"></i>Aceptar</button>
+                                        <button type="button" className="btn btn-danger" onClick={() => setEdit(false)}><i className="mdi mdi-close"></i>Cancelar</button>
+                                    </>}
+
+
                                 </div>
                                 <div className="card text-bg-light w-full">
-                                    <div className="card-header">Detalles</div>
+                                    <h4 className="card-header">Detalles</h4>
                                     <div className="card-body">
 
                                         <div className="card-text">
                                             <div className="d-flex mb-3">
-                                                <div className="w-50">Nombre: nombre</div>
-                                                <div className="w-50">Apellido: apellido</div>
+                                                <div className="w-50 d-flex align-items-center">
+                                                    Nombre:
+                                                    {!edit && <span> {userData.name}</span>}
+                                                    {edit && <input placeholder="Ingresa un nombre" value={userData.name} className="form-control w-50" />}
+                                                </div>
+                                                <div className="w-50 d-flex align-items-center">
+                                                    Apellido:
+                                                    {!edit && <span> {userData.lastName}</span>}
+                                                    {edit && <input placeholder="Ingresa un apellido" value={userData.lastName} className="form-control w-50" />}
+                                                </div>
                                             </div>
 
                                             <div className="d-flex mb-3">
-                                                <div className="w-50">Email: hola@email.com</div>
-                                                <div className="w-50">Telefono: 55403434242</div>
+                                                <div className="w-50 d-flex align-items-center">
+                                                    Email:
+                                                    {!edit && <span> {userData.email}</span>}
+                                                    {edit && <input placeholder="Ingresa un email" value={userData.email} className="form-control w-50" />}
+                                                </div>
+                                                <div className="w-50 d-flex lign-items-center">
+                                                    Telefono:
+                                                    {!edit && <span> {userData.phone}</span>}
+                                                    {edit && <input placeholder="Ingresa un numero telefonico" value={userData.phone} className="form-control w-50" />}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -83,6 +124,41 @@ const Leads = () => {
                     </Row>
                 </Row>
             </Container>
+            <Modal
+                isOpen={modal}
+                toggle={() => {
+                    setModal(false);
+                }}
+                centered
+            >
+                <ModalHeader
+                    className="bg-light p-3"
+                    id="exampleModalLabel"
+                    toggle={() => setModal(false)}
+                >
+                    ¿Deseas eliminar el lead?
+                </ModalHeader>
+                <div className="tablelist-form">
+                    <ModalFooter>
+                        <div className="">
+                            <button
+                                type="button"
+                                className="btn btn-light mx-4"
+                                onClick={() => setModal(false)}
+                            >
+                                Cerrar
+                            </button>
+                            <button
+                                onClick={() => { alert("eliminar") }}
+                                className="btn btn-success"
+                                id="add-btn"
+                            >
+                                Aceptar
+                            </button>
+                        </div>
+                    </ModalFooter>
+                </div>
+            </Modal>
         </div>
     );
 };
