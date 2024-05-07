@@ -23,32 +23,38 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 import validateEmail from "../../helpers/validateEmail";
 
 const CorporateIdentity = () => {
-  const [emails, setEmails] = useState([]);
+  const [brands, setBrands] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
   const [email, setEmail] = useState("");
-  const [valid, setValid] = useState(false);
+  const [valid, setValid] = useState(true);
+  const [urlImg, setUrlImg] = useState("");
+  const [personalBrand, setPB] = useState("")
+  const [phone, setPhone] = useState("")
+  const [msg, setMsg] = useState("")
+  const [unInsta, setUNI] = useState("")
+  const [name, setName] = useState("")
+  const [co, setCO] = useState("#000000")
+  const [ct, setCT] = useState("#000000")
 
-  const fetchData = async () => {
-    const { data } = await GetData("/email-senders");
 
-    const realData = data[0];
-    const mailsObj = Object.keys(realData);
-    const mails = [];
+  //   brandingColors: {
+  //     color1: "#ffffff",
+  //     color2: "#000000",
+  //   },
 
-    mailsObj.forEach((email) => {
-      let valid = realData[email]["VerificationStatus"];
-      mails.push({ email, valid: valid === "Success" ? true : false });
-    });
+  //En newAITemplate mostrar las brands y usar el obj para crearlo generateTemplateHtml linea 35
 
-    setEmails(mails);
-    setModal(false);
-    setEmail("");
+  const fetchData = async (id) => {
+    const { data } = await GetData(`/companies/${id}`);
+    setBrands(data.brand)
   };
 
   useEffect(() => {
     try {
-      fetchData();
+      //fetchData();
+      const { companyId } = JSON.parse(localStorage.getItem("authUser"))
+      fetchData(companyId)
     } catch (err) {
       console.log(err);
     } finally {
@@ -57,12 +63,12 @@ const CorporateIdentity = () => {
   }, []);
 
   const updateInput = (e) => {
-    const text = e.target.value;
-    setEmail(text);
-    setValid(validateEmail(text));
+    const { name, value } = e.target;
+    console.log(name, value)
+
   };
 
-  const handleUpdateImg = (e) => {
+  const handleUpdateImg = async (e) => {
     let base64String = "";
     console.log(e.target.value)
     let file = document.querySelector(
@@ -72,33 +78,59 @@ const CorporateIdentity = () => {
     let reader = new FileReader();
     console.log("next");
 
-    reader.onload = function () {
+    reader.onload = async function () {
       base64String = reader.result.replace("data:", "")
         .replace(/^.+,/, "");
 
       //imageBase64Stringsep = base64String;
 
       // alert(imageBase64Stringsep);
-      console.log(base64String);
+      //console.log(base64String);
+      const upload = await PostData("/company/upload-image", { "base64": base64String })
+      setUrlImg(upload.data.url)
+      console.log(upload.data.url)
     }
     reader.readAsDataURL(file);
 
   }
 
-  const sendEmail = async (e) => {
+  const sendNewBrand = async (e) => {
     e.preventDefault();
-    await PostData("/email-senders", { email });
-    await fetchData();
+    const data = {
+      logoUrl: urlImg,
+      personalBrand,
+      name,
+      contact: {
+        email,
+        whatsapp: {
+          link: `https://api.whatsapp.com/send/?phone=${phone}&text=${msg}`,
+          logoImage: "https://upload.wikimedia.org/wikipedia/commons/7/75/Whatsapp_logo_svg.png",
+        },
+        instagram: {
+          link: `https://www.instagram.com/${unInsta}`,
+          logoImage:
+            "https://freelogopng.com/images/all_img/1658586823instagram-logo-transparent.png",
+        }
+      },
+      brandingColors: {
+        color1: co,
+        color2: ct,
+      },
+    }
+
+    const saveUser = await PostData("/companies/brands", data)
+    console.log({ saveUser })
   };
+
 
   const columns = [
     {
-      name: <span className="font-weight-bold fs-13">Email</span>,
-      selector: (row) => row.email,
+      name: <span className="font-weight-bold fs-13">Nombre</span>,
+      selector: (row) => row.name,
       sortable: true,
     },
     {
-      name: <span className="font-weight-bold fs-13">Válido</span>,
+      name: <span className="font-weight-bold fs-13">Personal brand</span>,
       selector: (row) => (
         <span>
           <i
@@ -192,8 +224,8 @@ const CorporateIdentity = () => {
               </div>
             ) : (
               <DataTable
-                data={[]}
-                columns={[]}
+                data={brands}
+                columns={columns}
                 noDataComponent={<span className="py-4">Sin resultados</span>}
               />
             )}
@@ -223,11 +255,13 @@ const CorporateIdentity = () => {
               <input
                 className="form-control"
                 placeholder="Ingresa el logotipo a registrar"
-                value={email}
+                // value={urlImg}
                 onChange={handleUpdateImg}
                 type="file"
               />
             </div>
+            <div className="mb-3"><img width={200} height={"auto"} src={urlImg} /></div>
+
             <div className="mb-3">
               <label htmlFor="titlebot-field" className="form-label">
                 Nombre del brand
@@ -235,8 +269,9 @@ const CorporateIdentity = () => {
               <input
                 className="form-control"
                 placeholder="Ingresa un nombre de referencia"
-                value={email}
-                onChange={updateInput}
+                value={name}
+                name="name"
+                onChange={e => setName(e.target.value)}
               />
             </div>
             <div className="mb-3">
@@ -246,31 +281,43 @@ const CorporateIdentity = () => {
               <input
                 className="form-control"
                 placeholder="Ingresa tu marca personal"
-                value={email}
-                onChange={updateInput}
+                value={personalBrand}
+                name="personalBrand"
+                onChange={e => setPB(e.target.value)}
               />
             </div>
 
             <div className="mb-3">
               <label htmlFor="titlebot-field" className="form-label">
-                Link whatsapp
+                Numero de whatsapp
               </label>
               <input
                 className="form-control"
-                placeholder="Ingresa el link de whatsapp"
-                value={email}
-                onChange={updateInput}
+                placeholder="Ingresa el numero de whatsapp"
+                value={phone}
+                onChange={e => setPhone(e.target.value)}
               />
             </div>
             <div className="mb-3">
               <label htmlFor="titlebot-field" className="form-label">
-                Link instagram
+                Mensaje de whatsapp
+              </label>
+              <input
+                className="form-control"
+                placeholder="Ingresa el mensaje de whatsapp"
+                value={msg}
+                onChange={e => setMsg(e.target.value)}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="titlebot-field" className="form-label">
+                Nombre de usuario instagram
               </label>
               <input
                 className="form-control"
                 placeholder="Ingresa el link de instagram"
-                value={email}
-                onChange={updateInput}
+                value={unInsta}
+                onChange={e => setUNI(e.target.value)}
               />
             </div>
             <div className="mb-3">
@@ -281,7 +328,9 @@ const CorporateIdentity = () => {
                 className="form-control"
                 placeholder="Ingresa el email a registrar"
                 value={email}
-                onChange={updateInput}
+                name="email"
+                type="email"
+                onChange={e => setEmail(e.target.value)}
               />
             </div>
             <div className="d-flex justify-content-between">
@@ -292,8 +341,9 @@ const CorporateIdentity = () => {
                 <input
                   className="form-control"
                   placeholder="Ingresa el email a registrar"
-                  value={email}
-                  onChange={updateInput}
+                  value={co}
+                  name="color1"
+                  onChange={e => setCO(e.target.value)}
                   type="color"
                 />
               </div>
@@ -304,8 +354,8 @@ const CorporateIdentity = () => {
                 <input
                   className="form-control"
                   placeholder="Ingresa el email a registrar"
-                  value={email}
-                  onChange={updateInput}
+                  value={ct}
+                  onChange={e => setCT(e.target.value)}
                   type="color"
                 />
               </div>
@@ -322,7 +372,7 @@ const CorporateIdentity = () => {
               </button>
               <button
                 className={"btn btn-success " + (!valid && "disabled")}
-                onClick={sendEmail}
+                onClick={sendNewBrand}
               >
                 Registrar
               </button>

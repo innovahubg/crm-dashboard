@@ -91,7 +91,7 @@ const NewAITemplate = () => {
       if (status === 200) {
         navigate("/email-templates");
       }
-    } catch (err) {}
+    } catch (err) { }
   };
 
   return (
