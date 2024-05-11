@@ -110,6 +110,7 @@ import EmailValidation from "../Pages/EmailValidation/index.js";
 import NewAITemplate from "../Pages/EmailTemplates/NewAITemplate.js";
 import NewBuilder from "../Pages/EmailTemplates/NewBuilder.js";
 import NewTemplate from "../Pages/EmailTemplates/NewTemplate.js";
+import EmailComponent from '../Pages/NewEmail/index.js'
 import CorporateIdentity from "../Pages/CorporateIdentity/index.js";
 import WhatsAppTemplates from "../Pages/WhatsAppTemplates/index.js";
 
@@ -138,9 +139,11 @@ const authProtectedRoutes = [
   { path: "/leads", component: <Leads /> },
   { path: "/leads/:id", component: <LeadsDetails /> },
   { path: "/email-validation", component: <EmailValidation /> },
+  { path: "/new-email-test", component: <EmailComponent /> },
   { path: "/corporate-identity", component: <CorporateIdentity /> },
   { path: "/whatsapp-templates", component: <WhatsAppTemplates /> },
   { path: "/automation", component: <Automation /> },
+
 
   // Profile
   { path: "/userprofile", component: <UserProfile /> },

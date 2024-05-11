@@ -138,3 +138,29 @@ File: Main Css File
   .closeRed{
     color: rgb(220,38,38) !important;
   }
+
+
+  .EmailComponent{
+    position: absolute !important;
+    top: 10vh !important;
+    left: 20vw !important;
+    height: 80vh;
+    width: 70%;
+  }
+  
+
+  .blockbuilder-preview{
+    
+  }
+
+  .actions-container{
+    position: fixed;
+    top:0;
+    left: 40px;
+  }
+
+  .EmailComponent .saveTemplate{
+    background-color: #293039;
+    color: white;
+    padding: 2px 5px
+  }
