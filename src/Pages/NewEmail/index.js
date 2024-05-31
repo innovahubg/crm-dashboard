@@ -47,4 +47,3 @@ const EmailComponent = (props) => {
 
 
 export default EmailComponent
-
