@@ -32,7 +32,7 @@ const NewTemplate = () => {
 
   const handleCreateTemplate = async () => {
     try {
-      const { data } = await PostData("templates/escape-html", html, {
+      const { data } = await PostData("/templates/escape-html", html, {
         headers: {
           "Content-Length": 0,
           "Content-Type": "text/plain",
@@ -43,7 +43,11 @@ const NewTemplate = () => {
         localStorage.getItem("newEmailTemplate")
       );
 
-      const { status } = await PostData("templates", {
+      console.log("-------DATA------", data)
+
+      return
+
+      const { status } = await PostData("/templates", {
         type: "email",
         templateName: name,
         template: data,
@@ -58,7 +62,7 @@ const NewTemplate = () => {
       if (status === 200) {
         navigate("/email-templates");
       }
-    } catch (err) {}
+    } catch (err) { }
   };
 
   return (

@@ -68,7 +68,7 @@ const NewAITemplate = () => {
   const handleCreateTemplate = async () => {
     // console.log(html);
     try {
-      const { data } = await PostData("templates/escape-html", html, {
+      const { data } = await PostData("/templates/escape-html", html, {
         headers: {
           "Content-Length": 0,
           "Content-Type": "text/plain",
@@ -79,7 +79,7 @@ const NewAITemplate = () => {
         localStorage.getItem("newEmailTemplate")
       );
 
-      const { status } = await PostData("templates", {
+      const { status } = await PostData("/templates", {
         type: "email",
         templateName: name,
         template: data,

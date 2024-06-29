@@ -79,6 +79,7 @@ const EmailTemplates = () => {
       }
     });
     console.log(mails);
+    setNewTemplate({ ...newTemplate, from: mails[0].email })
     setEmails(mails);
   };
 

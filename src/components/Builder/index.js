@@ -2490,6 +2490,7 @@ const Builder = ({ html, setHTML }) => {
                     <TabList>
                         <Tab>Visual</Tab>
                         <Tab>Codigo</Tab>
+                        <Tab>Resultado</Tab>
                     </TabList>
 
                     <TabPanel>
@@ -2535,6 +2536,11 @@ const Builder = ({ html, setHTML }) => {
                                 tabSize: 2
                             }}
                         />
+                    </TabPanel>
+                    <TabPanel>
+                        <iframe srcDoc={html} width='100%' height="1000px">
+
+                        </iframe>
                     </TabPanel>
                 </Tabs>
             </div>

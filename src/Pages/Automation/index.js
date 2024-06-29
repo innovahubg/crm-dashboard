@@ -75,8 +75,8 @@ const Automation = () => {
       sortable: true,
     },
     {
-      name: <span className="font-weight-bold fs-13">From</span>,
-      selector: (row) => row.from,
+      name: <span className="font-weight-bold fs-13">Name</span>,
+      selector: (row) => row.name,
     },
     {
       name: <span className="font-weight-bold fs-13">Template</span>,
@@ -186,26 +186,44 @@ const Automation = () => {
     try {
       const scheduledObj = { ...newAuto };
 
-      const dates = newAuto.date.split("-");
-      const day = dates[2].split("T")[0];
-      const time = newAuto.date.split("T");
-      const times = time[1].split(":");
-      const run = {
-        year: Number(dates[0]),
-        month: Number(dates[1]),
-        day: Number(day),
-        hour: Number(times[0]),
-        minute: Number(times[1]),
-      };
-      const find = templates.find((t) => t.id === newAuto.template);
+      const typeAuto = newAuto.type === "registered" ? "register" : "schedule"
 
-      scheduledObj["run"] = run;
+      const find = templates.find((t) => t.id === newAuto.template);
+      console.log({ find })
+
       scheduledObj["from"] = find["from"];
+
+      if (newAuto.type === "scheduled") {
+        const dates = newAuto.date.split("-");
+        const day = dates[2].split("T")[0];
+        const time = newAuto.date.split("T");
+        const times = time[1].split(":");
+        const run = {
+          year: Number(dates[0]),
+          month: Number(dates[1]),
+          day: Number(day),
+          hour: Number(times[0]),
+          minute: Number(times[1]),
+        };
+        scheduledObj["run"] = run;
+      } else {
+        scheduledObj["idAutomation"] = newAuto.idLista
+        scheduledObj["registered"] = [{ ...newAuto }]
+        scheduledObj["registered"][0]["params"] = { name: 'string' }
+        scheduledObj["registered"][0]["from"] = find["from"]
+      }
+
+
+
       console.log(scheduledObj);
-      const { status } = await PostData("automation/schedule", scheduledObj);
+
+      console.log({ typeAuto })
+
+      const { status } = await PostData(`/automation/${typeAuto}`, scheduledObj);
+
 
       if (status === 200) {
-        navigate("/email-templates");
+        navigate("/automation");
       }
     } catch (err) {
       console.log(err);
@@ -383,7 +401,7 @@ const Automation = () => {
                   Cerrar
                 </button>
                 <button
-                  onClick={() => {}}
+                  onClick={() => { }}
                   className="btn btn-success"
                   id="add-btn"
                 >
@@ -451,11 +469,10 @@ const Automation = () => {
                 <div>
                   <button
                     type="button"
-                    className={`btn w-50 mr-4 ${
-                      newAuto.type === "registered"
-                        ? "btn-success"
-                        : "btn-light"
-                    } `}
+                    className={`btn w-50 mr-4 ${newAuto.type === "registered"
+                      ? "btn-success"
+                      : "btn-light"
+                      } `}
                     onClick={() =>
                       setNewAuto((data) => ({ ...data, type: "registered" }))
                     }
@@ -464,9 +481,8 @@ const Automation = () => {
                   </button>
                   <button
                     type="button"
-                    className={`btn w-50 ${
-                      newAuto.type === "scheduled" ? "btn-success" : "btn-light"
-                    }`}
+                    className={`btn w-50 ${newAuto.type === "scheduled" ? "btn-success" : "btn-light"
+                      }`}
                     onClick={() =>
                       setNewAuto((data) => ({ ...data, type: "scheduled" }))
                     }
@@ -482,9 +498,8 @@ const Automation = () => {
                 <div>
                   <button
                     type="button"
-                    className={`btn w-50 ${
-                      newAuto.send === "whatsapp" ? "btn-success" : "btn-light"
-                    } `}
+                    className={`btn w-50 ${newAuto.send === "whatsapp" ? "btn-success" : "btn-light"
+                      } `}
                     onClick={() => {
                       setNewAuto((data) => ({ ...data, send: "whatsapp" }));
                       setTemplateType("whatsapp");
@@ -495,9 +510,8 @@ const Automation = () => {
                   </button>
                   <button
                     type="button"
-                    className={`btn w-50 ${
-                      newAuto.send === "email" ? "btn-success" : "btn-light"
-                    }`}
+                    className={`btn w-50 ${newAuto.send === "email" ? "btn-success" : "btn-light"
+                      }`}
                     onClick={() => {
                       setNewAuto((data) => ({ ...data, send: "email" }));
                       setTemplateType("email");
