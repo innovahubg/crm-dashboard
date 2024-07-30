@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@azure/storage-blob": "^12.9.0",
     "@ckeditor/ckeditor5-build-classic": "^36.0.1",
     "@ckeditor/ckeditor5-react": "^5.1.0",
     "@fullcalendar/bootstrap": "^6.1.4",

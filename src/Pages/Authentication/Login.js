@@ -21,6 +21,8 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { Link, redirect } from "react-router-dom";
 import withRouter from "../../components/Common/withRouter";
+import FacebookLogin from 'react-facebook-login';
+
 
 // Formik validation
 import * as Yup from "yup";
@@ -29,7 +31,7 @@ import { useFormik } from "formik";
 //Social Media Imports
 import { GoogleLogin } from "react-google-login";
 // import TwitterLogin from "react-twitter-auth"
-import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
+// import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 
 // actions
 import { loginUser, socialLogin } from "../../store/actions";
@@ -118,9 +120,10 @@ const Login = (props) => {
   // const twitterResponse = e => {}
 
   //handleFacebookLoginResponse
-  const facebookResponse = (response) => {
-    signIn(response, "facebook");
+  const handleFacebookCallback = (response) => {
+    console.log(response)
   };
+
 
   useEffect(() => {
     //document.body.className = "bg-pattern";
@@ -184,13 +187,13 @@ const Login = (props) => {
                             value={validation.values.email || ""}
                             invalid={
                               validation.touched.email &&
-                              validation.errors.email
+                                validation.errors.email
                                 ? true
                                 : false
                             }
                           />
                           {validation.touched.email &&
-                          validation.errors.email ? (
+                            validation.errors.email ? (
                             <FormFeedback type="invalid">
                               <div>{validation.errors.email}</div>
                             </FormFeedback>
@@ -208,7 +211,7 @@ const Login = (props) => {
                               onBlur={validation.handleBlur}
                               invalid={
                                 validation.touched.password &&
-                                validation.errors.password
+                                  validation.errors.password
                                   ? true
                                   : false
                               }
@@ -227,7 +230,7 @@ const Login = (props) => {
                             )}
                           </div>
                           {validation.touched.password &&
-                          validation.errors.password ? (
+                            validation.errors.password ? (
                             <FormFeedback type="invalid">
                               <div> {validation.errors.password} </div>
                             </FormFeedback>
@@ -267,47 +270,45 @@ const Login = (props) => {
                             Acceder
                           </button>
                         </div>
-                        {/*
-                          <div className="mt-4 text-center">
-                            <h5 className="font-size-14 mb-3">Sign in with</h5>
 
-                            <ul className="list-inline">
-                              <li className="list-inline-item">
-                                <FacebookLogin
-                                  appId={facebook.APP_ID}
-                                  autoLoad={false}
-                                  callback={facebookResponse}
-                                  render={(renderProps) => (
-                                    <Link
-                                      to="#"
-                                      className="social-list-item bg-primary text-white border-primary"
-                                      onClick={renderProps.onClick}
-                                    >
-                                      <i className="mdi mdi-facebook" />
-                                    </Link>
-                                  )}
-                                />
-                              </li>
 
-                              <li className="list-inline-item">
-                                <GoogleLogin
-                                  clientId={google.CLIENT_ID}
-                                  render={(renderProps) => (
-                                    <Link
-                                      to="#"
-                                      className="social-list-item bg-danger text-white border-danger"
-                                      onClick={renderProps.onClick}
-                                    >
-                                      <i className="mdi mdi-google" />
-                                    </Link>
-                                  )}
-                                  onSuccess={googleResponse}
-                                  onFailure={() => {}}
-                                />
-                              </li>
-                            </ul>
-                          </div>
-                          */}
+
+                        <div className="mt-4 text-center">
+                          <h5 className="font-size-14 mb-3">Acceder con:</h5>
+
+                          <ul className="list-inline">
+                            <li className="list-inline-item">
+                              <FacebookLogin
+                                buttonStyle={{ padding: "6px" }}
+                                appId="1286925628673362"  // we need to get this from facebook developer console by setting the app.
+                                autoLoad={false}
+                                fields="name,email,picture"
+                                callback={handleFacebookCallback}
+                                render={renderProps => (
+                                  <button onClick={renderProps.onClick}>Acceder</button>
+                                )}
+                              />
+                            </li>
+
+                            <li className="list-inline-item">
+                              <GoogleLogin
+                                clientId={"google.CLIENT_ID"}
+                                render={(renderProps) => (
+                                  <Link
+                                    to="#"
+                                    className="social-list-item bg-danger text-white border-danger"
+                                    onClick={renderProps.onClick}
+                                  >
+                                    <i className="mdi mdi-google" />
+                                  </Link>
+                                )}
+                                onSuccess={googleResponse}
+                                onFailure={() => { }}
+                              />
+                            </li>
+                          </ul>
+                        </div>
+
                       </Col>
                     </Row>
                   </Form>
@@ -337,3 +338,27 @@ export default withRouter(Login);
 Login.propTypes = {
   history: PropTypes.object,
 };
+
+
+
+{/* <script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '{your-app-id}',
+      cookie     : true,
+      xfbml      : true,
+      version    : '{api-version}'
+    });
+      
+    FB.AppEvents.logPageView();   
+      
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script> */}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
+import { BlobServiceClient } from '@azure/storage-blob';
 import {
   DropdownItem,
   DropdownMenu,
@@ -69,29 +70,54 @@ const CorporateIdentity = () => {
   };
 
   const handleUpdateImg = async (e) => {
-    let base64String = "";
-    console.log(e.target.value)
-    let file = document.querySelector(
-      'input[type=file]')['files'][0];
-    //let file = e.target.value
+    // let base64String = "";
+    // console.log(e.target.value)
+    try {
 
-    let reader = new FileReader();
-    console.log("next");
 
-    reader.onload = async function () {
-      base64String = reader.result.replace("data:", "")
-        .replace(/^.+,/, "");
+      let file = document.querySelector(
+        'input[type=file]')['files'][0];
+      //let file = e.target.value
+      console.log({ file })
 
-      //imageBase64Stringsep = base64String;
+      const connectionString = '';
+      console.log({ connectionString })
+      const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
+      console.log({ blobServiceClient })
+      // let reader = new FileReader();
+      // console.log("next");
 
-      // alert(imageBase64Stringsep);
-      //console.log(base64String);
-      const upload = await PostData("/company/upload-image", { "base64": base64String })
-      setUrlImg(upload.data.url)
-      console.log(upload.data.url)
+      const containerName = 'corporateIdentity';
+      const blobName = file.name
+      console.log("blob", blobName)
+      const containerClient = blobServiceClient.getContainerClient(containerName);
+
+      await containerClient.createIfNotExists();
+
+      const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+
+      const res = await blockBlobClient.uploadBrowserData(file);
+
+      console.log({ res })
+
+      alert('Archivo subido con éxito!');
+
+      // reader.onload = async function () {
+      //   base64String = reader.result.replace("data:", "")
+      //     .replace(/^.+,/, "");
+
+      //   //imageBase64Stringsep = base64String;
+
+      //   // alert(imageBase64Stringsep);
+      //   //console.log(base64String);
+      //   const upload = await PostData("/company/upload-image", { "base64": base64String })
+      //   setUrlImg(upload.data.url)
+      //   console.log(upload.data.url)
+      // }
+      // reader.readAsDataURL(file);
+    } catch (err) {
+      console.log(err)
     }
-    reader.readAsDataURL(file);
-
   }
 
   const sendNewBrand = async (e) => {
@@ -197,7 +223,7 @@ const CorporateIdentity = () => {
                   id="create-btn"
                 >
                   <i className="ri-add-line align-bottom me-1"></i> Nueva
-                  identidad
+                  identidadXD
                 </Button>
                 {/* <Button color="soft-danger"
                                                     onClick="deleteMultiple()"
@@ -244,7 +270,7 @@ const CorporateIdentity = () => {
           id="exampleModalLabel"
           toggle={() => setModal(false)}
         >
-          Registrar identidad
+          Registrar identidads
         </ModalHeader>
         <div className="tablelist-form">
           <ModalBody style={{ height: "auto" }}>

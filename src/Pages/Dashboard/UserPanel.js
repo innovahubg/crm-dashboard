@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, CardBody, Col, Row } from "reactstrap";
+
 
 import RadialChart1 from "./userpanelChart1";
 import RadialChart2 from "./userpanelChart2";
 import RadialChart3 from "./userpanelChart3";
 
-const UserPanel = () => {
+const UserPanel = ({ customers }) => {
   return (
     <React.Fragment>
       <Row>
@@ -20,8 +21,8 @@ const UserPanel = () => {
                 </div>
 
                 <div className="flex-grow-1 overflow-hidden">
-                  <p className="mb-1">Users</p>
-                  <h5 className="mb-3">2.2k</h5>
+                  <p className="mb-1">Customers</p>
+                  <h5 className="mb-3">{customers.length}</h5>
                   <p className="text-truncate mb-0">
                     <span className="text-success me-2">
                       {" "}

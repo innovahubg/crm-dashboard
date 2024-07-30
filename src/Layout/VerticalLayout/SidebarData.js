@@ -65,16 +65,16 @@ const SidebarData = [
     isHasArrow: true,
     url: "/whatsapp-templates",
   },
-  {
-    label: "AI",
-    isMainMenu: true,
-  },
-  {
-    label: "Chatbot Builder",
-    icon: "mdi mdi-robot",
-    isHasArrow: true,
-    url: "/dashboard/bot-builder",
-  },
+  // {
+  //   label: "AI",
+  //   isMainMenu: true,
+  // },
+  // {
+  //   label: "Chatbot Builder",
+  //   icon: "mdi mdi-robot",
+  //   isHasArrow: true,
+  //   url: "/dashboard/bot-builder",
+  // },
   // {
   //   label: "Email",
   //   icon: "mdi mdi-email-outline",
@@ -159,16 +159,16 @@ const SidebarData = [
   //     { sublabel: "Sparkline Charts", link: "/chart-sparklinecharts" },
   //   ],
   // },
-  {
-    label: "Icons",
-    icon: "ri-brush-line",
-    subItem: [
-      { sublabel: "Box Icons", link: "/icon-boxicon" },
-      { sublabel: "Material Design", link: "/icons-materialdesign" },
-      { sublabel: "Dripicons", link: "/icon-dripicons" },
-      { sublabel: "Font Awesome", link: "/icons-fontawesome" },
-    ],
-  },
+  // {
+  //   label: "Icons",
+  //   icon: "ri-brush-line",
+  //   subItem: [
+  //     { sublabel: "Box Icons", link: "/icon-boxicon" },
+  //     { sublabel: "Material Design", link: "/icons-materialdesign" },
+  //     { sublabel: "Dripicons", link: "/icon-dripicons" },
+  //     { sublabel: "Font Awesome", link: "/icons-fontawesome" },
+  //   ],
+  // },
   // {
   //   label: "Maps",
   //   icon: "ri-map-pin-line",
