@@ -6,7 +6,7 @@ import RadialChart1 from "./userpanelChart1";
 import RadialChart2 from "./userpanelChart2";
 import RadialChart3 from "./userpanelChart3";
 
-const UserPanel = ({ customers }) => {
+const UserPanel = ({ customers, contactLists }) => {
   return (
     <React.Fragment>
       <Row>
@@ -50,8 +50,8 @@ const UserPanel = ({ customers }) => {
                 </div>
 
                 <div className="flex-grow-1 overflow-hidden">
-                  <p className="mb-1">Views per minute</p>
-                  <h5 className="mb-3">50</h5>
+                  <p className="mb-1">Listas de contactos</p>
+                  <h5 className="mb-3">{contactLists.length}</h5>
                   <p className="text-truncate mb-0">
                     <span className="text-success me-2">
                       {" "}

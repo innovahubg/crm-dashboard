@@ -21,7 +21,6 @@ const CampaignDetails = () => {
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await GetData(`/contact-lists/${id}/customers`);
-      console.log({ data });
       setData(data);
     };
     fetchData();
@@ -102,7 +101,7 @@ const CampaignDetails = () => {
   return (
     <div className="page-content">
       <Container fluid={true}>
-        <Breadcrumbs title="IHubG" breadcrumbItem={`Campañas/${data.name}`} />
+        <Breadcrumbs title="IHubG" breadcrumbItem={`Campañas`} />
         <Row className="mb-4">
           <DataTable
             data={data}

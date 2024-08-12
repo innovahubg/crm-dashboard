@@ -18,10 +18,16 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 const Dashboard = () => {
   document.title = "CRM Innova Hub Group";
   const [customers, setCustomers] = useState([])
+  const [contactList, setContactList] = useState([])
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await GetData(`/customers`);
+      const leads = await GetData(`/contact-lists`);
+      // const templates = await GetData(`/templates`);
+      console.log(leads)
       setCustomers(data)
+      setContactList(leads.data)
+      console.log(data)
       // setLeads(data);
       // setLoading(false);
     };
@@ -34,26 +40,27 @@ const Dashboard = () => {
         <Container fluid={true}>
           <Breadcrumbs title="IHG" breadcrumbItem="Dashboard" />
           {/* User Panel Charts */}
-          <UsePanel customers={customers} />
+          <UsePanel customers={customers} contactLists={contactList} />
 
           <Row>
             {/* Overview Chart */}
-            <OverView />
+            {/* <OverView /> */}
+            <LatestTransation customers={customers} />
             {/* Social Source Chart */}
-            <SocialSource />
+            <SocialSource contactLists={contactList} />
           </Row>
 
-          <Row>
-            {/* Order Stats */}
-            <OrderStatus />
-            {/* Notifications */}
-            <Notifications />
-            {/* Revenue by Location Vector Map */}
-            <RevenueByLocation />
-          </Row>
+          {/* <Row> */}
+          {/* Order Stats */}
+          {/* <OrderStatus /> */}
+          {/* Notifications */}
+          {/* <Notifications /> */}
+          {/* Revenue by Location Vector Map */}
+          {/* <RevenueByLocation /> */}
+          {/* </Row> */}
 
           {/* Latest Transaction Table */}
-          <LatestTransation />
+          {/* <LatestTransation /> */}
         </Container>
       </div>
     </React.Fragment>

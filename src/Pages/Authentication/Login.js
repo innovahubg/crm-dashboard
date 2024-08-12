@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import logolight from "../../assets/images/logo.png";
 import logodark from "../../assets/images/logo.png";
 
@@ -16,12 +16,26 @@ import {
   Label,
 } from "reactstrap";
 
+import {
+  LoginSocialGoogle,
+  LoginSocialFacebook,
+  LoginSocialInstagram,
+} from 'reactjs-social-login';
+
+import {
+  FacebookLoginButton,
+  GoogleLoginButton,
+  InstagramLoginButton,
+} from 'react-social-login-buttons';
+
 //redux
 import { useSelector, useDispatch } from "react-redux";
 
 import { Link, redirect } from "react-router-dom";
 import withRouter from "../../components/Common/withRouter";
-import FacebookLogin from 'react-facebook-login';
+// import FacebookLogin from 'react-facebook-login';
+import { Helmet } from "react-helmet";
+
 
 
 // Formik validation
@@ -49,6 +63,22 @@ const Login = (props) => {
 
   const [errorAlert, setEA] = useState();
   const [passInput, setPassInput] = useState("password");
+
+  const [provider, setProvider] = useState('');
+  const [profile, setProfile] = useState();
+
+  const onLoginStart = useCallback(() => {
+    alert('login start');
+  }, []);
+
+  const onLogoutSuccess = useCallback(() => {
+    setProfile(null);
+    setProvider('');
+    alert('logout success');
+  }, []);
+
+  const onLogout = useCallback(() => { }, []);
+
 
   const dispatch = useDispatch();
 
@@ -135,6 +165,10 @@ const Login = (props) => {
 
   return (
     <React.Fragment>
+      <Helmet>
+
+
+      </Helmet>
       {/*
         <div className="bg-overlay"></div>
       */}
@@ -278,20 +312,28 @@ const Login = (props) => {
 
                           <ul className="list-inline">
                             <li className="list-inline-item">
-                              <FacebookLogin
-                                buttonStyle={{ padding: "6px" }}
-                                appId="1286925628673362"  // we need to get this from facebook developer console by setting the app.
-                                autoLoad={false}
-                                fields="name,email,picture"
-                                callback={handleFacebookCallback}
-                                render={renderProps => (
-                                  <button onClick={renderProps.onClick}>Acceder</button>
-                                )}
-                              />
+                              <LoginSocialFacebook
+                                appId={process.env.REACT_APP_FB_APP_ID || '1286925628673362'}
+                                fieldsProfile={
+                                  'id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender'
+                                }
+                                onLoginStart={onLoginStart}
+                                onLogoutSuccess={onLogoutSuccess}
+                                redirect_uri={"REDIRECT_URI"}
+                                onResolve={({ provider, data }) => {
+                                  setProvider(provider);
+                                  setProfile(data);
+                                }}
+                                onReject={err => {
+                                  console.log(err);
+                                }}
+                              >
+                                <FacebookLoginButton />
+                              </LoginSocialFacebook>
                             </li>
 
                             <li className="list-inline-item">
-                              <GoogleLogin
+                              {/* <GoogleLogin
                                 clientId={"google.CLIENT_ID"}
                                 render={(renderProps) => (
                                   <Link
@@ -304,7 +346,7 @@ const Login = (props) => {
                                 )}
                                 onSuccess={googleResponse}
                                 onFailure={() => { }}
-                              />
+                              /> */}
                             </li>
                           </ul>
                         </div>
@@ -341,7 +383,8 @@ Login.propTypes = {
 
 
 
-{/* <script>
+{/* 
+<script>
   window.fbAsyncInit = function() {
     FB.init({
       appId      : '{your-app-id}',
@@ -361,4 +404,4 @@ Login.propTypes = {
      js.src = "https://connect.facebook.net/en_US/sdk.js";
      fjs.parentNode.insertBefore(js, fjs);
    }(document, 'script', 'facebook-jssdk'));
-</script> */}
+</script>*/}

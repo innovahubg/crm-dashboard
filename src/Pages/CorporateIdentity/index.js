@@ -223,7 +223,7 @@ const CorporateIdentity = () => {
                   id="create-btn"
                 >
                   <i className="ri-add-line align-bottom me-1"></i> Nueva
-                  identidadXD
+                  identidad
                 </Button>
                 {/* <Button color="soft-danger"
                                                     onClick="deleteMultiple()"

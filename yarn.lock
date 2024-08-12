@@ -10914,6 +10914,11 @@
   "resolved" "https://registry.npmjs.org/react-fast-compare/-/react-fast-compare-3.2.0.tgz"
   "version" "3.2.0"
 
+"react-fast-compare@^3.1.1":
+  "integrity" "sha512-nsO+KSNgo1SbJqJEYRE9ERzo7YtYbou/OqjSQKxV7jcKox7+usiUVZOAC+XnDOABXggQTno0Y1CpVnuWEc1boQ=="
+  "resolved" "https://registry.npmjs.org/react-fast-compare/-/react-fast-compare-3.2.2.tgz"
+  "version" "3.2.2"
+
 "react-flatpickr@^3.10.7":
   "integrity" "sha512-4m+K1K8jhvRFI8J/AHmQfA5hLALzhebEtEK8mLevXjX24MV3u502crzBn+EGFIBOfNUtrL5PId9FsGwgtuz/og=="
   "resolved" "https://registry.npmjs.org/react-flatpickr/-/react-flatpickr-3.10.13.tgz"
@@ -10929,6 +10934,16 @@
   dependencies:
     "@types/react" "*"
     "prop-types" "^15.6.0"
+
+"react-helmet@^6.1.0":
+  "integrity" "sha512-4uMzEY9nlDlgxr61NL3XbKRy1hEkXmKNXhjbAIOVw5vcFrsdYbH2FEwcNyWvWinl103nXgzYNlns9ca+8kFiWw=="
+  "resolved" "https://registry.npmjs.org/react-helmet/-/react-helmet-6.1.0.tgz"
+  "version" "6.1.0"
+  dependencies:
+    "object-assign" "^4.1.1"
+    "prop-types" "^15.7.2"
+    "react-fast-compare" "^3.1.1"
+    "react-side-effect" "^2.1.0"
 
 "react-i18next@^11.14.3":
   "integrity" "sha512-yHb2F9BiT0lqoQDt8loZ5gWP331GwctHz9tYQ8A2EIEUu+CcEdjBLQWli1USG3RdWQt3W+jqQLg/d4rrQR96LA=="
@@ -11156,6 +11171,11 @@
     "react-transition-group" "^4.3.0"
     "use-isomorphic-layout-effect" "^1.1.2"
 
+"react-side-effect@^2.1.0":
+  "integrity" "sha512-PVjOcvVOyIILrYoyGEpDN3vmYNLdy1CajSFNt4TDsVQC5KpTijDvWVoR+/7Rz2xT978D8/ZtFceXxzsPwZEDvw=="
+  "resolved" "https://registry.npmjs.org/react-side-effect/-/react-side-effect-2.1.2.tgz"
+  "version" "2.1.2"
+
 "react-slick@^0.28.1":
   "integrity" "sha512-JwRQXoWGJRbUTE7eZI1rGIHaXX/4YuwX6gn7ulfvUZ4vFDVQAA25HcsHSYaUiRCduTr6rskyIuyPMpuG6bbluw=="
   "resolved" "https://registry.npmjs.org/react-slick/-/react-slick-0.28.1.tgz"
@@ -11174,6 +11194,11 @@
   dependencies:
     "fast-equals" "^4.0.3"
     "react-transition-group" "2.9.0"
+
+"react-social-login-buttons@^4.1.0":
+  "integrity" "sha512-PoZKH6h3eKGgcviFC5Sh50QDVQ5KhFf7MrPTFBU/wwPNn0DVNEb5km+T7z83+CiM24Z8qV/H82wHZ4OE6gcawQ=="
+  "resolved" "https://registry.npmjs.org/react-social-login-buttons/-/react-social-login-buttons-4.1.0.tgz"
+  "version" "4.1.0"
 
 "react-sparklines@^1.7.0":
   "integrity" "sha512-bJFt9K4c5Z0k44G8KtxIhbG+iyxrKjBZhdW6afP+R7EnIq+iKjbWbEFISrf3WKNFsda+C46XAfnX0StS5fbDcg=="
@@ -11264,6 +11289,11 @@
     "@reactflow/minimap" "11.7.6"
     "@reactflow/node-resizer" "2.2.6"
     "@reactflow/node-toolbar" "1.3.6"
+
+"reactjs-social-login@^2.6.3":
+  "integrity" "sha512-i/pcyJPtlVpHoPRr/j5/KjaP/GNxAInnnHDk0PD2Zo0B3cMdvr0ZiGC/GMjOKAAgKCujyniDf/OiZ7c6MrOLQg=="
+  "resolved" "https://registry.npmjs.org/reactjs-social-login/-/reactjs-social-login-2.6.3.tgz"
+  "version" "2.6.3"
 
 "reactstrap@^9.0.1":
   "integrity" "sha512-79h/L/pvMJIz198VULMpLbEyXFeArFTLAnEtk5anppJhAnZnfyM1pNuQWZNGXy6cUlgsaEy2gBziAw4tockOnw=="

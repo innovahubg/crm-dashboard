@@ -5,18 +5,22 @@ import { Card, CardBody, Col, Row } from "reactstrap";
 
 import { SocialSourceData } from "../../CommonData/Data/index";
 
-const SocialSource = () => {
+const SocialSource = ({ contactLists }) => {
+
+
+
   return (
     <React.Fragment>
-      <Col xl={4}>
+      <Col xl={2}>
         <Card>
           <CardBody>
             <div className="d-flex  align-items-center">
               <div className="flex-grow-1">
-                <h5 className="card-title">Social Source</h5>
+                <h5 className="card-title">top #3 Listas</h5>
+
               </div>
-              <div className="flex-shrink-0">
-                <select className="form-select form-select-sm mb-0 my-n1">
+              {/* <div className="flex-shrink-0"> */}
+              {/* <select className="form-select form-select-sm mb-0 my-n1">
                   {[
                     "May",
                     "April",
@@ -29,12 +33,12 @@ const SocialSource = () => {
                       {item}
                     </option>
                   ))}
-                </select>
-              </div>
+                </select> */}
+              {/* </div> */}
             </div>
             {/* RadialChart */}
             <RadialChart />
-            <Row>
+            {/* <Row>
               {SocialSourceData.map((item, key) => (
                 <div key={key} className="col-4">
                   <div className="social-source text-center mt-3">
@@ -53,11 +57,11 @@ const SocialSource = () => {
                   </div>
                 </div>
               ))}
-            </Row>
+            </Row> */}
           </CardBody>
         </Card>
       </Col>
-    </React.Fragment>
+    </React.Fragment >
   );
 };
 
