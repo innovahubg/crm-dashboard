@@ -9,6 +9,7 @@ import {
   UncontrolledDropdown,
   Container,
   Row,
+  Button
 } from "reactstrap";
 import { Link, useParams } from "react-router-dom";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
@@ -99,14 +100,15 @@ const CampaignDetails = () => {
   ];
 
   return (
-    <div className="page-content">
-      <Container fluid={true}>
+    <div className="page-content p">
+      <Container fluid={true} className="pt-4">
         <Breadcrumbs title="IHubG" breadcrumbItem={`Campañas`} />
-        <Row className="mb-4">
+        <Row className="mb-4 h-75 ">
           <DataTable
             data={data}
             columns={columns}
             noDataComponent="Sin datos"
+            className="h-75"
           />
         </Row>
       </Container>

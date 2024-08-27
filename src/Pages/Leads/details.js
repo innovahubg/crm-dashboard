@@ -22,6 +22,13 @@ import DataTable from "react-data-table-component";
 import { GetData } from "../../services/api";
 import { Link } from "react-router-dom";
 
+
+//Leads
+
+// Paginador
+// Creado por createdBy en tabla
+
+
 const Leads = () => {
     const [loading, setLoading] = useState(false);
     const [leads, setLeads] = useState([]);

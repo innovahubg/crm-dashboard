@@ -72,3 +72,4 @@ const LatestTransation = ({ customers }) => {
 }
 
 export default LatestTransation;
+

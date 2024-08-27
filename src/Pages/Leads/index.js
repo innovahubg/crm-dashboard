@@ -17,6 +17,9 @@ import DataTable from "react-data-table-component";
 import { GetData } from "../../services/api";
 import { Link } from "react-router-dom";
 
+
+
+
 const Leads = () => {
   const [loading, setLoading] = useState(true);
   const [leads, setLeads] = useState([]);
@@ -51,7 +54,16 @@ const Leads = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      //limit = 10
+      //offset = 0
+      //createdBy
+      //Checar calendario aendados automatizacion
+      //Dashboard Numero de leads 
+      //Dashboard Visitas de landing pages
+      //Whatsapp Crear --> 
+
       const { data } = await GetData(`/customers`);
+      console.log(data)
       setLeads(data);
       setLoading(false);
     };

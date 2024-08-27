@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { GetData } from "../../services/api";
+import { GetData, PostData } from "../../services/api";
 import DataTable from "react-data-table-component";
 import moment from "moment"
 import {
@@ -10,22 +10,33 @@ import {
   UncontrolledDropdown,
   Container,
   Row,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Col,
+  Button
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { RingLoader } from "react-spinners";
+import Swal from 'sweetalert2'
+
 
 const Campaigns = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [modal, setModal] = useState(false);
+  const [name, setName] = useState("")
+
+
+  const fetchData = async () => {
+    const { data } = await GetData("/contact-lists");
+    setData(data);
+    setLoading(false);
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const { data } = await GetData("/contact-lists");
-      setData(data);
-      console.log({ data });
-      setLoading(false);
-    };
     fetchData();
   }, []);
 
@@ -78,10 +89,9 @@ const Campaigns = () => {
                 <i className="mdi mdi-cog-outline align-bottom me-2 text-muted" />
                 Automatizar
               </DropdownItem>
-              <DropdownItem className="remove-item-btn">
-                {" "}
-                <i className="ri-delete-bin-fill align-bottom me-2 text-muted"></i>{" "}
-                Eliminar{" "}
+              <DropdownItem className="remove-item-btn" onClick={deleteCampaign}>
+                <i className="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
+                Eliminar
               </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
@@ -90,10 +100,65 @@ const Campaigns = () => {
     },
   ];
 
+  const createCampaign = async () => {
+    try {
+      const { status } = await PostData("/contact-lists", { name })
+      if (status === 200) {
+        Swal.fire({
+          title: `${name} Campaña creada`,
+          icon: "success"
+        });
+        fetchData()
+        setModal(false)
+        setName("")
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const deleteCampaign = () => {
+    Swal.fire({
+      title: "¿Deseas eliminar la campaña?",
+      showCancelButton: true,
+      confirmButtonText: "Eliminar",
+      denyButtonText: `Cancelar`,
+      confirmButtonColor: '#32CD32'
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        Swal.fire("Campaña eliminada!", "", "success");
+      }
+      // else if (result.isDenied) {
+      //   Swal.fire("Changes are not saved", "", "info");
+      // }
+    });
+  }
+
   return (
     <div className="page-content">
       <Container fluid={true}>
         <Breadcrumbs title="IHubG" breadcrumbItem="Campañas" />
+        <Row className="my-4">
+          <Col className="col-sm-auto">
+            <div className="d-flex gap-1 justify-content-end">
+              <Button
+                color="success"
+                className="add-btn"
+                onClick={() => {
+                  setModal(true);
+                }}
+                id="create-btn"
+              >
+                <i className="ri-add-line align-bottom me-1"></i> Nueva
+                campaña
+              </Button>
+              {/* <Button color="soft-danger"
+                                                    onClick="deleteMultiple()"
+                                                    ><i className="ri-delete-bin-2-line"></i></Button> */}
+            </div>
+          </Col>
+        </Row>
         <Row className="mb-4">
           {loading ? (
             <div className="d-flex justify-content-center p-5 w-full">
@@ -108,6 +173,58 @@ const Campaigns = () => {
           )}
         </Row>
       </Container>
+      <Modal
+        isOpen={modal}
+        toggle={() => {
+          setModal(false);
+        }}
+        centered
+      >
+        <ModalHeader
+          className="bg-light p-3"
+          id="exampleModalLabel"
+          toggle={() => setModal(false)}
+        >
+          Nueva Campaña
+        </ModalHeader>
+        <div className="tablelist-form">
+          <ModalBody style={{ height: "auto" }}>
+
+            <div className="mb-3">
+              <label htmlFor="titlebot-field" className="form-label">
+                Nombre
+              </label>
+              <input
+                type="text"
+                id="titlebot-field"
+                className="form-control"
+                placeholder="Ingresa un nombre a tu campaña"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <div className="">
+              <button
+                type="button"
+                className="btn btn-light mx-4"
+                onClick={() => setModal(false)}
+              >
+                Cerrar
+              </button>
+              <button
+                onClick={createCampaign}
+                className="btn btn-success"
+                id="add-btn"
+              >
+                Crear
+              </button>
+            </div>
+          </ModalFooter>
+        </div>
+      </Modal>
     </div>
   );
 };

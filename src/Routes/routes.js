@@ -128,6 +128,7 @@ const authProtectedRoutes = [
   //Modules
   { path: "/campaigns", component: <Campanas /> },
   { path: "/campaigns/:id", component: <CampaignDetails /> },
+  { path: "/campaigns/:id/edit", component: <CampaignDetails /> },
 
   { path: "/landing-templates", component: <LandingTemplates /> },
   { path: "/landing-templates/:id", component: <LandingTemplates /> },
