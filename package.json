@@ -94,6 +94,7 @@
     "styled-components": "^5.3.5",
     "sweetalert2": "^11.12.4",
     "un": "^0.0.0",
+    "uuid": "^10.0.0",
     "web-vitals": "^1.0.1",
     "yup": "^0.32.11"
   },

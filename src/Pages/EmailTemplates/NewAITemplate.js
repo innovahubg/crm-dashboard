@@ -31,6 +31,12 @@ const NewAITemplate = () => {
     try {
       setLoading(true);
 
+      //Obtener de  const fetchData = async (id) => {
+      //   const { data } = await GetData(`/companies/${id}`);
+      //   console.log({ data })
+      //   setBrands(data.brand)
+      // };
+
       const data = await PostData("/generate-template-email", {
         prompt: prompt + " solo envia el codigo HTML",
         brand: {

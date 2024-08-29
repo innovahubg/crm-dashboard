@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import moment from "moment";
-import { BlobServiceClient } from '@azure/storage-blob';
+import { v4 as uuidv4 } from 'uuid';
 import {
   DropdownItem,
   DropdownMenu,
@@ -22,6 +21,7 @@ import { GetData, PostData } from "../../services/api";
 import { Link } from "react-router-dom";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import validateEmail from "../../helpers/validateEmail";
+import axios from "axios";
 
 const CorporateIdentity = () => {
   const [brands, setBrands] = useState([]);
@@ -38,6 +38,8 @@ const CorporateIdentity = () => {
   const [co, setCO] = useState("#000000")
   const [ct, setCT] = useState("#000000")
 
+  const [base64Image, setBase64Image] = useState(null);
+
 
   //   brandingColors: {
   //     color1: "#ffffff",
@@ -48,6 +50,7 @@ const CorporateIdentity = () => {
 
   const fetchData = async (id) => {
     const { data } = await GetData(`/companies/${id}`);
+    console.log({ data })
     setBrands(data.brand)
   };
 
@@ -73,48 +76,44 @@ const CorporateIdentity = () => {
     // let base64String = "";
     // console.log(e.target.value)
     try {
-
-
       let file = document.querySelector(
         'input[type=file]')['files'][0];
-      //let file = e.target.value
-      console.log({ file })
 
-      const connectionString = '';
-      console.log({ connectionString })
-      const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
-      console.log({ blobServiceClient })
-      // let reader = new FileReader();
-      // console.log("next");
+      const formData = new FormData()
+      let reader = new FileReader();
+      // let ext = file.name.split('.').pop().toLowerCase()
 
-      const containerName = 'corporateIdentity';
-      const blobName = file.name
-      console.log("blob", blobName)
-      const containerClient = blobServiceClient.getContainerClient(containerName);
+      const { token } = JSON.parse(localStorage.getItem("authUser"));
 
-      await containerClient.createIfNotExists();
+      reader.onload = async () => {
+        const result = reader.result
+        // const name = uuidv4() + "." + ext
 
-      const blockBlobClient = containerClient.getBlockBlobClient(blobName);
 
-      const res = await blockBlobClient.uploadBrowserData(file);
 
-      console.log({ res })
+        setBase64Image(result);
+        formData.append("file", file)
+        console.log({ formData })
 
-      alert('Archivo subido con éxito!');
 
-      // reader.onload = async function () {
-      //   base64String = reader.result.replace("data:", "")
-      //     .replace(/^.+,/, "");
+        // const response = await axios.post("https://builder.crearnegociodigital.com/upload", {
+        //   headers: {
+        //     "Content-Type": "application/json"
+        //   },
+        //   body: formData
+        // })
 
-      //   //imageBase64Stringsep = base64String;
+        const { url } = await axios.post(`${process.env.REACT_APP_API}/company/upload-image`, formData, {
+          headers: {
+            'content-type': 'multipart/form-data',
+            'authorization': "Bearer " + token
+          }
+        })
 
-      //   // alert(imageBase64Stringsep);
-      //   //console.log(base64String);
-      //   const upload = await PostData("/company/upload-image", { "base64": base64String })
-      //   setUrlImg(upload.data.url)
-      //   console.log(upload.data.url)
-      // }
-      // reader.readAsDataURL(file);
+        setUrlImg(url)
+        alert('Archivo subido con éxito!');
+      };
+      reader.readAsDataURL(file);
     } catch (err) {
       console.log(err)
     }
@@ -130,12 +129,12 @@ const CorporateIdentity = () => {
         email,
         whatsapp: {
           link: `https://api.whatsapp.com/send/?phone=${phone}&text=${msg}`,
-          logoImage: "https://upload.wikimedia.org/wikipedia/commons/7/75/Whatsapp_logo_svg.png",
+          logoImage: "https://cdn.ihubg.tech/crm/image-2024-08-29T05-32-34-404Z-47021265-90fb-4bf8-9539-d79f47eabae7.png",
         },
         instagram: {
           link: `https://www.instagram.com/${unInsta}`,
           logoImage:
-            "https://freelogopng.com/images/all_img/1658586823instagram-logo-transparent.png",
+            "https://cdn.ihubg.tech/crm/image-2024-08-29T05-33-12-999Z-47e95b3a-7804-4ce8-8dec-a5c02a73d82c.webp",
         }
       },
       brandingColors: {
@@ -144,8 +143,10 @@ const CorporateIdentity = () => {
       },
     }
 
-    const saveUser = await PostData("/companies/brands", data)
-    console.log({ saveUser })
+    console.log({ data })
+
+    const saveBrand = await PostData("/companies/brands", data)
+    console.log({ saveBrand })
   };
 
 
@@ -285,8 +286,9 @@ const CorporateIdentity = () => {
                 onChange={handleUpdateImg}
                 type="file"
               />
+              {base64Image && <img src={base64Image} alt="Uploaded Image" className="w-full my-4" />}
             </div>
-            <div className="mb-3"><img width={200} height={"auto"} src={urlImg} /></div>
+            {/* <div className="mb-3"><img width={200} height={"auto"} src={urlImg} /></div> */}
 
             <div className="mb-3">
               <label htmlFor="titlebot-field" className="form-label">
