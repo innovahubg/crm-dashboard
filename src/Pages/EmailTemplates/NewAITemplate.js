@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import {
   DropdownItem,
@@ -16,51 +16,34 @@ import {
   Button,
 } from "reactstrap";
 import { RingLoader } from "react-spinners";
-import { PostData } from "../../services/api";
+import { GetData, PostData } from "../../services/api";
 import Builder from "../../components/Builder";
 import { useNavigate } from "react-router-dom";
+
 const NewAITemplate = () => {
   const [loading, setLoading] = useState(false);
+  const [brands, setBrands] = useState([])
+  const [brand, setBrand] = useState({})
   const [prompt, setPrompt] = useState(
     "Un website de invitacion para un evento de venta de lotes residenciales en Merida Yucatan Mexico, el dia 10 de Febrero a las 12:00."
   );
   const [html, setHTML] = useState("");
   const navigate = useNavigate();
 
+  //Obtener de  
+  const fetchData = async (id) => {
+    const { data } = await GetData(`/companies/${id}`);
+    setBrands(data.brand)
+    setBrand(0)
+  };
+
   const generateTemplateHtml = async () => {
     try {
       setLoading(true);
-
-      //Obtener de  const fetchData = async (id) => {
-      //   const { data } = await GetData(`/companies/${id}`);
-      //   console.log({ data })
-      //   setBrands(data.brand)
-      // };
-
+      const brandObj = brands[brand] || {}
       const data = await PostData("/generate-template-email", {
         prompt: prompt + " solo envia el codigo HTML",
-        brand: {
-          logoUrl: "https://cdn.arcemunoz.tech/assets/arcemunoz.png",
-          logoWith: "250px",
-          personalBrand: "Arce Muñoz | Líder Digital",
-          contact: {
-            email: "hola@arcemunoz.tech",
-            whatsapp: {
-              link: "https://api.whatsapp.com/send/?phone=522291171708&text=Hola+Arce!",
-              logoImage:
-                "https://upload.wikimedia.org/wikipedia/commons/7/75/Whatsapp_logo_svg.png",
-            },
-            instagram: {
-              link: "https://www.instagram.com/arcemunoz_tech",
-              logoImage:
-                "https://freelogopng.com/images/all_img/1658586823instagram-logo-transparent.png",
-            },
-          },
-          brandingColors: {
-            color1: "#ffffff",
-            color2: "#000000",
-          },
-        },
+        brand: brandObj
       });
 
       setHTML(data.data);
@@ -100,6 +83,11 @@ const NewAITemplate = () => {
     } catch (err) { }
   };
 
+  useEffect(() => {
+    const { companyId } = JSON.parse(localStorage.getItem("authUser"))
+    fetchData(companyId)
+  }, [])
+
   return (
     <div className="page-content">
       <Container fluid={true}>
@@ -114,14 +102,20 @@ const NewAITemplate = () => {
                 value={prompt}
                 rows="6"
               ></textarea>
+              <h3>Selecciona una Identidad Corporativa</h3>
+              <select onChange={(e) => setBrand(e.target.value)} className="w-full p-2">
+                {
+                  brands.map((brand, index) => <option value={index} key={index}>{brand.name}</option>)
+                }
+              </select>
               <button
-                className="btn btn-success"
+                className="btn btn-success mt-4"
                 onClick={(e) => {
                   e.preventDefault();
                   generateTemplateHtml();
                 }}
               >
-                Generar template
+                Generar templatee
               </button>
             </div>
           </Row>
@@ -148,7 +142,7 @@ const NewAITemplate = () => {
                     id="create-btn"
                   >
                     <i className="mdi mdi-content-save align-bottom me-1"></i>{" "}
-                    Guardar
+                    Guardarr
                   </Button>
                 </div>
               </Col>

@@ -22,6 +22,8 @@ import { Link } from "react-router-dom";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import validateEmail from "../../helpers/validateEmail";
 import axios from "axios";
+import Swal from 'sweetalert2'
+
 
 const CorporateIdentity = () => {
   const [brands, setBrands] = useState([]);
@@ -73,8 +75,6 @@ const CorporateIdentity = () => {
   };
 
   const handleUpdateImg = async (e) => {
-    // let base64String = "";
-    // console.log(e.target.value)
     try {
       let file = document.querySelector(
         'input[type=file]')['files'][0];
@@ -87,21 +87,9 @@ const CorporateIdentity = () => {
 
       reader.onload = async () => {
         const result = reader.result
-        // const name = uuidv4() + "." + ext
-
-
-
         setBase64Image(result);
+
         formData.append("file", file)
-        console.log({ formData })
-
-
-        // const response = await axios.post("https://builder.crearnegociodigital.com/upload", {
-        //   headers: {
-        //     "Content-Type": "application/json"
-        //   },
-        //   body: formData
-        // })
 
         const { url } = await axios.post(`${process.env.REACT_APP_API}/company/upload-image`, formData, {
           headers: {
@@ -111,7 +99,6 @@ const CorporateIdentity = () => {
         })
 
         setUrlImg(url)
-        alert('Archivo subido con éxito!');
       };
       reader.readAsDataURL(file);
     } catch (err) {
@@ -135,7 +122,10 @@ const CorporateIdentity = () => {
           link: `https://www.instagram.com/${unInsta}`,
           logoImage:
             "https://cdn.ihubg.tech/crm/image-2024-08-29T05-33-12-999Z-47e95b3a-7804-4ce8-8dec-a5c02a73d82c.webp",
-        }
+        },
+        phone,
+        msg,
+        unInsta
       },
       brandingColors: {
         color1: co,
@@ -143,14 +133,35 @@ const CorporateIdentity = () => {
       },
     }
 
-    console.log({ data })
-
     const saveBrand = await PostData("/companies/brands", data)
-    console.log({ saveBrand })
+    if (saveBrand) {
+      const { companyId } = JSON.parse(localStorage.getItem("authUser"))
+      fetchData(companyId)
+      setModal(false)
+      setEmail("");
+      setValid(true);
+      setUrlImg("");
+      setPB("")
+      setPhone("")
+      setMsg("")
+      setUNI("")
+      setName("")
+      setCO("#000000")
+      setCT("#000000")
+      Swal.fire({
+        title: `Identidad corporativa creada`,
+        icon: "success"
+      });
+    }
   };
 
 
   const columns = [
+    {
+      name: <span className="font-weight-bold fs-13">Logo</span>,
+      selector: (row) => <img src={`${row.logoUrl}`} width={60} height={60} />,
+      sortable: true,
+    },
     {
       name: <span className="font-weight-bold fs-13">Nombre</span>,
       selector: (row) => row.name,
@@ -158,18 +169,22 @@ const CorporateIdentity = () => {
     },
     {
       name: <span className="font-weight-bold fs-13">Personal brand</span>,
-      selector: (row) => (
-        <span>
-          <i
-            className={
-              "mdi " +
-              (row.valid
-                ? "mdi-check-circle checkGreen"
-                : "mdi-close-circle closeRed")
-            }
-          ></i>
-        </span>
-      ),
+      selector: (row) => row.personalBrand,
+      sortable: true,
+    },
+    {
+      name: <span className="font-weight-bold fs-13">Email</span>,
+      selector: (row) => row.contact.email,
+      sortable: true,
+    },
+    {
+      name: <span className="font-weight-bold fs-13">Telefono</span>,
+      selector: (row) => row.contact.phone,
+      sortable: true,
+    },
+    {
+      name: <span className="font-weight-bold fs-13">Mensaje</span>,
+      selector: (row) => row.contact.msg,
       sortable: true,
     },
     {
