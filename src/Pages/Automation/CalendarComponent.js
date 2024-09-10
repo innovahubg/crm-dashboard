@@ -3,24 +3,29 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from "@fullcalendar/interaction"
 
-
-
-
 const CalendarComponent = ({ setModal, setType, setDetails, events }) => {
-
-    console.log({ events })
+    const eventsData = events?.map(({ run, name, id, type }) => {
+        // if (type == "registered") {
+        const { year, month, day } = run
+        const monthFormat = month <= 9 ? "0" + (month + 1) : (month + 1)
+        return {
+            title: name,
+            date: `${year}-${monthFormat}-${day}`,
+            id
+        }
+        // }
+    })
 
     const handleDateClick = (arg) => {
-        console.log(arg.dateStr)
         setType("new")
         setModal(true)
-
     }
 
     const handleEventClick = (info) => {
         info.jsEvent.preventDefault(); // don't let the browser navigate
-        console.log(info.event.title, info.event.id)
-        setDetails({ title: info.event.title })
+        // console.log(info.event.title, info.event.id)
+        const obj = events.find(e => e.id === info.event.id)
+        setDetails(obj)
         setType("details")
         setModal(true)
     }
@@ -29,12 +34,10 @@ const CalendarComponent = ({ setModal, setType, setDetails, events }) => {
             <FullCalendar
                 plugins={[dayGridPlugin, interactionPlugin]}
                 initialView="dayGridMonth"
-                events={[
-                    { title: 'event 1', date: '2024-03-01', id: 1996 },
-                    { title: 'event 2', date: '2024-03-01', id: 2123 }
-                ]}
+                events={eventsData}
                 eventClick={handleEventClick}
                 dateClick={handleDateClick}
+                locale={"es"}
             />
         </div>
     )

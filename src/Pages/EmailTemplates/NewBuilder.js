@@ -38,13 +38,32 @@ const NewBuilder = () => {
         localStorage.getItem("newEmailTemplate")
       );
 
+      const params = {}
+
+      if (data.includes("{{name}}")) {
+        params['name'] = "string"
+      }
+
+      if (data.includes("{{lastName}}")) {
+        params['lastName'] = "string"
+      }
+
+      if (data.includes("{{email}}")) {
+        params['email'] = "string"
+      }
+
+      if (data.includes("{{phone}}")) {
+        params['phone'] = "string"
+      }
+
+      console.log({ params })
       const { status } = await PostData("/templates", {
         type: "email",
         templateName: name,
         template: data,
         subject,
         from,
-        params: {},
+        params,
       });
 
       if (status === 200) {

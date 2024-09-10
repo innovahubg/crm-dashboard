@@ -44,22 +44,19 @@ const Automation = () => {
     const fetchData = async () => {
       const { data } = await GetData("/contact-lists");
       setData(data);
-      console.log({ data });
       setLoading(false);
     };
     fetchData();
   }, []);
 
   const getTemplates = async () => {
-    console.log(`/templates/${newAuto.send}`);
+    // console.log(`/templates/${newAuto.send}`);
     const { data } = await GetData(`/templates/${templateType}`);
     setTemplates(data);
-    console.log(data);
   };
 
   const getAutomations = async (idContactList) => {
     const { data } = await GetData(`/automation/${idContactList}`);
-    console.log(data);
     setAutomations(data);
   };
 
@@ -189,8 +186,6 @@ const Automation = () => {
       const typeAuto = newAuto.type === "registered" ? "register" : "schedule"
 
       const find = templates.find((t) => t.id === newAuto.template);
-      console.log({ find })
-
       scheduledObj["from"] = find["from"];
 
       if (newAuto.type === "scheduled") {
@@ -212,19 +207,13 @@ const Automation = () => {
         scheduledObj["registered"][0]["params"] = { name: 'string' }
         scheduledObj["registered"][0]["from"] = find["from"]
       }
-
-
-
       console.log(scheduledObj);
-
       console.log({ typeAuto })
-
       const { status } = await PostData(`/automation/${typeAuto}`, scheduledObj);
-
-
       if (status === 200) {
         navigate("/automation");
       }
+      setNewModal(false)
     } catch (err) {
       console.log(err);
     }
@@ -386,8 +375,17 @@ const Automation = () => {
               {type === "details" && (
                 <div className="mb-3">
                   <h4 htmlFor="titlebot-field" className="form-label">
-                    Titulo: {details.title}
+                    Titulo: {details.name}
                   </h4>
+                  <h6 htmlFor="titlebot-field" className="form-label">
+                    Tipo: {details.type}
+                  </h6>
+                  <h6 htmlFor="titlebot-field" className="form-label">
+                    Fecha: {details.date}
+                  </h6>
+                  <h6 htmlFor="titlebot-field" className="form-label">
+                    Enviado por: {details.from}
+                  </h6>
                 </div>
               )}
             </ModalBody>
@@ -400,13 +398,16 @@ const Automation = () => {
                 >
                   Cerrar
                 </button>
-                <button
-                  onClick={() => { }}
-                  className="btn btn-success"
-                  id="add-btn"
-                >
-                  Crear
-                </button>
+                {type != "details" && (
+
+                  <button
+                    onClick={() => { }}
+                    className="btn btn-success"
+                    id="add-btn"
+                  >
+                    Crear
+                  </button>
+                )}
               </div>
             </ModalFooter>
           </form>
