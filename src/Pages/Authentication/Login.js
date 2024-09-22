@@ -87,12 +87,12 @@ const Login = (props) => {
     enableReinitialize: true,
 
     initialValues: {
-      email: "hola@arcemunoz.tech" || "",
-      password: "amocampo" || "",
+      email: "",
+      password: "",
     },
     validationSchema: Yup.object({
-      email: Yup.string().required("Please Enter Your Email"),
-      password: Yup.string().required("Please Enter Your Password"),
+      email: Yup.string().required("Ingresa tu correo electrónico"),
+      password: Yup.string().required("Ingresa tu contraseña"),
     }),
     onSubmit: async (values) => {
       try {
