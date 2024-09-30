@@ -8,10 +8,13 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import CodeMirror from "@uiw/react-codemirror";
 import beautify from 'js-beautify';
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
+import axios from "axios";
 
 const Builder = ({ html, setHTML }) => {
+    let editorRef
     const [modal, setModal] = useState(false)
     const onEditor = (editor) => {
+        editorRef = editor
         console.log("Editor loaded", { editor });
         editor.setComponents(html);
         // editor.setComponents(`<!-- Free to use, HTML email template designed & built by FullSphere. Learn more about us at www.fullsphere.co.uk -->
@@ -274,7 +277,155 @@ const Builder = ({ html, setHTML }) => {
             label: 'Simple block',
             content: '<div class="my-block"> <form><input placeholder="nombre" /> <button>ENVIAR</button></form> </div>',
         });
-        editor.Blocks.add('my-first-block2', {
+        editor.Blocks.add('Button 1', {
+            label: 'Button 1',
+            content: '<style>button { padding: 10px 20px; text-transform: uppercase; border-radius: 8px; font-size: 17px; font-weight: 500; color: #ffffff; text-shadow: none; background: black; cursor: pointer; box-shadow: transparent; border: 1px solid #ffffff; transition: 0.5s ease; user-select: none; } #btn:hover,:focus {color: #ffffff;background: #008cff;border: 1px solid #008cff;text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff;box-shadow: 0 0 5px #008cff, 0 0 20px #008cff, 0 0 50px #008cff,0 0 100px #008cff;} </style> <button id="btn">Mensaje</button>',
+        });
+        editor.Blocks.add('Button 2', {
+            label: 'Button 2',
+            content: `
+                <style>
+                    .button-2 {
+                        background-color: #000;
+                        color: #fff;
+                        width: 8.5em;
+                        height: 2.9em;
+                        border: #3654ff 0.2em solid;
+                        border-radius: 11px;
+                        text-align: right;
+                        transition: all 0.6s ease;
+                    }
+
+                    .button-2:hover {
+                        background-color: #3654ff;
+                        cursor: pointer;
+                    }
+
+                    .button-2 svg {
+                        width: 1.6em;
+                        margin: -0.2em 0.8em 1em;
+                        position: absolute;
+                        display: flex;
+                        transition: all 0.6s ease;
+                    }
+
+                    .button-2:hover svg {
+                        transform: translateX(5px);
+                    }
+
+                    .text-button-2 {
+                        margin: 0 1.5em
+                    }
+                </style>
+                <button class="button-2">
+                    
+                    <div class="text-button-2">
+                        Button
+                    </div>
+                </button>
+            `
+        });
+        editor.Blocks.add('Galeria', {
+            label: 'Galeria 1',
+            content: `
+                <style>
+    /* Three columns side by side */
+.column-galeria-1 {
+  float: left;
+  width: 33.3%;
+  margin-bottom: 16px;
+  padding: 0 8px;
+}
+
+/* Display the columns below each other instead of side by side on small screens */
+@media screen and (max-width: 650px) {
+  .column-galeria-1 {
+    width: 100%;
+    display: block;
+  }
+}
+
+/* Add some shadows to create a card effect */
+.card-galeria-1 {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Some left and right padding inside the container */
+.container-galeria-1 {
+  padding: 0 16px;
+}
+
+/* Clear floats */
+.container-galeria-1::after, .row-galeria-1::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.title-galeria-1 {
+  color: grey;
+}
+
+.button-galeria-1 {
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+}
+
+.button-galeria-1:hover {
+  background-color: #555;
+}
+</style>
+
+<div class="row-galeria-1">
+  <div class="column-galeria-1">
+    <div class="card-galeria-1">
+      <img src="https://picsum.photos/200/300" alt="Jane" style="width:100%">
+      <div class="container-galeria-1">
+        <h2>Jane Doe</h2>
+        <p class="title-galeria-1">CEO &amp; Founder</p>
+        <p>Some text that describes me lorem ipsum ipsum lorem.</p>
+        <p>example@example.com</p>
+        <p><button class="button-galeria-1">Contact</button></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="column-galeria-1">
+    <div class="card-galeria-1">
+      <img src="https://picsum.photos/200/300" alt="Mike" style="width:100%">
+      <div class="container-galeria-1">
+        <h2>Mike Ross</h2>
+        <p class="title-galeria-1">Art Director</p>
+        <p>Some text that describes me lorem ipsum ipsum lorem.</p>
+        <p>example@example.com</p>
+        <p><button class="button-galeria-1">Contact</button></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="column-galeria-1">
+    <div class="card-galeria-1">
+      <img src="https://picsum.photos/200/300" alt="John" style="width:100%">
+      <div class="container-galeria-1">
+        <h2>John Doe</h2>
+        <p class="title-galeria-1">Designer</p>
+        <p>Some text that describes me lorem ipsum ipsum lorem.</p>
+        <p>example@example.com</p>
+        <p><button class="button-galeria-1">Contact</button></p>
+      </div>
+    </div>
+  </div>
+</div>   
+            `,
+        });
+        editor.Blocks.add('NavBar', {
             label: 'Nav',
             content: `<ul style="display: flex;">
       <li style="display: inline; "><a href="default.asp" style="display: block; padding: 8px; background-color: #04AA6D;">Home</a></li>
@@ -2509,6 +2660,80 @@ const Builder = ({ html, setHTML }) => {
                                 colorPicker: {
                                     containerClassName: "gjsEditor-color-picker",
                                 },
+                                assetManager: {
+                                    upload: false, // Desactivamos la subida automática de assets
+                                    assets: [], // Lista inicial de assets
+                                    uploadFile: async function (e) {
+                                        const files = e.dataTransfer ? e.dataTransfer.files : e.target.files;
+
+                                        for (let i = 0; i < files.length; i++) {
+                                            const file = files[i];
+
+                                            if (file.type && file.type.indexOf('image') === -1) {
+                                                continue;
+                                            }
+
+                                            // Convertimos el archivo en una cadena Base64 para verificar si es Base64
+                                            const reader = new FileReader();
+                                            reader.onloadend = async function () {
+                                                const base64Data = reader.result;
+
+                                                // Verificamos si el archivo está en formato Base64
+                                                if (base64Data.startsWith('data:image/')) {
+                                                    const formData = new FormData();
+                                                    formData.append('file', file);
+
+                                                    try {
+                                                        // Envía la imagen al backend
+                                                        const { token } = JSON.parse(localStorage.getItem("authUser"));
+                                                        const response = await axios.post(`${process.env.REACT_APP_API}/company/upload-image`, formData, {
+                                                            headers: {
+                                                                'content-type': 'multipart/form-data',
+                                                                'authorization': "Bearer " + token
+                                                            }
+                                                        })
+
+
+                                                        console.log({ response })
+                                                        if (response.url) {
+                                                            // Reemplaza la imagen base64 en el contenido del editor con la URL devuelta
+
+                                                            const newSrc = `src="${response.url}"`;
+
+                                                            // Obtener el contenido HTML actual
+                                                            let htmlContent = editorRef.getHtml();
+
+                                                            // Reemplaza cualquier src que comience con data:image/svg+xml;base64, con la nueva URL
+                                                            htmlContent = htmlContent.replace(/src="data:image\/svg\+xml;base64,[^"]+"/g, newSrc);
+                                                            console.log("Imagen SVG Base64 reemplazada por URL:", response.url);
+
+                                                            // Actualiza el contenido del editor con el nuevo HTML
+                                                            editorRef.setComponents(htmlContent);
+
+                                                            // Opcional: Agrega la imagen al Asset Manager
+                                                            editorRef.AssetManager.add({
+                                                                src: response.url,
+                                                                name: response.name || file.name,
+                                                            });
+
+                                                            console.log("se sube metodo 1");
+
+                                                        } else {
+                                                            console.error('Error al subir la imagen:', response);
+                                                        }
+                                                    } catch (error) {
+                                                        console.error('Error en la subida de la imagen:', error);
+                                                    }
+                                                } else {
+                                                    console.log('La imagen no está en formato Base64, no se necesita hacer nada.');
+                                                }
+                                            };
+
+                                            reader.readAsDataURL(file);
+                                        }
+                                    },
+                                },
+
                             }}
                             onEditor={onEditor}
                             plugins={[plugin, newsLetterPlugin, myPlugin, grapeform]}
