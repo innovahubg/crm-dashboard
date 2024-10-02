@@ -22,7 +22,7 @@ spec:
         - name: REACT_APP_API
           valueFrom:
             secretKeyRef:
-              name: secrets-dashboard
+              name: secrets-dashboard-dev
               key: REACT_APP_API
       imagePullSecrets:
       - name: acr-secret
