@@ -24,12 +24,10 @@ spec:
             secretKeyRef:
               name: secrets-dashboard-dev
               key: REACT_APP_API
-        resources:  # Agrega esta sección para definir límites y solicitudes de recursos
-          requests:
-            memory: "256Mi"   # Ajusta según la necesidad real de la aplicación
-            cpu: "200m"       # Ajusta según la necesidad real de la aplicación
-          limits:
-            memory: "512Mi"   # Ajusta según la necesidad real de la aplicación
-            cpu: "500m"       # Ajusta según la necesidad real de la aplicación
+      resources:
+        requests:
+          memory: "512Mi"
+        limits:
+          memory: "1Gi"
       imagePullSecrets:
       - name: acr-secret
