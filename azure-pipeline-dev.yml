@@ -1,0 +1,53 @@
+trigger:
+  branches:
+    include:
+      - dev
+
+pool:
+  name: 'default'
+
+stages:
+- stage: Build
+  jobs:
+  - job: BuildAndPush
+    steps:
+    - checkout: self
+      fetchDepth: 1
+
+    - script: |
+        echo "Setting up Docker Buildx..."
+        docker buildx create --use
+        docker buildx inspect --bootstrap
+
+        echo "Building Docker image for linux/amd64..."
+        docker buildx build --platform=linux/amd64 -t ihubg.azurecr.io/crm-dashboard-dev:latest . --load
+      displayName: 'Build Docker Image'
+
+    - task: Docker@2
+      inputs:
+        command: login
+        containerRegistry: 'DockerRegistryConnection'  # Usa la Service Connection para ACR
+        # Esta tarea se encargará del login al ACR usando la conexión configurada
+
+    - script: |
+        echo "Pushing Docker image to ACR..."
+        docker push ihubg.azurecr.io/crm-dashboard-dev:latest
+      displayName: 'Push Docker Image to ACR'
+
+- stage: Deploy_Dev
+  dependsOn: Build
+  jobs:
+  - job: Deploy
+    steps:
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'AzureServiceConnectionAKS-Dev'  # Usa la Service Connection para AKS
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az aks get-credentials --resource-group aks-group --name cluster-aks --overwrite-existing
+          kubectl apply -f deploy-kubernetes/secrets-dev.yml
+          kubectl apply -f deploy-kubernetes/deploy-dev.yml
+          kubectl apply -f deploy-kubernetes/service-dev.yml
+          kubectl rollout restart deployment dashboard-dev
+      displayName: 'Deploy to AKS Dev'
