@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dashboard-dev
+  name: dashboard
 spec:
   replicas: 1
   selector:
