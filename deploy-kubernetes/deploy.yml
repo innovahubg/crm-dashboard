@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dashboard
+  name: dashboard-dev
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: dashboard
@@ -24,6 +24,10 @@ spec:
             secretKeyRef:
               name: secrets-dashboard
               key: REACT_APP_API
+        resources:  # Correcta anidación aquí dentro del contenedor
+          requests:
+            memory: "1Gi"
+          limits:
+            memory: "2Gi"
       imagePullSecrets:
       - name: acr-secret
-      
