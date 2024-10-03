@@ -24,10 +24,10 @@ spec:
             secretKeyRef:
               name: secrets-dashboard-dev
               key: REACT_APP_API
-      resources:
-        requests:
-          memory: "512Mi"
-        limits:
-          memory: "1Gi"
+        resources:  # Correcta anidación aquí dentro del contenedor
+          requests:
+            memory: "512Mi"
+          limits:
+            memory: "1Gi"
       imagePullSecrets:
       - name: acr-secret
