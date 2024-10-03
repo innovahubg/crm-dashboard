@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: dashboard-dev
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: dashboard-dev
@@ -26,7 +26,7 @@ spec:
               key: REACT_APP_API
         resources:  # Correcta anidación aquí dentro del contenedor
           requests:
-            memory: "512Mi"
+            memory: "1Gi"
           limits:
             memory: "2Gi"
       imagePullSecrets:
