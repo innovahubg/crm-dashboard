@@ -111,8 +111,10 @@ import NewAITemplate from "../Pages/EmailTemplates/NewAITemplate.js";
 import NewBuilder from "../Pages/EmailTemplates/NewBuilder.js";
 import NewTemplate from "../Pages/EmailTemplates/NewTemplate.js";
 import EmailComponent from '../Pages/NewEmail/index.js'
+import DetailsEmailTemplate from "../Pages/EmailTemplates/details.js";
 import CorporateIdentity from "../Pages/CorporateIdentity/index.js";
 import WhatsAppTemplates from "../Pages/WhatsAppTemplates/index.js";
+import EditEmailTemplate from "../Pages/EmailTemplates/edit.js";
 
 const authProtectedRoutes = [
   //dashboard
@@ -136,7 +138,8 @@ const authProtectedRoutes = [
   { path: "/email-templates/new/ai", component: <NewAITemplate /> },
   { path: "/email-templates/new/builder", component: <NewBuilder /> },
   { path: "/email-templates/new/template", component: <NewTemplate /> },
-  { path: "/email-templates/:id", component: <EmailTemplates /> },
+  { path: "/email-templates/:id", component: <DetailsEmailTemplate /> },
+  { path: "/email-templates/:id/edit", component: <EditEmailTemplate /> },
   { path: "/leads", component: <Leads /> },
   { path: "/leads/:id", component: <LeadsDetails /> },
   { path: "/email-validation", component: <EmailValidation /> },

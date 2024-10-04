@@ -22,6 +22,7 @@ import {
 } from "reactstrap";
 import { Link, useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
+import ReactPaginate from 'react-paginate';
 
 const EmailTemplates = () => {
   const [templates, setTemplates] = useState([]);
@@ -130,8 +131,10 @@ const EmailTemplates = () => {
                 </Link>
               </DropdownItem>
               <DropdownItem className="edit-item-btn">
-                <i className="ri-pencil-fill align-bottom me-2 text-muted"></i>
-                Editar
+                <Link to={`/email-templates/${data.id}/edit`} className="text-muted w-full">
+                  <i className="ri-pencil-fill align-bottom me-2 text-muted"></i>
+                  Editar
+                </Link>
               </DropdownItem>
               <DropdownItem className="remove-item-btn">
                 {" "}
@@ -144,6 +147,31 @@ const EmailTemplates = () => {
       },
     },
   ];
+
+
+
+  // Here we use item offsets; we could also use page offsets
+  // following the API or data you're working with.
+  const [itemOffset, setItemOffset] = useState(0);
+  const itemsPerPage = 5
+  // Simulate fetching items from another resources.
+  // (This could be items from props; or items loaded in a local state
+  // from an API endpoint with useEffect and useState)
+  const endOffset = itemOffset + itemsPerPage;
+  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+  const currentItems = templates.slice(itemOffset, endOffset);
+  const pageCount = Math.ceil(templates.length / itemsPerPage);
+
+
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % templates.length;
+    console.log(
+      `User requested page number ${event.selected}, which is offset ${newOffset}`
+    );
+    setItemOffset(newOffset);
+  };
+
+
   return (
     <div className="page-content">
       <Container fluid={true}>
@@ -188,11 +216,23 @@ const EmailTemplates = () => {
                 <RingLoader color="#E9553E" />
               </div>
             ) : (
-              <DataTable
-                data={templates}
-                columns={columns}
-                noDataComponent={<span className="py-4">Sin resultados</span>}
-              />
+              <>
+                <DataTable
+                  data={currentItems}
+                  columns={columns}
+                  noDataComponent={<span className="py-4">Sin resultados</span>}
+                />
+                <ReactPaginate
+                  breakLabel="..."
+                  nextLabel="Sig. >"
+                  onPageChange={handlePageClick}
+                  pageRangeDisplayed={5}
+                  pageCount={pageCount}
+                  previousLabel="< Ant."
+                  renderOnZeroPageCount={null}
+                  className='reactPaginate'
+                />
+              </>
             )}
           </Row>
         </Row>
