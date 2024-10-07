@@ -19,6 +19,7 @@ const CalendarComponent = ({ setModal, setType, setDetails, events }) => {
     const handleDateClick = (arg) => {
         setType("new")
         setModal(true)
+        console.log({ arg })
     }
 
     const handleEventClick = (info) => {
@@ -28,6 +29,7 @@ const CalendarComponent = ({ setModal, setType, setDetails, events }) => {
         setDetails(obj)
         setType("details")
         setModal(true)
+        console.log("info", info)
     }
     return (
         <div>

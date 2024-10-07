@@ -239,15 +239,11 @@ const EmailTemplates = () => {
       </Container>
       <Modal
         isOpen={modal}
-        toggle={() => {
-          setModal(false);
-        }}
         centered
       >
         <ModalHeader
           className="bg-light p-3"
           id="exampleModalLabel"
-          toggle={() => setModal(false)}
         >
           Nuevo template
         </ModalHeader>

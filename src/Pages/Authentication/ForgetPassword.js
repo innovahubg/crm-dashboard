@@ -1,38 +1,86 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useEffect, useState, useCallback } from "react";
+import logolight from "../../assets/images/logo.png";
+import logodark from "../../assets/images/logo.png";
+
 import {
   Row,
   Col,
-  Alert,
-  Card,
   CardBody,
+  Card,
+  Alert,
   Container,
-  FormFeedback,
-  Input,
-  Label,
   Form,
+  Input,
+  FormFeedback,
+  Label,
 } from "reactstrap";
+
+import {
+  LoginSocialGoogle,
+  LoginSocialFacebook,
+  LoginSocialInstagram,
+} from 'reactjs-social-login';
+
+import {
+  FacebookLoginButton,
+  GoogleLoginButton,
+  InstagramLoginButton,
+} from 'react-social-login-buttons';
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
 
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import withRouter from "../../components/Common/withRouter";
+// import FacebookLogin from 'react-facebook-login';
+import { Helmet } from "react-helmet";
 
-// Formik Validation
+
+
+// Formik validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
 
-// action
-import { userForgetPassword } from "../../store/actions";
+//Social Media Imports
+import { GoogleLogin } from "react-google-login";
+// import TwitterLogin from "react-twitter-auth"
+// import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 
-// import images
-import profile from "../../assets/images/bg.png";
-import logo from "../../assets/images/logo-sm.png";
+// actions
+import { loginUser, socialLogin } from "../../store/actions";
 
-const ForgetPasswordPage = (props) => {
+//Import config
+import { facebook, google } from "../../config";
+
+import { useNavigate } from "react-router-dom";
+
+import { LoginService } from "../../services/auth";
+
+const Login = (props) => {
+  document.title = "CRM IHG";
+  const navigate = useNavigate();
+
+  const [errorAlert, setEA] = useState();
+  const [passInput, setPassInput] = useState("password");
+
+  const [provider, setProvider] = useState('');
+  const [profile, setProfile] = useState();
+
+  // const onLoginStart = useCallback(() => {
+  //   alert('login start');
+  // }, []);
+
+  // const onLogoutSuccess = useCallback(() => {
+  //   setProfile(null);
+  //   setProvider('');
+  //   alert('logout success');
+  // }, []);
+
+  const onLogout = useCallback(() => { }, []);
+
+
   const dispatch = useDispatch();
-  document.title = "Forget Password | Upzet - React Admin & Dashboard Template";
 
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
@@ -42,127 +90,209 @@ const ForgetPasswordPage = (props) => {
       email: "",
     },
     validationSchema: Yup.object({
-      email: Yup.string().required("Please Enter Your Email"),
+      email: Yup.string().required("Ingresa tu correo electrónico"),
     }),
-    onSubmit: (values) => {
-      dispatch(userForgetPassword(values, props.router.navigate));
+    onSubmit: async (values) => {
+      try {
+        //SEND TO RECOPERY PASSWORD SERVICE
+        const next = await LoginService(values);
+        if (next) {
+          navigate("/dashboard");
+        } else {
+          setEA(true);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+
+      // if(!error)
+
+      // dispatch(loginUser(res, props.router.navigate));
     },
   });
 
-  const { forgetError, forgetSuccessMsg } = useSelector((state) => ({
-    // forgetError: state.ForgetPassword.forgetError,
-    forgetSuccessMsg: state.forgetPassword.forgetSuccessMsg,
-  }));
+  // const { error } = useSelector((state) => ({
+  //   error: state.login.error,
+  // }));
+
+  // handleValidSubmit
+  // const handleValidSubmit = (event, values) => {
+  //   dispatch(loginUser(values, props.router.navigate));
+  // };
+
+  const signIn = (res, type) => {
+    if (type === "google" && res) {
+      const postData = {
+        name: res.profileObj.name,
+        email: res.profileObj.email,
+        token: res.tokenObj.access_token,
+        idToken: res.tokenId,
+      };
+      dispatch(socialLogin(postData, props.router.navigate, type));
+    } else if (type === "facebook" && res) {
+      const postData = {
+        name: res.name,
+        email: res.email,
+        token: res.accessToken,
+        idToken: res.tokenId,
+      };
+      dispatch(socialLogin(postData, props.router.navigate, type));
+    }
+  };
+
+  //handleGoogleLoginResponse
+  const googleResponse = (response) => {
+    signIn(response, "google");
+  };
+
+  //handleTwitterLoginResponse
+  // const twitterResponse = e => {}
+
+  //handleFacebookLoginResponse
+  const handleFacebookCallback = (response) => {
+    console.log(response)
+  };
+
+
+  useEffect(() => {
+    //document.body.className = "bg-pattern";
+    // remove classname when component will unmount
+    return function cleanup() {
+      document.body.className = "";
+    };
+  });
 
   return (
     <React.Fragment>
-      <div className="account-pages my-5 pt-sm-5">
-        <Container>
-          <Row className="justify-content-center">
-            <Col md={8} lg={6} xl={5}>
-              <Card className="overflow-hidden">
-                <div className="bg-primary bg-softbg-soft-primary">
-                  <Row>
-                    <Col xs={7}>
-                      <div className="text-primary p-4">
-                        <h5 className="text-primary">Welcome Back !</h5>
-                        <p>Sign in to continue to Upzet.</p>
-                      </div>
-                    </Col>
-                    <Col className="col-5 align-self-end">
-                      <img src={profile} alt="" className="img-fluid" />
-                    </Col>
-                  </Row>
-                </div>
-                <CardBody className="pt-0">
-                  <div>
-                    <Link to="/">
-                      <div className="avatar-md profile-user-wid mb-4">
-                        <span className="avatar-title rounded-circle bg-light">
-                          <img
-                            src={logo}
-                            alt=""
-                            className="rounded-circle"
-                            height="34"
-                          />
-                        </span>
-                      </div>
-                    </Link>
-                  </div>
-                  <div className="p-2">
-                    {forgetError && forgetError ? (
-                      <Alert color="danger" style={{ marginTop: "13px" }}>
-                        {forgetError}
-                      </Alert>
-                    ) : null}
-                    {forgetSuccessMsg ? (
-                      <Alert color="success" style={{ marginTop: "13px" }}>
-                        {forgetSuccessMsg}
-                      </Alert>
-                    ) : null}
+      <Helmet>
 
-                    <Form
-                      className="form-horizontal"
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        validation.handleSubmit();
-                        return false;
-                      }}
-                    >
-                      <div className="mb-3">
-                        <Label className="form-label">Email</Label>
-                        <Input
-                          name="email"
-                          className="form-control"
-                          placeholder="Enter email"
-                          type="email"
-                          onChange={validation.handleChange}
-                          onBlur={validation.handleBlur}
-                          value={validation.values.email || ""}
-                          invalid={
-                            validation.touched.email && validation.errors.email
-                              ? true
-                              : false
-                          }
-                        />
-                        {validation.touched.email && validation.errors.email ? (
-                          <FormFeedback type="invalid">
-                            <div>{validation.errors.email}</div>
-                          </FormFeedback>
-                        ) : null}
-                      </div>
-                      <Row className="mb-3">
-                        <Col className="text-end">
+
+      </Helmet>
+      {/*
+        <div className="bg-overlay"></div>
+      */}
+      <div className="accessSpace">
+        <div className="leftColAccess"></div>
+        <div className="rightColAccess">
+          <div className="d-flex flex-column">
+            <Card className="w-full flex-column d-flex">
+              <CardBody className="p-4">
+                <div>
+                  <div className="text-center">
+                    <img
+                      src={logodark}
+                      alt="InnovaHubGroup"
+                      className="auth-logo logo-dark mx-auto"
+                    />
+                    <img
+                      src={logolight}
+                      alt="InnovaHubGroup"
+                      className="auth-logo logo-light mx-auto"
+                    />
+                  </div>
+
+                  <Form
+                    className="form-horizontal"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      validation.handleSubmit();
+                      return false;
+                    }}
+                  >
+                    {errorAlert ? (
+                      <Alert color="danger">
+                        <div>Credenciales incorrectas</div>
+                      </Alert>
+                    ) : null}
+                    <Row>
+                      <Col md={12}>
+                        <div className="mb-4">
+                          <Label className="form-label">
+                            Correo electrónico
+                          </Label>
+                          <Input
+                            name="email"
+                            className="form-control"
+                            placeholder="Ingresar correo electrónico"
+                            type="email"
+                            onChange={validation.handleChange}
+                            onBlur={validation.handleBlur}
+                            value={validation.values.email || ""}
+                            invalid={
+                              validation.touched.email &&
+                                validation.errors.email
+                                ? true
+                                : false
+                            }
+                          />
+                          {validation.touched.email &&
+                            validation.errors.email ? (
+                            <FormFeedback type="invalid">
+                              <div>{validation.errors.email}</div>
+                            </FormFeedback>
+                          ) : null}
+                        </div>
+
+                        <div className="d-grid mt-4">
                           <button
-                            className="btn btn-primary w-md "
+                            className="btn btn-primary waves-effect waves-light"
                             type="submit"
                           >
-                            Reset
+                            Recuperar contraseña
                           </button>
-                        </Col>
-                      </Row>
-                    </Form>
-                  </div>
-                </CardBody>
-              </Card>
-              <div className="mt-5 text-center">
-                <p>
-                  Go back to{" "}
-                  <Link to="login" className="font-weight-medium text-primary">
-                    Login
-                  </Link>{" "}
-                </p>
-              </div>
-            </Col>
-          </Row>
-        </Container>
+                        </div>
+
+                      </Col>
+                    </Row>
+                  </Form>
+                </div>
+              </CardBody>
+            </Card>
+            <div className="mt-5 text-center">
+              <p className="text-black">
+                <Link to="/registro" className="fw-medium text-primary">
+                  Registrarse
+                </Link>
+              </p>
+              <p className="text-black">
+                © {new Date().getFullYear()}
+                <i className="mdi mdi-heart text-danger"></i> InnovaHubGroup
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </React.Fragment>
   );
 };
 
-ForgetPasswordPage.propTypes = {
+export default withRouter(Login);
+
+Login.propTypes = {
   history: PropTypes.object,
 };
 
-export default withRouter(ForgetPasswordPage);
+
+
+{/* 
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '{your-app-id}',
+      cookie     : true,
+      xfbml      : true,
+      version    : '{api-version}'
+    });
+      
+    FB.AppEvents.logPageView();   
+      
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>*/}

@@ -115,6 +115,7 @@ import DetailsEmailTemplate from "../Pages/EmailTemplates/details.js";
 import CorporateIdentity from "../Pages/CorporateIdentity/index.js";
 import WhatsAppTemplates from "../Pages/WhatsAppTemplates/index.js";
 import EditEmailTemplate from "../Pages/EmailTemplates/edit.js";
+import PasswordRecovery from "../Pages/PassRecovery/index.js";
 
 const authProtectedRoutes = [
   //dashboard
@@ -233,13 +234,13 @@ const publicRoutes = [
   // Authentication Page
   { path: "/logout", component: <Logout /> },
   { path: "/login", component: <Login /> },
-  { path: "/forgot-password", component: <ForgetPasswordPage /> },
   { path: "/registro", component: <Register /> },
+  { path: "/password-recovery", component: <PasswordRecovery /> },
 
   // Authentication Inner Pages
   { path: "/auth-login", component: <Login1 /> },
   { path: "/auth-register", component: <Register1 /> },
-  { path: "/auth-recoverpw", component: <RecoverPassword /> },
+  { path: "/forgot-password", component: <ForgetPasswordPage /> },
   { path: "/auth-lock-screen", component: <LockScreen /> },
 
   // Utility Pages

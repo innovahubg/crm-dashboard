@@ -58,7 +58,7 @@ const Campaigns = () => {
     },
     {
       name: <span className="font-weight-bold fs-13">Creada</span>,
-      selector: (row) => moment(row.createdAt).format("DD/MM/YYYY HH:mm"),
+      selector: (row) => row.createdAt ? moment(row.createdAt).format("DD/MM/YYYY HH:mm") : "-",
       sortable: true,
     },
     {
@@ -175,15 +175,11 @@ const Campaigns = () => {
       </Container>
       <Modal
         isOpen={modal}
-        toggle={() => {
-          setModal(false);
-        }}
         centered
       >
         <ModalHeader
           className="bg-light p-3"
           id="exampleModalLabel"
-          toggle={() => setModal(false)}
         >
           Nueva Campaña
         </ModalHeader>

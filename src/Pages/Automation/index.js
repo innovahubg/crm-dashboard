@@ -24,6 +24,7 @@ import { Link } from "react-router-dom";
 import { RingLoader } from "react-spinners";
 import DataTable from "react-data-table-component";
 import moment from "moment";
+import Swal from "sweetalert2";
 
 const Automation = () => {
   const [modal, setModal] = useState(false);
@@ -85,7 +86,7 @@ const Automation = () => {
 
       cell: (data) => {
         return (
-          <UncontrolledDropdown className="dropdown d-inline-block">
+          <UncontrolledDropdown className="dropdown d-inline-block z-99">
             <DropdownToggle
               className="btn btn-soft-secondary btn-sm"
               tag="button"
@@ -101,12 +102,12 @@ const Automation = () => {
               </DropdownItem>
               <DropdownItem className="edit-item-btn">
                 <i className="ri-pencil-fill align-bottom me-2 text-muted"></i>
-                Edit
+                Editar
               </DropdownItem>
-              <DropdownItem className="remove-item-btn">
+              <DropdownItem className="remove-item-btn" onClick={handleDelete}>
                 {" "}
                 <i className="ri-delete-bin-fill align-bottom me-2 text-muted"></i>{" "}
-                Delete{" "}
+                Eliminar
               </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
@@ -209,6 +210,8 @@ const Automation = () => {
       }
       console.log(scheduledObj);
       console.log({ typeAuto })
+
+
       const { status } = await PostData(`/automation/${typeAuto}`, scheduledObj);
       if (status === 200) {
         navigate("/automation");
@@ -218,6 +221,28 @@ const Automation = () => {
       console.log(err);
     }
   };
+
+
+  const handleDelete = async () => {
+    Swal.fire({
+      title: "¿Estás seguro de eliminar la automatización?",
+      // text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#09A363",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Confirmar",
+      cancelButtonText: "Cancelar"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Eliminado!",
+          text: "La automatización ha sido eliminada",
+          icon: "success"
+        });
+      }
+    });
+  }
 
   return (
     <React.Fragment>
@@ -265,7 +290,7 @@ const Automation = () => {
                       ))}
                     </select>
                     <span className="mx-4">
-                      {automations.status === "Activated" ? (
+                      {automations?.status === "Activated" ? (
                         <span> Activo </span>
                       ) : (
                         <span> Desactivo </span>
@@ -309,6 +334,7 @@ const Automation = () => {
                   data={automations.registered}
                   columns={columnsRegistered}
                   noDataComponent={<span className="py-4">Sin resultados</span>}
+                  className="dataTableHeight"
                 />
               )}
             </Row>
@@ -324,6 +350,7 @@ const Automation = () => {
                   data={automations.scheduled}
                   columns={columnsScheduled}
                   noDataComponent={<span className="py-4">Sin resultados</span>}
+                  className="dataTableHeight"
                 />
               )}
             </Row>
@@ -356,20 +383,93 @@ const Automation = () => {
           <form className="tablelist-form">
             <ModalBody style={{ height: "auto" }}>
               {type === "new" && (
-                <div className="mb-3">
-                  <label htmlFor="titlebot-field" className="form-label">
-                    Nombre
-                  </label>
-                  <input
-                    type="text"
-                    id="titlebot-field"
-                    className="form-control"
-                    placeholder="Ingresa un nombre a tu evento"
-                    required
-                    value={""}
-                    onChange={(e) => console.log({})}
-                  />
-                </div>
+                <>
+                  <div className="mb-3">
+                    <label htmlFor="titlebot-field" className="form-label">
+                      Nombre
+                    </label>
+                    <input
+                      type="text"
+                      id="titlebot-field"
+                      className="form-control"
+                      placeholder="Ingresa un nombre a tu evento"
+                      required
+                      value={""}
+                      onChange={(e) => console.log({})}
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="titlebot-field" className="form-label">
+                      Campaña
+                    </label>
+                    <select
+                      className="form-control"
+                      onChange={(e) =>
+                        setNewAuto((data) => ({ ...data, idLista: e.target.value }))
+                      }
+                    >
+                      {data.map(({ id, name }) => (
+                        <option value={id} key={id}>
+                          {name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="mb-3">
+                    <label htmlFor="titlebot-field" className="form-label">
+                      Enviar
+                    </label>
+                    <div>
+                      <button
+                        type="button"
+                        className={`btn w-50 ${newAuto.send === "whatsapp" ? "btn-success" : "btn-light"
+                          } `}
+                        onClick={() => {
+                          setNewAuto((data) => ({ ...data, send: "whatsapp" }));
+                          setTemplateType("whatsapp");
+                        }}
+                      >
+                        <i className="mdi mdi-whatsapp align-bottom me-2 text-muted" />{" "}
+                        Whatsapp
+                      </button>
+                      <button
+                        type="button"
+                        className={`btn w-50 ${newAuto.send === "email" ? "btn-success" : "btn-light"
+                          }`}
+                        onClick={() => {
+                          setNewAuto((data) => ({ ...data, send: "email" }));
+                          setTemplateType("email");
+                        }}
+                      >
+                        <i className="mdi mdi-email align-bottom me-2 text-muted" />{" "}
+                        Email
+                      </button>
+                    </div>
+                  </div>
+                  {templates && (
+                    <div className="mb-3">
+                      <label htmlFor="titlebot-field" className="form-label">
+                        Templates
+                      </label>
+                      <select
+                        className="form-control"
+                        onChange={(e) =>
+                          setNewAuto((data) => ({
+                            ...data,
+                            template: e.target.value,
+                          }))
+                        }
+                      >
+                        {templates.map(({ id, name }) => (
+                          <option value={id} key={id}>
+                            {name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+                </>
               )}
 
               {type === "details" && (
@@ -415,15 +515,11 @@ const Automation = () => {
 
         <Modal
           isOpen={newModal}
-          toggle={() => {
-            setNewModal(false);
-          }}
           centered
         >
           <ModalHeader
             className="bg-light p-3"
             id="exampleModalLabel"
-            toggle={() => setNewModal(false)}
           >
             Nueva Automatización
           </ModalHeader>
@@ -582,7 +678,10 @@ const Automation = () => {
                 <button
                   type="button"
                   className="btn btn-light mx-4"
-                  onClick={() => setModal(false)}
+                  onClick={() => {
+                    setModal(false)
+                    setNewModal(false)
+                  }}
                 >
                   Cerrar
                 </button>
