@@ -43,6 +43,9 @@ body {
   background-size: cover;
 }
 
+.passRec{
+  background-image: url("../images/login.jpg");
+}
 
 
 .rightColAccess{
@@ -62,6 +65,9 @@ body {
 
 @media only screen and (max-width: 767px) {
   .leftColAccess{
+    display: none;
+  }
+  .passRec{
     display: none;
   }
   .rightColAccess{

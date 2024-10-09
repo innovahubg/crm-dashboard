@@ -289,7 +289,7 @@ const Login = (props) => {
                             </Col> */}
                           <Col className="text-center">
                             <div className="text-center mt-3">
-                              <Link to="/auth-recoverpw" className="text-muted">
+                              <Link to="/password-recovery" className="text-muted">
                                 <i className="mdi mdi-lock"></i> Recuperar
                                 contraseña
                               </Link>

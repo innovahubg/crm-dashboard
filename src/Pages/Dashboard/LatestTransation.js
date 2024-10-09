@@ -1,11 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Row, Col } from 'reactstrap';
 
 import { LatestTransationData } from '../../CommonData/Data/index';
 import moment from "moment"
+import ReactPaginate from 'react-paginate';
 
 const LatestTransation = ({ customers }) => {
+
+    // Here we use item offsets; we could also use page offsets
+    // following the API or data you're working with.
+    const [itemOffset, setItemOffset] = useState(0);
+    const itemsPerPage = 5
+    // Simulate fetching items from another resources.
+    // (This could be items from props; or items loaded in a local state
+    // from an API endpoint with useEffect and useState)
+    const endOffset = itemOffset + itemsPerPage;
+    console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+    const currentItems = customers.slice(itemOffset, endOffset);
+    const pageCount = Math.ceil(customers.length / itemsPerPage);
+
+
+    const handlePageClick = (event) => {
+        const newOffset = (event.selected * itemsPerPage) % customers.length;
+        console.log(
+            `User requested page number ${event.selected}, which is offset ${newOffset}`
+        );
+        setItemOffset(newOffset);
+    };
+
     return (
         <React.Fragment>
 
@@ -19,11 +42,11 @@ const LatestTransation = ({ customers }) => {
 
                                 <thead>
                                     <tr>
-                                        <th scope="col" style={{ width: "50px" }}>
+                                        {/* <th scope="col" style={{ width: "50px" }}>
                                             <div className="form-check">
                                                 <label className="form-check-label" htmlFor="customCheckall"></label>
                                             </div>
-                                        </th>
+                                        </th> */}
 
                                         <th scope="col">Nombre</th>
                                         <th scope="col">Email</th>
@@ -33,14 +56,14 @@ const LatestTransation = ({ customers }) => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {customers.map((item, key) => (<tr key={key}>
-                                        <td>
+                                    {currentItems.map((item, key) => (<tr key={key}>
+                                        {/* <td>
                                             <div className="form-check">
                                                 <input type="checkbox" className="form-check-input" id={item.id}
                                                 />
                                                 <label className="form-check-label" htmlFor={item.id}></label>
                                             </div>
-                                        </td>
+                                        </td> */}
                                         <td>
                                             {item.name} {item.lastName}
                                         </td>
@@ -62,6 +85,16 @@ const LatestTransation = ({ customers }) => {
                                     </tr>))}
                                 </tbody>
                             </table>
+                            <ReactPaginate
+                                breakLabel="..."
+                                nextLabel="Sig. >"
+                                onPageChange={handlePageClick}
+                                pageRangeDisplayed={5}
+                                pageCount={pageCount}
+                                previousLabel="< Ant."
+                                renderOnZeroPageCount={null}
+                                className='reactPaginate'
+                            />
                         </div>
                     </div>
                 </div>

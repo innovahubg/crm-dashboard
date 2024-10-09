@@ -286,7 +286,7 @@ const CorporateIdentity = () => {
           id="exampleModalLabel"
           toggle={() => setModal(false)}
         >
-          Registrar identidads
+          Registrar identidad
         </ModalHeader>
         <div className="tablelist-form">
           <ModalBody style={{ height: "auto" }}>

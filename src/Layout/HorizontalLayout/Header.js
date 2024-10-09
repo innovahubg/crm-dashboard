@@ -144,7 +144,7 @@ const Header = (props) => {
               </div>
             </div>
 
-            <LanguageDropdown />
+            {/* <LanguageDropdown /> */}
 
             <AppsDropdown />
 
@@ -161,7 +161,7 @@ const Header = (props) => {
               </button>
             </div> */}
 
-            <NotificationDropdown />
+            {/* <NotificationDropdown /> */}
 
             <ProfileMenu />
 

@@ -60,7 +60,7 @@ const TopBar = () => {
           </div>
 
           <div className="d-flex">
-            <LanguageDropdown />
+            {/* <LanguageDropdown /> */}
             <AppsDropdown />
             {/* <div className="dropdown d-none d-lg-inline-block ms-1">
               <button
@@ -71,7 +71,7 @@ const TopBar = () => {
                 <i className="ri-fullscreen-line"></i>
               </button>
             </div> */}
-            <NotificationDropdown />
+            {/* <NotificationDropdown /> */}
             <ProfileMenu />
 
             <div className="dropdown d-inline-block">

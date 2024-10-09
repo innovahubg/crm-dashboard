@@ -112,11 +112,11 @@ const EmailValidation = () => {
               </DropdownItem>
               <DropdownItem className="edit-item-btn">
                 <i className="ri-pencil-fill align-bottom me-2 text-muted"></i>
-                Edit
+                Editar
               </DropdownItem>
               <DropdownItem className="remove-item-btn">
                 <i className="ri-delete-bin-fill align-bottom me-2 text-muted"></i>{" "}
-                Delete{" "}
+                Elimiar{" "}
               </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
@@ -141,8 +141,7 @@ const EmailValidation = () => {
                   }}
                   id="create-btn"
                 >
-                  <i className="ri-add-line align-bottom me-1"></i> Registrar
-                  email
+                  <i className="ri-add-line align-bottom me-1"></i> Registrar email
                 </Button>
                 {/* <Button color="soft-danger"
                                                     onClick="deleteMultiple()"
@@ -179,15 +178,13 @@ const EmailValidation = () => {
       </Container>
       <Modal
         isOpen={modal}
-        toggle={() => {
-          setModal(false);
-        }}
+
         centered
       >
         <ModalHeader
           className="bg-light p-3"
           id="exampleModalLabel"
-          toggle={() => setModal(false)}
+
         >
           Registrar correo electrónico
         </ModalHeader>
