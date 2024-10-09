@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dashboard-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  namespace: default
+spec:
+  ingressClassName: nginx  # Especifica el controlador de `Ingress`
+  tls:
+  - hosts:
+    - crm.ihubg.tech
+    secretName: crm-ihubg-tls
+  rules:
+  - host: crm.ihubg.tech
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: service-dashboard
+            port:
+              number: 80
