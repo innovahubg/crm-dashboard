@@ -67,15 +67,15 @@ const Login = (props) => {
   const [provider, setProvider] = useState('');
   const [profile, setProfile] = useState();
 
-  // const onLoginStart = useCallback(() => {
-  //   alert('login start');
-  // }, []);
+  const onLoginStart = useCallback(() => {
+    alert('login start');
+  }, []);
 
-  // const onLogoutSuccess = useCallback(() => {
-  //   setProfile(null);
-  //   setProvider('');
-  //   alert('logout success');
-  // }, []);
+  const onLogoutSuccess = useCallback(() => {
+    setProfile(null);
+    setProvider('');
+    alert('logout success');
+  }, []);
 
   const onLogout = useCallback(() => { }, []);
 
@@ -94,13 +94,7 @@ const Login = (props) => {
     }),
     onSubmit: async (values) => {
       try {
-        //SEND TO RECOPERY PASSWORD SERVICE
-        const next = await LoginService(values);
-        if (next) {
-          navigate("/dashboard");
-        } else {
-          setEA(true);
-        }
+        alert("Send to service")
       } catch (err) {
         console.log(err);
       }
@@ -111,22 +105,11 @@ const Login = (props) => {
     },
   });
 
-  // const { error } = useSelector((state) => ({
-  //   error: state.login.error,
-  // }));
-
-  // handleValidSubmit
-  // const handleValidSubmit = (event, values) => {
-  //   dispatch(loginUser(values, props.router.navigate));
-  // };
 
   const signIn = (res, type) => {
     if (type === "google" && res) {
       const postData = {
-        name: res.profileObj.name,
         email: res.profileObj.email,
-        token: res.tokenObj.access_token,
-        idToken: res.tokenId,
       };
       dispatch(socialLogin(postData, props.router.navigate, type));
     } else if (type === "facebook" && res) {
@@ -233,14 +216,62 @@ const Login = (props) => {
                           ) : null}
                         </div>
 
+
+
                         <div className="d-grid mt-4">
                           <button
                             className="btn btn-primary waves-effect waves-light"
                             type="submit"
                           >
-                            Recuperar contraseña
+                            Recuperar
                           </button>
                         </div>
+
+
+
+                        {/* <div className="mt-4 text-center">
+                          <h5 className="font-size-14 mb-3">Acceder con:</h5>
+
+                          <ul className="list-inline">
+                            <li className="list-inline-item">
+                              <LoginSocialFacebook
+                                appId={process.env.REACT_APP_FB_APP_ID || '1286925628673362'}
+                                fieldsProfile={
+                                  'id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender'
+                                }
+                                onLoginStart={onLoginStart}
+                                onLogoutSuccess={onLogoutSuccess}
+                                redirect_uri={"REDIRECT_URI"}
+                                onResolve={({ provider, data }) => {
+                                  setProvider(provider);
+                                  setProfile(data);
+                                }}
+                                onReject={err => {
+                                  console.log(err);
+                                }}
+                              >
+                                <FacebookLoginButton />
+                              </LoginSocialFacebook>
+                            </li>
+
+                            <li className="list-inline-item">
+                              {/* <GoogleLogin
+                                clientId={"google.CLIENT_ID"}
+                                render={(renderProps) => (
+                                  <Link
+                                    to="#"
+                                    className="social-list-item bg-danger text-white border-danger"
+                                    onClick={renderProps.onClick}
+                                  >
+                                    <i className="mdi mdi-google" />
+                                  </Link>
+                                )}
+                                onSuccess={googleResponse}
+                                onFailure={() => { }}
+                              /> 
+                            </li>
+                          </ul>
+                        </div> */}
 
                       </Col>
                     </Row>
@@ -272,27 +303,3 @@ Login.propTypes = {
   history: PropTypes.object,
 };
 
-
-
-{/* 
-<script>
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '{your-app-id}',
-      cookie     : true,
-      xfbml      : true,
-      version    : '{api-version}'
-    });
-      
-    FB.AppEvents.logPageView();   
-      
-  };
-
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "https://connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
-</script>*/}

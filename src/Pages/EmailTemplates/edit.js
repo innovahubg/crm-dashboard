@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, useParams } from "react-router-dom"
 import {
     DropdownItem,
@@ -16,9 +16,10 @@ import {
     Button,
 } from "reactstrap";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
+import Builder from '../../components/Builder';
 
 const EditEmailTemplate = () => {
-
+    const [html, setHTML] = useState("");
     const { id } = useParams()
 
     return (
@@ -28,6 +29,8 @@ const EditEmailTemplate = () => {
                 <Row className="mb-4">
                     <Row className="g-4 mb-3">
                         {id}
+
+                        <Builder html={html} setHTML={setHTML} />
                     </Row>
                 </Row>
             </Container>
