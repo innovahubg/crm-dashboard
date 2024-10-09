@@ -21,18 +21,43 @@ import { Link } from "react-router-dom";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { RingLoader } from "react-spinners";
 import Swal from 'sweetalert2'
+import ReactPaginate from 'react-paginate';
 
 
 const Campaigns = () => {
+
+
+
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
   const [name, setName] = useState("")
 
+  // Here we use item offsets; we could also use page offsets
+  // following the API or data you're working with.
+  const [itemOffset, setItemOffset] = useState(0);
+  const itemsPerPage = 10
+  // Simulate fetching items from another resources.
+  // (This could be items from props; or items loaded in a local state
+  // from an API endpoint with useEffect and useState)
+  const endOffset = itemOffset + itemsPerPage;
+  const currentItems = data.slice(itemOffset, endOffset);
+  const pageCount = Math.ceil(data.length / itemsPerPage);
+
+
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % data.length;
+    // console.log(
+    //     `User requested page number ${event.selected}, which is offset ${newOffset}`
+    // );
+    setItemOffset(newOffset);
+  };
+
 
   const fetchData = async () => {
     const { data } = await GetData("/contact-lists");
-    setData(data);
+    const ordered = data.sort((a, b) => { return new Date(b.createdAt) - new Date(a.createdAt) });
+    setData(ordered);
     setLoading(false);
   };
 
@@ -165,11 +190,24 @@ const Campaigns = () => {
               <RingLoader color="#E9553E" />
             </div>
           ) : (
-            <DataTable
-              data={data}
-              columns={columns}
-              noDataComponent={<span className="py-4">Sin resultados</span>}
-            />
+            <>
+              <DataTable
+                data={currentItems}
+                columns={columns}
+                noDataComponent={<span className="py-4">Sin resultados</span>}
+              />
+              <ReactPaginate
+                breakLabel="..."
+                nextLabel="Sig. >"
+                onPageChange={handlePageClick}
+                pageRangeDisplayed={10}
+                pageCount={pageCount}
+                previousLabel="< Ant."
+                renderOnZeroPageCount={null}
+                className='reactPaginate'
+                activeClassName="reactPaginate-active"
+              />
+            </>
           )}
         </Row>
       </Container>
