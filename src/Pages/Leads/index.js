@@ -17,12 +17,33 @@ import DataTable from "react-data-table-component";
 import { GetData } from "../../services/api";
 import { Link } from "react-router-dom";
 
-
+import ReactPaginate from 'react-paginate';
 
 
 const Leads = () => {
+
   const [loading, setLoading] = useState(true);
   const [leads, setLeads] = useState([]);
+
+  // Here we use item offsets; we could also use page offsets
+  // following the API or data you're working with.
+  const [itemOffset, setItemOffset] = useState(0);
+  const itemsPerPage = 10
+  // Simulate fetching items from another resources.
+  // (This could be items from props; or items loaded in a local state
+  // from an API endpoint with useEffect and useState)
+  const endOffset = itemOffset + itemsPerPage;
+  const currentItems = leads.slice(itemOffset, endOffset);
+  const pageCount = Math.ceil(leads.length / itemsPerPage);
+
+
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % leads.length;
+    // console.log(
+    //     `User requested page number ${event.selected}, which is offset ${newOffset}`
+    // );
+    setItemOffset(newOffset);
+  };
 
   const columns = [
     {
@@ -63,8 +84,10 @@ const Leads = () => {
       //Whatsapp Crear --> 
 
       const { data } = await GetData(`/customers`);
-      console.log(data)
-      setLeads(data);
+      const sorted = data.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
+      setLeads(sorted);
       setLoading(false);
     };
     fetchData();
@@ -81,11 +104,24 @@ const Leads = () => {
                 <RingLoader color="#E9553E" />
               </div>
             ) : (
-              <DataTable
-                data={leads}
-                columns={columns}
-                noDataComponent={<span className="py-4">Sin resultados</span>}
-              />
+              <>
+                <DataTable
+                  data={currentItems}
+                  columns={columns}
+                  noDataComponent={<span className="py-4">Sin resultados</span>}
+                />
+                <ReactPaginate
+                  breakLabel="..."
+                  nextLabel="Sig. >"
+                  onPageChange={handlePageClick}
+                  pageRangeDisplayed={10}
+                  pageCount={pageCount}
+                  previousLabel="< Ant."
+                  renderOnZeroPageCount={null}
+                  className='reactPaginate'
+                  activeClassName="reactPaginate-active"
+                />
+              </>
             )}
           </Row>
         </Row>

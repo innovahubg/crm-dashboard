@@ -5,27 +5,27 @@ import { Row, Col } from 'reactstrap';
 import { LatestTransationData } from '../../CommonData/Data/index';
 import moment from "moment"
 import ReactPaginate from 'react-paginate';
+import { Link } from 'react-router-dom';
 
 const LatestTransation = ({ customers }) => {
-
+    const ordered = customers.sort((a, b) => { return new Date(b.createdAt) - new Date(a.createdAt) });
     // Here we use item offsets; we could also use page offsets
     // following the API or data you're working with.
     const [itemOffset, setItemOffset] = useState(0);
-    const itemsPerPage = 5
+    const itemsPerPage = 10
     // Simulate fetching items from another resources.
     // (This could be items from props; or items loaded in a local state
     // from an API endpoint with useEffect and useState)
     const endOffset = itemOffset + itemsPerPage;
-    console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-    const currentItems = customers.slice(itemOffset, endOffset);
-    const pageCount = Math.ceil(customers.length / itemsPerPage);
+    const currentItems = ordered.slice(itemOffset, endOffset);
+    const pageCount = Math.ceil(ordered.length / itemsPerPage);
 
 
     const handlePageClick = (event) => {
-        const newOffset = (event.selected * itemsPerPage) % customers.length;
-        console.log(
-            `User requested page number ${event.selected}, which is offset ${newOffset}`
-        );
+        const newOffset = (event.selected * itemsPerPage) % ordered.length;
+        // console.log(
+        //     `User requested page number ${event.selected}, which is offset ${newOffset}`
+        // );
         setItemOffset(newOffset);
     };
 
@@ -79,8 +79,9 @@ const LatestTransation = ({ customers }) => {
                                         </td>
 
                                         <td>
-                                            <button type="button" className="btn btn-outline-success btn-sm me-1">Edit</button>
-                                            <button type="button" className="btn btn-outline-danger btn-sm me-1">Cancel</button>
+                                            <Link to={`/leads/${item.id}`}>
+                                                <button type="button" className="btn btn-outline-info btn-sm me-1">Detalles</button>
+                                            </Link>
                                         </td>
                                     </tr>))}
                                 </tbody>
@@ -89,11 +90,12 @@ const LatestTransation = ({ customers }) => {
                                 breakLabel="..."
                                 nextLabel="Sig. >"
                                 onPageChange={handlePageClick}
-                                pageRangeDisplayed={5}
+                                pageRangeDisplayed={10}
                                 pageCount={pageCount}
                                 previousLabel="< Ant."
                                 renderOnZeroPageCount={null}
                                 className='reactPaginate'
+                                activeClassName="reactPaginate-active"
                             />
                         </div>
                     </div>

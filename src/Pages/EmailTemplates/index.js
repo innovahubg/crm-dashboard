@@ -72,14 +72,12 @@ const EmailTemplates = () => {
     const realData = data[0];
     const mailsObj = Object.keys(realData);
     const mails = [];
-    console.log(realData);
     mailsObj.forEach((email) => {
       let valid = realData[email]["VerificationStatus"];
       if (valid === "Success") {
         mails.push({ email, valid: true });
       }
     });
-    console.log(mails);
     setNewTemplate({ ...newTemplate, from: mails[0].email })
     setEmails(mails);
   };
@@ -165,9 +163,7 @@ const EmailTemplates = () => {
 
   const handlePageClick = (event) => {
     const newOffset = (event.selected * itemsPerPage) % templates.length;
-    console.log(
-      `User requested page number ${event.selected}, which is offset ${newOffset}`
-    );
+
     setItemOffset(newOffset);
   };
 
@@ -231,6 +227,7 @@ const EmailTemplates = () => {
                   previousLabel="< Ant."
                   renderOnZeroPageCount={null}
                   className='reactPaginate'
+                  activeClassName="reactPaginate-active"
                 />
               </>
             )}
