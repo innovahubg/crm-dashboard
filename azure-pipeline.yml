@@ -16,11 +16,10 @@ stages:
 
     - script: |
         echo "Setting up Docker Buildx..."
-        docker buildx create --use
-        docker buildx inspect --bootstrap
-
+        sudo docker buildx create --use
+        sudo docker buildx inspect --bootstrap
         echo "Building Docker image for linux/amd64..."
-        docker buildx build --platform=linux/amd64 -t ihubg.azurecr.io/crm-dashboard:latest . --load
+        sudo  docker buildx build --platform=linux/amd64 -t ihubg.azurecr.io/crm-dashboard:latest . --load
       displayName: 'Build Docker Image'
 
     - task: Docker@2
@@ -31,7 +30,7 @@ stages:
 
     - script: |
         echo "Pushing Docker image to ACR..."
-        docker push ihubg.azurecr.io/crm-dashboard:latest
+        sudo docker push ihubg.azurecr.io/crm-dashboard:latest
       displayName: 'Push Docker Image to ACR'
 
 - stage: Deploy_Prod
