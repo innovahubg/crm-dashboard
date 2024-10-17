@@ -46,6 +46,9 @@ const Automation = () => {
       const { data } = await GetData("/contact-lists");
       setData(data);
       setLoading(false);
+      if (data.length > 0) {
+        getAutomations(data[0].id)
+      }
     };
     fetchData();
   }, []);
@@ -276,7 +279,7 @@ const Automation = () => {
               <div className="d-flex gap-1 justify-content-end">
                 <div className="mb-3">
                   <label htmlFor="titlebot-field" className="form-label">
-                    Campaña
+                    Listas de contacto
                   </label>
                   <div className="d-flex">
                     <select
@@ -293,7 +296,7 @@ const Automation = () => {
                       {automations?.status === "Activated" ? (
                         <span> Activo </span>
                       ) : (
-                        <span> Desactivo </span>
+                        <span> Desactivado </span>
                       )}
                     </span>
                   </div>
@@ -331,7 +334,7 @@ const Automation = () => {
                 </div>
               ) : (
                 <DataTable
-                  data={automations.registered}
+                  data={automations?.registered ? automations?.registered : []}
                   columns={columnsRegistered}
                   noDataComponent={<span className="py-4">Sin resultados</span>}
                   className="dataTableHeight"

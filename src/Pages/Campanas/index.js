@@ -130,7 +130,7 @@ const Campaigns = () => {
       const { status } = await PostData("/contact-lists", { name })
       if (status === 200) {
         Swal.fire({
-          title: `${name} Campaña creada`,
+          title: `${name} Lista de contacto creada`,
           icon: "success"
         });
         fetchData()
@@ -144,7 +144,7 @@ const Campaigns = () => {
 
   const deleteCampaign = () => {
     Swal.fire({
-      title: "¿Deseas eliminar la campaña?",
+      title: "¿Deseas eliminar Lista de contacto?",
       showCancelButton: true,
       confirmButtonText: "Eliminar",
       denyButtonText: `Cancelar`,
@@ -152,7 +152,7 @@ const Campaigns = () => {
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        Swal.fire("Campaña eliminada!", "", "success");
+        Swal.fire("Listas de contacto eliminada!", "", "success");
       }
       // else if (result.isDenied) {
       //   Swal.fire("Changes are not saved", "", "info");
@@ -163,7 +163,7 @@ const Campaigns = () => {
   return (
     <div className="page-content">
       <Container fluid={true}>
-        <Breadcrumbs title="IHubG" breadcrumbItem="Campañas" />
+        <Breadcrumbs title="IHubG" breadcrumbItem="Listas de contactos" />
         <Row className="my-4">
           <Col className="col-sm-auto">
             <div className="d-flex gap-1 justify-content-end">
@@ -176,7 +176,7 @@ const Campaigns = () => {
                 id="create-btn"
               >
                 <i className="ri-add-line align-bottom me-1"></i> Nueva
-                campaña
+                lista de contactos
               </Button>
               {/* <Button color="soft-danger"
                                                     onClick="deleteMultiple()"
@@ -219,7 +219,7 @@ const Campaigns = () => {
           className="bg-light p-3"
           id="exampleModalLabel"
         >
-          Nueva Campaña
+          Nueva lista de contactos
         </ModalHeader>
         <div className="tablelist-form">
           <ModalBody style={{ height: "auto" }}>
@@ -232,7 +232,7 @@ const Campaigns = () => {
                 type="text"
                 id="titlebot-field"
                 className="form-control"
-                placeholder="Ingresa un nombre a tu campaña"
+                placeholder="Ingresa un nombre a tu lista de contacto"
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}

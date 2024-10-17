@@ -21,6 +21,8 @@ import { RingLoader } from "react-spinners";
 import DataTable from "react-data-table-component";
 import { GetData } from "../../services/api";
 import { Link } from "react-router-dom";
+import ReactPaginate from 'react-paginate';
+
 
 
 //Leads

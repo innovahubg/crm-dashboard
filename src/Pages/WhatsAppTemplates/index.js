@@ -28,6 +28,8 @@ const WhatsAppTemplates = () => {
   const [modal, setModal] = useState(false);
   const [email, setEmail] = useState("");
   const [valid, setValid] = useState(false);
+  const [message, setMessage] = useState("")
+  const [name, setName] = useState("")
 
   const fetchData = async () => {
     const { data } = await GetData("/email-senders");
@@ -56,11 +58,15 @@ const WhatsAppTemplates = () => {
     }
   }, []);
 
-  const updateInput = (e) => {
+  const updateName = (e) => {
     const text = e.target.value;
-    setEmail(text);
-    setValid(validateEmail(text));
+    setName(text)
   };
+
+  const updateMessage = (e) => {
+    const text = e.target.value
+    setMessage(text)
+  }
 
   const sendEmail = async (e) => {
     e.preventDefault();
@@ -183,6 +189,8 @@ const WhatsAppTemplates = () => {
           setModal(false);
         }}
         centered
+        id="widthWhasappbuilder"
+        className="modal-dialog modal-xl"
       >
         <ModalHeader
           className="bg-light p-3"
@@ -191,88 +199,43 @@ const WhatsAppTemplates = () => {
         >
           Registrar plantilla
         </ModalHeader>
-        <div className="tablelist-form">
+        <div className="">
           <ModalBody style={{ height: "auto" }}>
-            <div className="mb-3">
-              <label htmlFor="titlebot-field" className="form-label">
-                Logotipo
-              </label>
-              <input
-                className="form-control"
-                placeholder="Ingresa el email a registrar"
-                value={email}
-                onChange={updateInput}
-                type="file"
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="titlebot-field" className="form-label">
-                Marca personal
-              </label>
-              <input
-                className="form-control"
-                placeholder="Ingresa tu marca personal"
-                value={email}
-                onChange={updateInput}
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="titlebot-field" className="form-label">
-                Link whatsapp
-              </label>
-              <input
-                className="form-control"
-                placeholder="Ingresa el link de whatsapp"
-                value={email}
-                onChange={updateInput}
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="titlebot-field" className="form-label">
-                Link instagram
-              </label>
-              <input
-                className="form-control"
-                placeholder="Ingresa el link de instagram"
-                value={email}
-                onChange={updateInput}
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="titlebot-field" className="form-label">
-                Email
-              </label>
-              <input
-                className="form-control"
-                placeholder="Ingresa el email a registrar"
-                value={email}
-                onChange={updateInput}
-              />
-            </div>
-            <div className="d-flex justify-content-between">
-              <div className="mb-3 w-50">
-                <label htmlFor="titlebot-field" className="form-label">
-                  Color primario
-                </label>
-                <input
-                  className="form-control"
-                  placeholder="Ingresa el email a registrar"
-                  value={email}
-                  onChange={updateInput}
-                  type="color"
-                />
+            <div className="d-flex flex-row justify-content-between ">
+              <div className="widthWhatsappInfo">
+
+                <div className="mb-3">
+                  <label htmlFor="titlebot-field" className="form-label">
+                    Nombre
+                  </label>
+                  <input
+                    className="form-control"
+                    placeholder="Ingresa el nombre de template"
+                    value={email}
+                    onChange={updateName}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="titlebot-field" className="form-label d-flex flex-row justify-content-between">
+                    Contenido
+                    <span>{message.length}/1024</span>
+                  </label>
+                  <textarea onChange={updateMessage} className="form-control"
+                    placeholder="Ingresa el contenido del mensaje">
+                    {message}
+                  </textarea>
+
+                </div>
               </div>
-              <div className="mb-3 w-50">
-                <label htmlFor="titlebot-field" className="form-label">
-                  Color secundario
-                </label>
-                <input
-                  className="form-control"
-                  placeholder="Ingresa el email a registrar"
-                  value={email}
-                  onChange={updateInput}
-                  type="color"
-                />
+              <div className="whatsappTemplateBg">
+                <div>
+                  <strong>Preview</strong>
+                </div>
+                {
+                  message && (
+                    <div className="messageWhatsappTemplate">{message}</div>
+                  )
+                }
               </div>
             </div>
           </ModalBody>

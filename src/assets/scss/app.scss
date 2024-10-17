@@ -222,3 +222,46 @@ File: Main Css File
       text-align: center;
     }
   }
+
+  .whatsappTemplateBg{
+    width: 45%;
+    background-image: url("../images/whatsapp.png");
+    padding: 15px;
+  }
+  
+  .widthWhatsappInfo{
+    width: 50%;
+  }
+
+  .widthWhasappbuilder{
+    // width: 60vw !important;
+  }
+
+  .messageWhatsappTemplate{
+    background: #fff;
+    border-radius: 0px 5px 5px 5px;
+    float: left;
+    padding: 14px;
+    word-wrap: break-word;
+    margin-top: 10px;
+  }
+
+
+  .messageWhatsappTemplate::after {
+    border-width: 0px 10px 10px 0;
+    border-color: white #fff transparent transparent;
+    top: 0;
+    left: -10px;
+    content: "";
+  }
+
+  // .messageWhatsappTemplate::after {
+  //   content: "";
+  //   position: absolute;
+  //   top: 100%;
+  //   left: 50%;
+  //   margin-left: -5px;
+  //   border-width: 5px;
+  //   border-style: solid;
+  //   border-color: black transparent transparent transparent;
+  // }

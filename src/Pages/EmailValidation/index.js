@@ -27,6 +27,7 @@ const EmailValidation = () => {
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
   const [email, setEmail] = useState("");
+  const [remitente, setRemitente] = useState("");
   const [valid, setValid] = useState(false);
 
   const fetchData = async () => {
@@ -62,9 +63,14 @@ const EmailValidation = () => {
     setValid(validateEmail(text));
   };
 
+  const updateRemitente = (e) => {
+    const text = e.target.value
+    setRemitente(text)
+  }
+
   const sendEmail = async (e) => {
     e.preventDefault();
-    await PostData("/email-senders", { email });
+    await PostData("/email-senders", { email: `${remitente} <${email}>` });
     await fetchData();
   };
 
@@ -116,7 +122,7 @@ const EmailValidation = () => {
               </DropdownItem>
               <DropdownItem className="remove-item-btn">
                 <i className="ri-delete-bin-fill align-bottom me-2 text-muted"></i>{" "}
-                Elimiar{" "}
+                Eliminar{" "}
               </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
@@ -192,6 +198,17 @@ const EmailValidation = () => {
           <ModalBody style={{ height: "auto" }}>
             <div className="mb-3">
               <label htmlFor="titlebot-field" className="form-label">
+                Remitente
+              </label>
+              <input
+                className="form-control"
+                placeholder="Ingresa el remitente a registrar"
+                value={remitente}
+                onChange={updateRemitente}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="titlebot-field" className="form-label">
                 Correo electrónico
               </label>
               <input
@@ -201,6 +218,7 @@ const EmailValidation = () => {
                 onChange={updateInput}
               />
             </div>
+            <strong>{`${remitente} ${email && "<"}${email}${email && ">"}`}</strong>
           </ModalBody>
           <ModalFooter>
             <div className="">

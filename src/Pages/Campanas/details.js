@@ -13,16 +13,24 @@ import {
 } from "reactstrap";
 import { Link, useParams } from "react-router-dom";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
+import { RingLoader } from "react-spinners";
+import ReactPaginate from 'react-paginate';
 
 const CampaignDetails = () => {
   const [data, setData] = useState([]);
   const [name, setName] = useState("");
+  const [loading, setLoading] = useState(true);
+
   const { id } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await GetData(`/contact-lists/${id}/customers`);
-      setData(data);
+      const sorted = data.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
+      setData(sorted);
+      setLoading(false);
     };
     fetchData();
   }, [id]);
@@ -99,17 +107,52 @@ const CampaignDetails = () => {
     },
   ];
 
+  // Here we use item offsets; we could also use page offsets
+  // following the API or data you're working with.
+  const [itemOffset, setItemOffset] = useState(0);
+  const itemsPerPage = 10
+  // Simulate fetching items from another resources.
+  // (This could be items from props; or items loaded in a local state
+  // from an API endpoint with useEffect and useState)
+  const endOffset = itemOffset + itemsPerPage;
+  const currentItems = data.slice(itemOffset, endOffset);
+  const pageCount = Math.ceil(data.length / itemsPerPage);
+
+
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % data.length;
+    setItemOffset(newOffset);
+  };
+
   return (
     <div className="page-content p">
       <Container fluid={true} className="pt-4">
-        <Breadcrumbs title="IHubG" breadcrumbItem={`Campañas`} />
+        <Breadcrumbs title="IHubG" breadcrumbItem={`Lista de contactos`} />
         <Row className="mb-4 h-75 ">
-          <DataTable
-            data={data}
-            columns={columns}
-            noDataComponent="Sin datos"
-            className="h-75"
-          />
+          {loading ? (
+            <div className="d-flex justify-content-center p-5 w-full">
+              <RingLoader color="#E9553E" />
+            </div>
+          ) : (
+            <>
+              <DataTable
+                data={currentItems}
+                columns={columns}
+                noDataComponent={<span className="py-4">Sin resultados</span>}
+              />
+              <ReactPaginate
+                breakLabel="..."
+                nextLabel="Sig. >"
+                onPageChange={handlePageClick}
+                pageRangeDisplayed={5}
+                pageCount={pageCount}
+                previousLabel="< Ant."
+                renderOnZeroPageCount={null}
+                className='reactPaginate'
+                activeClassName="reactPaginate-active"
+              />
+            </>
+          )}
         </Row>
       </Container>
     </div>

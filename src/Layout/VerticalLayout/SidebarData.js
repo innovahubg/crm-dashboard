@@ -24,7 +24,7 @@ const SidebarData = [
     url: "/automation",
   },
   {
-    label: "Campañas",
+    label: "Listas de contactos",
     icon: "mdi mdi-account-group-outline",
     isHasArrow: true,
     url: "/campaigns",
