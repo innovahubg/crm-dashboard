@@ -3,11 +3,11 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from "@fullcalendar/interaction"
 
-const CalendarComponent = ({ setModal, setType, setDetails, events }) => {
+const CalendarComponent = ({ setModal, setType, setDetails, events, idLista }) => {
     const eventsData = events?.map(({ run, name, id, type }) => {
         // if (type == "registered") {
         const { year, month, day } = run
-        const monthFormat = month <= 9 ? "0" + (month + 1) : (month + 1)
+        const monthFormat = month <= 8 ? "0" + (month + 1) : (month + 1)
         return {
             title: name,
             date: `${year}-${monthFormat}-${day}`,

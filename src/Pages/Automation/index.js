@@ -38,6 +38,7 @@ const Automation = () => {
   const [automations, setAutomations] = useState([]);
   const [emailSenders, setEmailSenders] = useState([]);
   const [templateType, setTemplateType] = useState();
+  const [idList, setIdList] = useState("")
 
   const navigate = useNavigate();
 
@@ -48,6 +49,8 @@ const Automation = () => {
       setLoading(false);
       if (data.length > 0) {
         getAutomations(data[0].id)
+        setIdList(data[0].id)
+        console.log("IDLIST", data[0].id)
       }
     };
     fetchData();
@@ -60,6 +63,7 @@ const Automation = () => {
   };
 
   const getAutomations = async (idContactList) => {
+    setIdList(idContactList)
     const { data } = await GetData(`/automation/${idContactList}`);
     setAutomations(data);
   };
@@ -88,6 +92,7 @@ const Automation = () => {
       sortable: true,
 
       cell: (data) => {
+        console.log({ data })
         return (
           <UncontrolledDropdown className="dropdown d-inline-block z-99">
             <DropdownToggle
@@ -107,7 +112,7 @@ const Automation = () => {
                 <i className="ri-pencil-fill align-bottom me-2 text-muted"></i>
                 Editar
               </DropdownItem>
-              <DropdownItem className="remove-item-btn" onClick={handleDelete}>
+              <DropdownItem className="remove-item-btn" onClick={() => handleDelete(data.template)}>
                 {" "}
                 <i className="ri-delete-bin-fill align-bottom me-2 text-muted"></i>{" "}
                 Eliminar
@@ -184,49 +189,70 @@ const Automation = () => {
   }, [newAuto]);
 
   const handleCreate = async () => {
-    try {
-      const scheduledObj = { ...newAuto };
+    Swal.fire({
+      title: "¿Estás seguro de crear la automatización?",
+      // text: "You won't be able to revert this!",
+      icon: "check",
+      showCancelButton: true,
+      confirmButtonColor: "#09A363",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Confirmar",
+      cancelButtonText: "Cancelar"
+    }).then(async (confirm) => {
+      console.log(confirm)
+      if (confirm.isConfirmed) {
+        try {
+          const scheduledObj = { ...newAuto };
 
-      const typeAuto = newAuto.type === "registered" ? "register" : "schedule"
+          const typeAuto = newAuto.type === "registered" ? "register" : "schedule"
 
-      const find = templates.find((t) => t.id === newAuto.template);
-      scheduledObj["from"] = find["from"];
+          const find = templates.find((t) => t.id === newAuto.template);
+          scheduledObj["from"] = find["from"];
 
-      if (newAuto.type === "scheduled") {
-        const dates = newAuto.date.split("-");
-        const day = dates[2].split("T")[0];
-        const time = newAuto.date.split("T");
-        const times = time[1].split(":");
-        const run = {
-          year: Number(dates[0]),
-          month: Number(dates[1]),
-          day: Number(day),
-          hour: Number(times[0]),
-          minute: Number(times[1]),
-        };
-        scheduledObj["run"] = run;
-      } else {
-        scheduledObj["idAutomation"] = newAuto.idLista
-        scheduledObj["registered"] = [{ ...newAuto }]
-        scheduledObj["registered"][0]["params"] = { name: 'string' }
-        scheduledObj["registered"][0]["from"] = find["from"]
+          if (newAuto.type === "scheduled") {
+            const dates = newAuto.date.split("-");
+            const day = dates[2].split("T")[0];
+            const time = newAuto.date.split("T");
+            const times = time[1].split(":");
+            const run = {
+              year: Number(dates[0]),
+              month: Number(dates[1]),
+              day: Number(day),
+              hour: Number(times[0]),
+              minute: Number(times[1]),
+            };
+            scheduledObj["run"] = run;
+            scheduledObj["idLista"] = idList
+          } else {
+            scheduledObj["idAutomation"] = idList
+            scheduledObj["registered"] = [{ ...newAuto }]
+            scheduledObj["registered"][0]["params"] = { name: 'string' }
+            scheduledObj["registered"][0]["from"] = find["from"]
+          }
+          console.log(scheduledObj);
+          console.log({ typeAuto })
+          console.log(`/automation/${typeAuto}`)
+
+          const { status } = await PostData(`/automation/${typeAuto}`, scheduledObj);
+          if (status === 200) {
+            navigate("/automation");
+          }
+          Swal.fire({
+            title: `Automatización creada`,
+            icon: "success"
+          });
+          setNewModal(false)
+        } catch (err) {
+          console.log(err);
+        }
       }
-      console.log(scheduledObj);
-      console.log({ typeAuto })
+    })
 
 
-      const { status } = await PostData(`/automation/${typeAuto}`, scheduledObj);
-      if (status === 200) {
-        navigate("/automation");
-      }
-      setNewModal(false)
-    } catch (err) {
-      console.log(err);
-    }
   };
 
 
-  const handleDelete = async () => {
+  const handleDelete = async (template) => {
     Swal.fire({
       title: "¿Estás seguro de eliminar la automatización?",
       // text: "You won't be able to revert this!",
@@ -236,15 +262,95 @@ const Automation = () => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Confirmar",
       cancelButtonText: "Cancelar"
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
+
+
+        const cpRegistered = automations.registered || []
+
+        console.log({ cpRegistered, automations })
+
+        const index = cpRegistered.findIndex(r => r.template === template)
+
+        cpRegistered.splice(index, 1)
+
+        console.log({ cpRegistered, automations })
+        const { status } = await PostData(`/automation/register`, { ...automations, idAutomation: automations.id });
+        if (status === 200) {
+          navigate("/automation");
+        }
+
         Swal.fire({
           title: "Eliminado!",
           text: "La automatización ha sido eliminada",
           icon: "success"
         });
+
+
+
       }
     });
+  }
+
+
+  const handleCreateCalendar = async () => {
+    const confirm = Swal.fire({
+      title: "¿Estás seguro de crear la automatización?",
+      // text: "You won't be able to revert this!",
+      icon: "check",
+      showCancelButton: true,
+      confirmButtonColor: "#09A363",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Confirmar",
+      cancelButtonText: "Cancelar"
+    })
+      (async () => {
+        if (confirm.isConfirmed) {
+          try {
+            const scheduledObj = { ...newAuto };
+
+            const typeAuto = newAuto.type === "registered" ? "register" : "schedule"
+
+            const find = templates.find((t) => t.id === newAuto.template);
+            scheduledObj["from"] = find["from"];
+
+            if (newAuto.type === "scheduled") {
+              const dates = newAuto.date.split("-");
+              const day = dates[2].split("T")[0];
+              const time = newAuto.date.split("T");
+              const times = time[1].split(":");
+              const run = {
+                year: Number(dates[0]),
+                month: Number(dates[1]),
+                day: Number(day),
+                hour: Number(times[0]),
+                minute: Number(times[1]),
+              };
+              scheduledObj["run"] = run;
+            } else {
+              scheduledObj["idAutomation"] = idList
+              scheduledObj["registered"] = [{ ...newAuto }]
+              scheduledObj["registered"][0]["params"] = { name: 'string' }
+              scheduledObj["registered"][0]["from"] = find["from"]
+            }
+            // console.log(scheduledObj);
+            // console.log({ typeAuto })
+            console.log(scheduledObj)
+
+            const { status } = await PostData(`/automation/${typeAuto}`, scheduledObj);
+            if (status === 200) {
+              navigate("/automation");
+            }
+            Swal.fire({
+              title: `Automatización creada`,
+              icon: "success"
+            });
+            setNewModal(false)
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      });
   }
 
   return (
@@ -364,6 +470,7 @@ const Automation = () => {
               setType={setType}
               setDetails={setDetails}
               events={automations.scheduled}
+              idLista={newAuto.idLista}
             />
           </TabPanel>
         </Tabs>
@@ -403,19 +510,42 @@ const Automation = () => {
                   </div>
                   <div className="mb-3">
                     <label htmlFor="titlebot-field" className="form-label">
+                      Nombre
+                    </label>
+                    <input
+                      type="time"
+                      id="titlebot-field"
+                      className="form-control"
+                      required
+                      value={""}
+                      onChange={(e) => console.log(e.target.value)}
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="titlebot-field" className="form-label">
                       Campaña
                     </label>
                     <select
                       className="form-control"
-                      onChange={(e) =>
+                      onChange={(e) => {
                         setNewAuto((data) => ({ ...data, idLista: e.target.value }))
+                        setIdList(e.target.value)
                       }
+                      }
+
                     >
-                      {data.map(({ id, name }) => (
-                        <option value={id} key={id}>
-                          {name}
-                        </option>
-                      ))}
+                      {data.map(({ id, name }) => {
+
+                        if (idList === id) {
+                          return <option value={id} key={id} selected>
+                            {name}
+                          </option>
+                        } else {
+                          return <option value={id} key={id}>
+                            {name}
+                          </option>
+                        }
+                      })}
                     </select>
                   </div>
 
