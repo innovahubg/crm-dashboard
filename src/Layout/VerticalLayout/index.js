@@ -100,6 +100,11 @@ const Layout = props => {
     }
   }, [topbarTheme, dispatch]);
 
+  function closeMenu() {
+    // dispatch(changeSidebarType("condensed", isMobile));
+    console.log("CLOSE MENUsss", isMobile)
+  }
+
   return (
     <React.Fragment>
       <div id="layout-wrapper">
@@ -108,6 +113,7 @@ const Layout = props => {
           theme={leftSideBarTheme}
           type={leftSideBarType}
           isMobile={isMobile}
+          closeMenu={closeMenu}
         />
         <div className="main-content">{props.children}</div>
         <Footer />

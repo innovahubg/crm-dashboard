@@ -156,7 +156,6 @@ const EmailTemplates = () => {
   // (This could be items from props; or items loaded in a local state
   // from an API endpoint with useEffect and useState)
   const endOffset = itemOffset + itemsPerPage;
-  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
   const currentItems = templates.slice(itemOffset, endOffset);
   const pageCount = Math.ceil(templates.length / itemsPerPage);
 

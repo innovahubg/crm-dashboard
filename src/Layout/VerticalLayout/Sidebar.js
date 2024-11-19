@@ -120,6 +120,14 @@ const Sidebar = (props) => {
       }
     }
   }
+
+  function closeMenuPWA() {
+    const w = document.body.clientWidth
+    if (w < 425) {
+      document.body.classList.toggle("sidebar-enable");
+    }
+  }
+
   return (
     <React.Fragment>
       <div className="vertical-menu">
@@ -139,6 +147,7 @@ const Sidebar = (props) => {
                             ? " "
                             : "has-arrow"
                         }
+                        onClick={closeMenuPWA}
                       >
                         <i
                           className={item.icon}

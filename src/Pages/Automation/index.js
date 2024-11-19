@@ -46,10 +46,13 @@ const Automation = () => {
     const fetchData = async () => {
       const { data } = await GetData("/contact-lists");
       setData(data);
+      console.log({ data })
       setLoading(false);
       if (data.length > 0) {
         getAutomations(data[0].id)
         setIdList(data[0].id)
+        console.log(data[0].id)
+        setNewAuto(() => ({ idLista: data[0].id }))
         console.log("IDLIST", data[0].id)
       }
     };
@@ -183,6 +186,7 @@ const Automation = () => {
   ];
 
   useEffect(() => {
+    console.log("newAuto", newAuto, data)
     if (templateType) {
       getTemplates();
     }
@@ -199,7 +203,6 @@ const Automation = () => {
       confirmButtonText: "Confirmar",
       cancelButtonText: "Cancelar"
     }).then(async (confirm) => {
-      console.log(confirm)
       if (confirm.isConfirmed) {
         try {
           const scheduledObj = { ...newAuto };
@@ -207,7 +210,9 @@ const Automation = () => {
           const typeAuto = newAuto.type === "registered" ? "register" : "schedule"
 
           const find = templates.find((t) => t.id === newAuto.template);
-          scheduledObj["from"] = find["from"];
+          scheduledObj["from"] = find?.["from"];
+
+
 
           if (newAuto.type === "scheduled") {
             const dates = newAuto.date.split("-");
@@ -222,16 +227,13 @@ const Automation = () => {
               minute: Number(times[1]),
             };
             scheduledObj["run"] = run;
-            scheduledObj["idLista"] = idList
+            scheduledObj["idLista"] = scheduledObj.idLista
           } else {
-            scheduledObj["idAutomation"] = idList
+            scheduledObj["idAutomation"] = scheduledObj.idLista
             scheduledObj["registered"] = [{ ...newAuto }]
             scheduledObj["registered"][0]["params"] = { name: 'string' }
             scheduledObj["registered"][0]["from"] = find["from"]
           }
-          console.log(scheduledObj);
-          console.log({ typeAuto })
-          console.log(`/automation/${typeAuto}`)
 
           const { status } = await PostData(`/automation/${typeAuto}`, scheduledObj);
           if (status === 200) {
@@ -677,7 +679,7 @@ const Automation = () => {
 
               <div className="mb-3">
                 <label htmlFor="titlebot-field" className="form-label">
-                  Campaña
+                  Lista de contacto
                 </label>
                 <select
                   className="form-control"
